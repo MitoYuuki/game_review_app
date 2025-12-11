@@ -1,0 +1,45 @@
+<div class="container mt-5">
+
+  <!-- ◆ サイト名 -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold">GameReview Hub</h1>
+    <p class="text-muted">ゲーム好きのためのレビュー・共有コミュニティ</p>
+  </div>
+
+  <!-- ◆ メイン画像 -->
+  <div class="text-center mb-4">
+    <%= image_tag "top_game_image.png",
+      class: "img-fluid rounded",
+      style: "max-width: 70%; background: transparent;" %>
+  </div>
+
+  <!-- ◆ アプリの特徴 -->
+  <div class="row mt-5">
+    <div class="col-md-4 text-center">
+      <h4>🎮 レビュー投稿</h4>
+      <p>あなたがプレイしたゲームの感想や評価を投稿できます。</p>
+    </div>
+    <div class="col-md-4 text-center">
+      <h4>🔍 タグ・ジャンル検索</h4>
+      <p>気になるゲームをタグ/ジャンルから簡単検索。</p>
+    </div>
+    <div class="col-md-4 text-center">
+      <h4>❤️ いいね機能</h4>
+      <p>お気に入りのレビューを保存できます。</p>
+    </div>
+  </div>
+
+  <!-- ◆ ボタン -->
+  <div class="text-center mt-5">
+    <%= link_to "新規登録", new_user_registration_path,
+          class: "btn btn-success btn-lg me-3" %>
+
+    <%= link_to "ログイン", new_user_session_path,
+          class: "btn btn-primary btn-lg me-3" %>
+
+    <%= link_to "ゲストログイン", guest_sign_in_path,
+          method: :post,
+          class: "btn btn-warning btn-lg" %>
+  </div>
+
+</div>

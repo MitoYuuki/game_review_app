@@ -1,0 +1,72 @@
+<div class="container mt-4">
+  <%= form_with url: root_path, method: :get, local: true do |f| %>
+    <div class="input-group mb-3">
+      <%= f.text_field :keyword, class: "form-control", placeholder: "キーワード検索" %>
+      <button class="btn btn-primary">検索</button>
+    </div>
+  <% end %>
+</div>
+
+<div class="container">
+  <div class="row">
+
+    <!-- ▷ 右サイド：ジャンル & タグ -->
+    <aside class="col-md-3">
+
+      <!-- ▼ ジャンル -->
+      <h5 data-bs-toggle="collapse" data-bs-target="#genreList" style="cursor: pointer;">ジャンル ▼</h5>
+      <ul id="genreList" class="list-group mb-3 collapse show">
+        <% @groups.each do |g| %>
+          <li class="list-group-item">
+            <%= link_to g.name, group_path(g) %>
+          </li>
+        <% end %>
+      </ul>
+
+      <!-- ▼ タグ -->
+      <h5 data-bs-toggle="collapse" data-bs-target="#tagList" style="cursor: pointer;">タグ ▼</h5>
+      <ul id="tagList" class="list-group collapse show">
+        <% @tags.each do |tag| %>
+          <li class="list-group-item">
+            <%= link_to tag.name, tag_path(tag) %>
+          </li>
+        <% end %>
+      </ul>
+
+    </aside>
+
+    <!-- ▷ 左メイン：最新投稿 -->
+    <div class="col-md-9">
+      <h3>新着投稿</h3>
+
+      <div class="row">
+        <% @posts.each do |post| %>
+          <div class="col-md-4 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <%= link_to post.title, post_path(post) %>
+                </h5>
+
+                <p><%= truncate(post.content, length: 60) %></p>
+
+                <p>
+                  <span class="badge bg-info"><%= post.group.name %></span>
+                </p>
+
+                <p>
+                  <% post.tags.each do |tag| %>
+                    <span class="badge bg-secondary"><%= tag.name %></span>
+                  <% end %>
+                </p>
+
+                <p>❤️ <%= post.likes.count %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+    </div> <!-- col-md-9 -->
+  </div> <!-- row -->
+</div> <!-- container -->
