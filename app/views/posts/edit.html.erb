@@ -1,4 +1,110 @@
-<!-- app/views/posts/edit.html.erb -->
-<h1>投稿を編集</h1>
+<div class="container mt-5">
+  <h2 class="mb-4">レビュー編集</h2>
 
-<%= render "form", post: @post %>
+  <% if @post.errors.any? %>
+    <div class="alert alert-danger">
+      <h4>更新できませんでした：</h4>
+      <ul>
+        <% @post.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @post, local: true do |f| %>
+
+    <!-- ◆ プラットフォーム -->
+    <div class="form-group mb-3">
+      <%= f.label :platform, "プラットフォーム" %>
+      <%= f.select :platform,
+            ["ソラリア5", "ユニットシフト", "エーテルギア", "ハイパーキューブX", "ポケットリンク"], 
+            { prompt: "選択してください" },
+            class: "form-control" %>
+    </div>
+
+    <!-- ◆ ジャンル -->
+    <div class="form-group mb-3">
+      <%= f.label :group_id, "ジャンル" %>
+      <%= f.select :group_id,
+        [["アクション", 1], 
+         ["RPG（ロールプレイング）", 2], 
+         ["シューティング", 3], 
+         ["シミュレーション", 4], 
+         ["アドベンチャー", 5], 
+         ["スポーツ", 6], 
+         ["パズル", 7]],
+        { prompt: "選択してください" },
+        class: "form-control" %>
+    </div>
+
+    <!-- ◆ ゲームタイトル -->
+    <div class="form-group mb-3">
+      <%= f.label :title, "ゲームタイトル" %>
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
+
+    <!-- ◆ 評価（星） -->
+    <div class="form-group mb-3">
+      <%= f.label :rating, "評価（★）" %>
+
+      <!-- Raty表示ゾーン（編集時 初期値を反映） -->
+      <div class="post_raty" data-target-rating="post_rating" data-score="<%= @post.rate %>"></div>
+
+      <!-- 評価値を受け取る hidden_field -->
+      <%= f.hidden_field :rate, id: "post_rating" %>
+    </div>
+
+    <!-- ◆ レビュー内容 -->
+    <div class="form-group mb-3">
+      <%= f.label :content, "レビュー内容" %>
+      <%= f.text_area :body, rows: 6, class: "form-control" %>
+    </div>
+
+    <!-- ◆ プレイ時間 -->
+    <div class="form-group mb-3">
+      <%= f.label :play_time, "プレイ時間（例: 20時間）" %>
+      <%= f.text_field :play_time, class: "form-control" %>
+    </div>
+
+    <!-- ◆ 難易度 -->
+    <div class="form-group mb-3">
+      <%= f.label :difficulty, "難易度" %>
+      <%= f.select :difficulty,
+            ["超簡単","簡単","普通","難しい","激ムズ"],
+            { prompt: "選択してください" },
+            class: "form-control" %>
+    </div>
+
+    <!-- ◆ おすすめ度 -->
+    <div class="form-group mb-3">
+      <%= f.label :recommend_level, "おすすめ度" %>
+      <%= f.select :recommend_level,
+            [["おすすめしない", 1], ["微妙", 2], ["普通", 3], ["おすすめ", 4], ["超おすすめ", 5]],
+            { prompt: "選択してください" },
+            class: "form-control" %>
+    </div>
+
+    <!-- ◆ 既存タグ（チェックボックス） -->
+    <div class="form-group mb-3">
+      <%= f.label :tag_ids, "タグ（複数選択可）" %>
+      <div class="border rounded p-2">
+
+        <% @tags.each do |tag| %>
+          <div class="form-check">
+            <%= check_box_tag "post[tag_ids][]", tag.id, @post.tags.include?(tag),
+                  class: "form-check-input", id: "tag_#{tag.id}" %>
+            <%= label_tag "tag_#{tag.id}", tag.name, class: "form-check-label" %>
+          </div>
+        <% end %>
+
+      </div>
+    </div>
+
+    <!-- ◆ 更新ボタン -->
+    <div class="mt-4">
+      <%= f.submit "更新する", class: "btn btn-primary btn-lg" %>
+    </div>
+
+  <% end %>
+</div>

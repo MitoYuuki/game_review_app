@@ -1,5 +1,9 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :reject_guest_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
+  
 
    # トップページ
   def home
@@ -16,8 +20,8 @@ class PostsController < ApplicationController
 
   def index
     @posts = Post.includes(:group, :tags).order(created_at: :desc)
-    @groups = Group.all      # ← これがないとビューで nil になる
-    @tags = Tag.all          # ← 同じく
+    @groups = Group.all      
+    @tags = Tag.all          
   end
 
   def show
@@ -30,6 +34,7 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @post = Post.find(params[:id])
     @groups = Group.all
     @tags   = Tag.all
   end
@@ -46,6 +51,7 @@ class PostsController < ApplicationController
 end
 
 def update
+  @post = Post.find(params[:id])
   if @post.update(post_params)
     redirect_to @post, notice: "投稿を更新しました"
     else
@@ -62,18 +68,29 @@ def update
 
 private
 
+  def reject_guest_user
+    if current_user.guest?
+      redirect_to root_path, alert: "ゲストユーザーは投稿できません"
+    end
+  end
+
   def set_post
     @post = Post.find(params[:id])
   end
 
-  # ★ここ重要 — tag_ids: [] を permit に追加！
+  def correct_user
+    unless @post.user == current_user
+      redirect_to posts_path, alert: "権限がありません。"
+    end
+  end
+
   def post_params
     params.require(:post).permit(
       :platform,
       :group_id,
       :title,
-      :rating,
-      :content,
+      :rate,
+      :body,
       :play_time,
       :difficulty,
       :recommend_level,

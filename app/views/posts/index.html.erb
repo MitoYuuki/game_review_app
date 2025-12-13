@@ -48,7 +48,7 @@
                   <%= link_to post.title, post_path(post) %>
                 </h5>
 
-                <p><%= truncate(post.content, length: 60) %></p>
+                <p><%= truncate(post.body, length: 60) %></p>
 
                 <p>
                   <span class="badge bg-info"><%= post.group.name %></span>

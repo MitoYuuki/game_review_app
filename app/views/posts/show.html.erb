@@ -1,3 +1,83 @@
-<h1>Posts#show</h1>
-<p>Find me in app/views/posts/show.html.erb</p>
-<%= form_with model:[@post, @comment] do |f| %>
+<div class="container mt-5">
+  <h2 class="mb-2 d-flex align-items-center">
+    <span><%= @post.title %></span>
+    <small class="text-muted ms-3 fs-6">
+      投稿者：<%= @post.user.name %>
+    </small>
+  </h2>
+
+  <!-- プラットフォーム -->
+  <p><strong>プラットフォーム：</strong> <%= @post.platform %></p>
+
+  <!-- ジャンル -->
+  <p><strong>ジャンル：</strong> <%= @post.group.name if @post.group %></p>
+
+  <!-- 評価 -->
+  <p><strong>評価：</strong> <%= @post.rate %> ★</p>
+
+  <!-- レビュー内容 -->
+  <div class="mb-3">
+    <strong>レビュー内容：</strong>
+    <p><%= simple_format(@post.body) %></p>
+  </div>
+
+  <!-- プレイ時間 -->
+  <p><strong>プレイ時間：</strong> <%= @post.play_time %></p>
+
+  <!-- 難易度 -->
+  <p><strong>難易度：</strong> <%= @post.difficulty %></p>
+
+  <!-- おすすめ度 -->
+  <p><strong>おすすめ度：</strong>
+  <%= case @post.recommend_level.to_i
+    when 1 then "おすすめしない"
+    when 2 then "微妙"
+    when 3 then "普通"
+    when 4 then "おすすめ"
+    when 5 then "超おすすめ"
+    else "未設定"
+    end %>
+  </p>
+
+  <!-- タグ -->
+  <p><strong>タグ：</strong>
+    <% @post.tags.each do |tag| %>
+      <span class="badge bg-secondary"><%= tag.name %></span>
+    <% end %>
+  </p>
+
+  <p>投稿日時：<%= @post.created_at.strftime("%Y-%m-%d %H:%M") %></p>
+
+  <h4>コメント</h4>
+    <% @post.comments.each do |comment| %>
+      <p><strong><%= comment.user.name %>：</strong> <%= comment.body %></p>
+    <% end %>
+
+    <%= form_with model: [@post, Comment.new], local: true do |f| %>
+      <div class="mb-3">
+        <%= f.text_area :body, class: "form-control", placeholder: "コメントを入力" %>
+      </div>
+      <%= f.submit "コメント投稿", class: "btn btn-primary" %>
+    <% end %>
+
+    <!-- いいね -->
+    <div id="like-area">
+      <%= render "likes/like", post: @post %>
+    </div>
+
+
+  <!-- 編集・削除・一覧に戻るボタン -->
+  <div class="mt-4">
+
+    <% if @post.user == current_user %>
+      <%= link_to "編集", edit_post_path(@post), class: "btn btn-warning me-2" %>
+      <%= link_to "削除", post_path(@post),
+          method: :delete,
+          data: { confirm: "本当に削除しますか？" },
+          class: "btn btn-danger me-2" %>
+    <% end %>
+
+    <%= link_to "一覧に戻る", posts_path, class: "btn btn-secondary" %>
+
+  </div>
+</div>

@@ -13,3 +13,23 @@
  *= require_tree .
  *= require_self
  */
+
+ .star-rating {
+  --percent: calc(var(--rate) / 5 * 100%);
+  display: inline-block;
+  font-size: 24px;
+  font-family: "Arial";
+  line-height: 1;
+}
+
+.star-rating::before {
+  content: "★★★★★";
+  letter-spacing: 3px;
+  background: linear-gradient(90deg, gold var(--percent), #ddd var(--percent));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.star-rating[data-rate] {
+  --rate: attr(data-rate number);
+}

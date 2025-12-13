@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <div class="col-md-6 mx-auto">
+
+    <h2 class="fw-bold mb-4">プロフィール編集</h2>
+
+    <%= form_with model: @user, local: true, multipart: true do |f| %>
+
+      <!-- 名前 -->
+      <div class="mb-3">
+        <%= f.label :name, "名前" %>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+
+      <!-- 自己紹介 -->
+      <div class="mb-3">
+        <%= f.label :profile, "自己紹介" %>
+        <%= f.text_area :profile, rows: 4, class: "form-control" %>
+      </div>
+
+      <!-- プロフィール画像 -->
+      <div class="mb-3">
+        <%= f.label :profile_image, "プロフィール画像" %>
+        <%= f.file_field :profile_image, class: "form-control" %>
+
+        <% if @user.profile_image.attached? %>
+          <p class="mt-2">現在の画像：</p>
+          <%= image_tag @user.profile_image.variant(resize_to_limit: [120, 120]), class: "rounded-circle" %>
+        <% end %>
+      </div>
+
+      <%= f.submit "保存する", class: "btn btn-primary w-100" %>
+
+    <% end %>
+
+  </div>
+</div>

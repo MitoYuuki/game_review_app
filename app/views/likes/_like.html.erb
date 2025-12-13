@@ -1,0 +1,26 @@
+<div class="d-flex align-items-center">
+  <% if current_user.likes.exists?(post_id: post.id) %>
+
+    <%= link_to post_likes_path(post),
+                method: :delete,
+                data: { turbo_method: :delete },
+                class: "text-danger fs-3 text-decoration-none me-2" do %>
+      ❤️
+    <% end %>
+
+  <% else %>
+
+    <%= link_to post_likes_path(post),
+                method: :post,
+                data: { turbo_method: :post },
+                class: "text-secondary fs-3 text-decoration-none me-2" do %>
+      🤍
+    <% end %>
+
+  <% end %>
+
+  <!-- Twitter風：いいね数 -->
+  <span class="ms-1"><%= post.likes.count %></span>
+</div>
+
+

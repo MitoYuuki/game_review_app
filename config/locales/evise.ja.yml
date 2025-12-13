@@ -1,0 +1,54 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード（確認用）"
+        current_password: "現在のパスワード"
+
+  errors:
+    messages:
+      blank: "を入力してください"
+      invalid: "が正しくありません"
+
+  devise:
+    sessions:
+      signed_in: "ログインしました"
+      signed_out: "ログアウトしました"
+
+    registrations:
+      signed_up: "アカウントを作成しました"
+      updated: "アカウント情報を更新しました"
+
+    failure:
+      invalid: "メールアドレスまたはパスワードが違います"
+
+    registrations:
+      destroyed: "退会しました"
+    alerts:
+    guest_forbidden: "ゲストユーザーは退会できません"
+
+    devise:
+    failure:
+      user:
+        not_found_in_database: "メールアドレスまたはパスワードが正しくありません"
+      not_found_in_database: "メールアドレスまたはパスワードが正しくありません"
+      invalid: "メールアドレスまたはパスワードが正しくありません"
+
+    activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "を入力してください"
+            password:
+              blank: "を入力してください"
+              too_short: "は%{count}文字以上で入力してください"
+
+  errors:
+    messages:
+      blank: "を入力してください"
+      too_short: "は%{count}文字以上で入力してください"
+      not_saved: "%{resource}の保存に失敗しました"

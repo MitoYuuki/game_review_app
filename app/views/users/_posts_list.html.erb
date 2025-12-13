@@ -1,0 +1,17 @@
+<div class="card mb-4">
+  <div class="card-body">
+    <h4 class="fw-bold mb-3">あなたの投稿</h4>
+
+    <% if posts.present? %>
+      <% posts.each do |post| %>
+        <div class="mb-3 border-bottom pb-2">
+          <h5><%= link_to post.title, post_path(post) %></h5>
+          <p class="text-muted small">評価：<%= post.rate %> ★</p>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-muted">投稿はまだありません。</p>
+    <% end %>
+
+  </div>
+</div>
