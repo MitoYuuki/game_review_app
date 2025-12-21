@@ -1,12 +1,13 @@
 class Post < ApplicationRecord
   belongs_to :user
-  belongs_to :group
+  belongs_to :group, optional: true
   has_many :post_tags, dependent: :destroy
   has_many :tags, through: :post_tags
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
   attr_accessor :tag_names
   validates :group_id, presence: true
+  validates :title, presence: true
 
   before_save :round_rate
 

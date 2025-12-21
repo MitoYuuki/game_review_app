@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_one_attached :profile_image
 
+  validates :name, presence: true
   validates :email, presence: true, uniqueness: true
   validates :password, presence: true, length: { minimum: 6 }, if: :password_required?
   

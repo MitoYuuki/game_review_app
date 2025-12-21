@@ -27,15 +27,9 @@
     <div class="form-group mb-3">
       <%= f.label :group_id, "ジャンル" %>
       <%= f.select :group_id,
-        [["アクション", 1], 
-         ["RPG（ロールプレイング）", 2], 
-         ["シューティング", 3], 
-         ["シミュレーション", 4], 
-         ["アドベンチャー", 5], 
-         ["スポーツ", 6], 
-         ["パズル", 7]],
-        prompt: "選択してください", 
-        class: "form-control" %>
+      options_from_collection_for_select(@groups, :id, :name, @post.group_id),
+      { include_blank: "ジャンルを選択してください" },
+      class: "form-select" %>
     </div>
 
     <!-- ◆ ゲームタイトル -->

@@ -3,57 +3,54 @@ class PostsController < ApplicationController
   before_action :reject_guest_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
-  
 
-   # トップページ
+  # トップページ
   def home
-    # 検索キーワードがある場合
     if params[:keyword].present?
       @posts = Post.where("title LIKE ?", "%#{params[:keyword]}%")
     else
       @posts = Post.order(created_at: :desc).limit(10)
     end
 
-    @groups = Group.all   # ジャンル一覧
-    @tags = Tag.all       # タグ一覧
+    @groups = Group.all
+    @tags   = Tag.all
   end
 
   def index
-    @posts = Post.includes(:group, :tags).order(created_at: :desc)
-    @groups = Group.all      
-    @tags = Tag.all          
+    @posts  = Post.includes(:group, :tags).order(created_at: :desc)
+    @groups = Group.all
+    @tags   = Tag.all
   end
 
   def show
   end
 
   def new
-    @post = Post.new
+    @post   = Post.new
     @groups = Group.all
-    @tags = Tag.all
+    @tags   = Tag.all
   end
 
   def edit
-    @post = Post.find(params[:id])
     @groups = Group.all
     @tags   = Tag.all
   end
 
   def create
-  @post = current_user.posts.new(post_params)
-  if @post.save
+    @post = current_user.posts.new(post_params)
+
+    if @post.save
       redirect_to @post, notice: "投稿を作成しました"
     else
       @groups = Group.all
       @tags   = Tag.all
-    render :new
+      render :new
+    end
   end
-end
 
-def update
-  @post = Post.find(params[:id])
-  if @post.update(post_params)
-    redirect_to @post, notice: "投稿を更新しました"
+  def update
+    if @post.update(post_params)
+      redirect_to @post, notice: "投稿を更新しました"
     else
       @groups = Group.all
       @tags   = Tag.all
@@ -62,11 +59,11 @@ def update
   end
 
   def destroy
-      @post.destroy
-      redirect_to posts_path, notice: "レビューを削除しました。"
+    @post.destroy
+    redirect_to posts_path, notice: "レビューを削除しました。"
   end
 
-private
+  private
 
   def reject_guest_user
     if current_user.guest?
@@ -79,9 +76,7 @@ private
   end
 
   def correct_user
-    unless @post.user == current_user
-      redirect_to posts_path, alert: "権限がありません。"
-    end
+    redirect_to posts_path, alert: "権限がありません。" unless @post.user == current_user
   end
 
   def post_params
@@ -94,8 +89,7 @@ private
       :play_time,
       :difficulty,
       :recommend_level,
-      tag_ids: []   # ←タグの複数選択対応
+      tag_ids: []
     )
   end
-
 end

@@ -8,8 +8,9 @@ gem 'rails', '~> 6.1.7', '>= 6.1.7.10'
 # Use mysql as the database for Active Record
 #gem 'mysql2', '~> 0.5'
 # Use Puma as the app server
-gem 'puma', '~> 3.11'
-#gem 'puma', '~> 5.0'
+gem 'puma', '~> 3.12.6
+'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -31,7 +32,8 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  #gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug'
 end
 
 group :development do
@@ -60,10 +62,11 @@ gem 'bootstrap', '~> 5.3'
 gem 'font-awesome-sass'
 
 gem 'dotenv-rails'
-group :production do
-  gem 'mysql2'
-end
+
+gem 'mysql2', '>= 0.5.3'
 
 gem "net-smtp"
 gem "net-pop"
 gem "net-imap"
+
+

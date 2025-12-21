@@ -64,7 +64,7 @@ GEM
       public_suffix (>= 2.0.2, < 8.0)
     base64 (0.3.0)
     bcrypt (3.1.20)
-    bigdecimal (3.3.1)
+    bigdecimal (4.0.1)
     bindex (0.8.1)
     bootsnap (1.19.0)
       msgpack (~> 1.2)
@@ -294,11 +294,11 @@ DEPENDENCIES
   image_processing (~> 1.2)
   jbuilder (~> 2.7)
   listen (~> 3.3)
-  mysql2
+  mysql2 (>= 0.5.3)
   net-imap
   net-pop
   net-smtp
-  puma (~> 3.11)
+  puma (~> 3.12.6)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.7, >= 6.1.7.10)
   sass-rails (>= 6)

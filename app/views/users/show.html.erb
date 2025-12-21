@@ -30,13 +30,17 @@
   </p>
 
   <!-- プロフィール編集（名前もここで編集） -->
-  <%= link_to "プロフィールを編集する", edit_user_path(@user),
-        class: "btn btn-primary btn-sm w-80 mt-2" %><br>
+  <!-- ログインユーザーと一致する場合のみ表示 -->
+  <% if @user == current_user %>
+    <!-- プロフィール編集（名前もここで編集） -->
+    <%= link_to "プロフィールを編集する", edit_user_path(@user),
+          class: "btn btn-primary btn-sm w-80 mt-2" %><br>
 
-  <!-- アカウント編集 -->
-  <%= link_to "アカウント設定（メール・パスワード変更）",
-      edit_account_path,
-      class: "btn btn-secondary btn-sm w-80 mt-2" %>
+    <!-- アカウント編集 -->
+    <%= link_to "アカウント設定（メール・パスワード変更）",
+          edit_account_path,
+          class: "btn btn-secondary btn-sm w-80 mt-2" %>
+  <% end %>
 
 </div>
 

@@ -2,7 +2,7 @@
   <h2 class="mb-2 d-flex align-items-center">
     <span><%= @post.title %></span>
     <small class="text-muted ms-3 fs-6">
-      投稿者：<%= @post.user.name %>
+      投稿者：<%= link_to @post.user.name, user_path(@post.user), class: "text-decoration-none" %>
     </small>
   </h2>
 
