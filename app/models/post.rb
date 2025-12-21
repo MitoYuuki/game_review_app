@@ -8,6 +8,13 @@ class Post < ApplicationRecord
   attr_accessor :tag_names
   validates :group_id, presence: true
   validates :title, presence: true
+  validates :platform, presence: true
+  validates :play_time, presence: true
+  validates :difficulty, presence: true
+  validates :recommend_level, presence: true
+
+
+
 
   before_save :round_rate
 

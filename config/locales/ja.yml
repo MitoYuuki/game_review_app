@@ -43,15 +43,24 @@ ja:
             rate:
               blank: "評価を入力してください"
               required: "評価を入力してください"
+              not_a_number: "評価は数値で入力してください"  # 追加
+              greater_than_or_equal_to: "評価は0以上で入力してください"  # 追加
+              less_than_or_equal_to: "評価は5以下で入力してください"  # 追加
             platform:
               blank: "プラットフォームを選択してください"
               required: "プラットフォームを選択してください"
             play_time:
               blank: "プレイ時間を入力してください"
+              required: "プレイ時間を入力してください"  # 追加
             difficulty:
               blank: "難易度を選択してください"
+              required: "難易度を選択してください"  # 追加
             recommend_level:
-              blank: "おすすめレベルを選択してください"
+              blank: "おすすめ度を選択してください"
+              required: "おすすめ度を選択してください"  # 追加
+              not_a_number: "おすすめ度は数値で入力してください"  # 追加
+              greater_than_or_equal_to: "おすすめ度は1以上で入力してください"  # 追加
+              less_than_or_equal_to: "おすすめ度は5以下で入力してください"  # 追加
               
         user:
           attributes:
