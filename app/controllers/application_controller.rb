@@ -18,4 +18,11 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :profile])
     devise_parameter_sanitizer.permit(:account_update, keys: [:name, :profile])
   end
+
+  def reject_guest_user
+    if current_user.nil?
+      flash[:alert] = "この操作をするにはログインが必要です"
+      redirect_to new_user_session_path
+    end
+  end
 end

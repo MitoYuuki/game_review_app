@@ -22,4 +22,11 @@ class LikesController < ApplicationController
   def set_post
     @post = Post.find(params[:post_id])
   end
+
+  def reject_guest_user
+    if current_user.nil?
+      flash[:alert] = "この操作をするにはログインが必要です"
+      redirect_to new_user_session_path
+    end
+  end
 end

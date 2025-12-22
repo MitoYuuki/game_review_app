@@ -13,9 +13,6 @@ class Post < ApplicationRecord
   validates :difficulty, presence: true
   validates :recommend_level, presence: true
 
-
-
-
   before_save :round_rate
 
   def round_rate

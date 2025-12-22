@@ -15,11 +15,11 @@ ja:
       
       # Userモデルの属性
       user:
-        name: ""
-        email: ""
-        password: ""
-        password_confirmation: ""
-        remember_me: ""
+        name: "名前"
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード（確認）"
+        remember_me: "ログイン状態を保持する"
 
     errors:
       # エラーメッセージのフォーマットを変更（属性名を表示しない）
