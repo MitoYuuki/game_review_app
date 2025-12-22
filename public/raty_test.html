@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>Raty Test</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raty/2.9.0/jquery.raty.min.js"></script>
+</head>
+<body>
+<h1>Raty Test Page</h1>
+<div id="star"></div>
+<script>
+$(function() {
+    $('#star').raty({
+        starOff: 'https://cdnjs.cloudflare.com/ajax/libs/raty/2.9.0/images/star-off.png',
+        starOn: 'https://cdnjs.cloudflare.com/ajax/libs/raty/2.9.0/images/star-on.png',
+        score: 3
+    });
+    console.log('Raty initialized');
+});
+</script>
+</body>
+</html>

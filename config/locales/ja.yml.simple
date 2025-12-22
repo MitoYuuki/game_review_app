@@ -1,0 +1,10 @@
+ja:
+  activerecord:
+    errors:
+      models:
+        post:
+          attributes:
+            user_id:
+              blank: "ユーザーを選択してください"
+            group_id:
+              blank: "ジャンルを選択してください"
