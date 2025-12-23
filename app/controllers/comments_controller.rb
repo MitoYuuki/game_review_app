@@ -12,6 +12,17 @@ class CommentsController < ApplicationController
     end
   end
 
+  def destroy
+    comment = Comment.find(params[:id])
+
+    # 自分のコメント以外は削除不可
+    if comment.user == current_user
+      comment.destroy
+    end
+
+    redirect_to post_path(comment.post)
+  end
+
   private
 
   def set_post

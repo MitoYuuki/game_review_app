@@ -1,0 +1,75 @@
+<div class="container mt-4">
+
+  <h3 class="mb-4 text-center">
+    検索結果
+    <% if @model == "user" %>
+      （ユーザー）
+    <% else %>
+      （投稿）
+    <% end %>
+  </h3>
+
+  <% if @results.present? %>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+
+        <% @results.each do |result| %>
+          <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+
+              <% if @model == "user" %>
+                <!-- ユーザー検索結果 -->
+                <div class="d-flex align-items-center">
+
+                  <!-- プロフィール画像 -->
+                  <div class="me-3">
+                    <% if result.profile_image.attached? %>
+                      <%= image_tag result.profile_image,
+                            size: "60x60",
+                            class: "rounded-circle object-fit-cover" %>
+                    <% else %>
+                      <%= image_tag "default-image.png",
+                            size: "60x60",
+                            class: "rounded-circle" %>
+                    <% end %>
+                  </div>
+
+                  <!-- ユーザー名 -->
+                  <div>
+                    <h5 class="mb-1">
+                      <%= link_to result.name,
+                          user_path(result),
+                          class: "text-decoration-none fw-bold" %>
+                    </h5>
+                    <small class="text-muted">プロフィールを見る</small>
+                  </div>
+
+                </div>
+
+              <% else %>
+                <!-- 投稿検索結果 -->
+                <h5 class="card-title">
+                  <%= link_to result.title,
+                      post_path(result),
+                      class: "text-decoration-none fw-bold" %>
+                </h5>
+                <p class="card-text text-muted mb-0">
+                  <%= truncate(result.body, length: 80) %>
+                </p>
+
+              <% end %>
+
+            </div>
+          </div>
+        <% end %>
+
+      </div>
+    </div>
+
+  <% else %>
+    <div class="alert alert-warning text-center">
+      検索結果が見つかりませんでした
+    </div>
+  <% end %>
+
+</div>

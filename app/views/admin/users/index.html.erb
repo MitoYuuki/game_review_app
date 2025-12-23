@@ -1,0 +1,30 @@
+<!-- app/views/admin/users/index.html.erb -->
+<div class="container mt-4">
+  <h2>ユーザー一覧</h2>
+
+  <table class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>名前</th>
+        <th>メール</th>
+        <th>登録日</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.created_at.strftime("%Y-%m-%d") %></td>
+          <td>
+            <%= link_to "詳細", admin_user_path(user), class: "btn btn-sm btn-outline-primary" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

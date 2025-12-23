@@ -49,16 +49,34 @@
   <p>投稿日時：<%= @post.created_at.strftime("%Y-%m-%d %H:%M") %></p>
 
   <h4>コメント</h4>
-    <% @post.comments.each do |comment| %>
-      <p><strong><%= comment.user.name %>：</strong> <%= comment.body %></p>
-    <% end %>
 
-    <%= form_with model: [@post, Comment.new], local: true do |f| %>
-      <div class="mb-3">
-        <%= f.text_area :body, class: "form-control", placeholder: "コメントを入力" %>
-      </div>
-      <%= f.submit "コメント投稿", class: "btn btn-primary" %>
-    <% end %>
+  <!-- コメント一覧 -->
+  <% @post.comments.each do |comment| %>
+    <div class="mb-2 p-2 border rounded">
+
+      <strong><%= comment.user.name %></strong>
+      <p class="mb-1"><%= comment.body %></p>
+
+      <% if comment.user == current_user %>
+        <%= link_to "削除",
+          post_comment_path(@post, comment),
+          method: :delete,
+          data: { confirm: "このコメントを削除しますか？" },
+          class: "btn btn-sm btn-outline-danger" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- コメント投稿フォーム（ここが重要） -->
+  <%= form_with model: [@post, Comment.new], local: true do |f| %>
+    <div class="mb-3">
+      <%= f.text_area :body,
+        class: "form-control",
+        placeholder: "コメントを入力" %>
+    </div>
+    <%= f.submit "コメント投稿", class: "btn btn-primary" %>
+  <% end %>
+
 
     <!-- いいね -->
     <div id="like-area">

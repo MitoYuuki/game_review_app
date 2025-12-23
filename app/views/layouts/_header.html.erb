@@ -1,0 +1,56 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <%= link_to "GameReviews", root_path, class: "navbar-brand" %>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+
+          <% if admin_signed_in? %>
+            <!-- 管理者用ナビ -->
+            <li class="nav-item">
+              <%= link_to "ユーザー一覧", admin_users_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link" %>
+            </li>
+
+          <% elsif user_signed_in? %>
+            <!-- ユーザー用ナビ -->
+            <li class="nav-item">
+              <%= link_to "マイページ", user_path(current_user), class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "レビュー一覧", posts_path, class: "nav-link" %>
+            </li>
+            <% if !current_user.guest? %>
+              <li class="nav-item">
+                <%= link_to "新規投稿", new_post_path, class: "nav-link" %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <span class="nav-link text-muted">ゲストは投稿不可</span>
+              </li>
+            <% end %>
+            <li class="nav-item">
+              <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "nav-link" %>
+            </li>
+
+          <% else %>
+            <!-- 未ログイン -->
+            <li class="nav-item">
+              <%= link_to "ログイン", new_user_session_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "新規登録", new_user_registration_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= button_to "ゲストログイン", guest_sign_in_path, method: :post, class: "btn btn-warning ms-2" %>
+            </li>
+          <% end %>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

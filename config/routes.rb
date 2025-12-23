@@ -26,6 +26,19 @@ Rails.application.routes.draw do
   # タグ・グループ
   resources :tags, only: [:show]
   resources :groups, only: [:show]
+  get "search", to: "searches#search"
+
+  # 管理者側
+  devise_for :admins,
+    path: 'admin',
+    controllers: {
+      sessions: 'admin/sessions'
+    }
+
+  namespace :admin do
+    root to: "users#index"
+    resources :users, only: [:index, :show, :destroy]
+  end
 
   # ゲストログイン
   post "/guest_sign_in", to: "sessions#guest_sign_in"
