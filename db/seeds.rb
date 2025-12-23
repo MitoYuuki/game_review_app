@@ -1,10 +1,20 @@
 # db/seeds.rb
 puts "=== Seedデータの作成を開始します (環境: #{Rails.env}) ==="
 
+# =====================================
+# 管理者アカウント（全環境共通）
+# =====================================
+puts "--- 管理者アカウントの作成 ---"
+Admin.find_or_create_by!(email: "admin@example.com") do |admin|
+  admin.password = "password"
+  admin.password_confirmation = "password"
+end
+puts "管理者作成: admin@example.com"
+
 case Rails.env
 when 'development'
   puts "[開発環境] テストデータをリセットします..."
-  
+
   # 依存関係順に削除
   Comment.destroy_all
   Like.destroy_all
@@ -13,8 +23,7 @@ when 'development'
   Post.destroy_all
   Group.destroy_all
   User.destroy_all
-  
-  # 開発環境用データ作成（元のコードをそのままここに）
+
   puts "--- ユーザーの作成（開発環境）---"
   users = []
   10.times do |n|
@@ -27,11 +36,13 @@ when 'development'
     users << user
     puts "ユーザー作成: #{user.name}"
   end
-  
+
   puts "--- グループ（ジャンル）の作成 ---"
   groups = []
-  genres = ["アクション", "RPG", "アドベンチャー", "シューティング", "パズル", "シミュレーション", "スポーツ", "レーシング", "ストラテジー", "ホラー", "インディー", "オープンワールド", "ローグライク", "カジュアル"]
-  
+  genres = ["アクション", "RPG", "アドベンチャー", "シューティング", "パズル",
+            "シミュレーション", "スポーツ", "レーシング", "ストラテジー",
+            "ホラー", "インディー", "オープンワールド", "ローグライク", "カジュアル"]
+
   genres.each do |genre_name|
     group = Group.create!(
       name: genre_name,
@@ -40,20 +51,19 @@ when 'development'
     groups << group
     puts "グループ作成: #{group.name}"
   end
-  
-  # タグ作成（必要に応じてコメントアウト）
+
   puts "--- タグの作成 ---"
   tags = []
   tag_names = ["グラフィックが綺麗", "ストーリー重視", "アクション爽快", "音楽が良い", "ボリューム満点"]
-  
+
   tag_names.each do |tag_name|
     tag = Tag.create!(name: tag_name)
     tags << tag
     puts "タグ作成: #{tag.name}"
   end
-  
+
   puts "--- 投稿データの作成 ---"
-  5.times do |n|  # 開発時は5件で十分
+  5.times do |n|
     post = Post.create!(
       user: users.sample,
       group: groups.sample,
@@ -69,12 +79,10 @@ when 'development'
   end
 
 when 'production'
-  # 本番/評価環境用コード（前回示した安全なコード）
-  # ...
-  
+  puts "[本番環境] 管理者アカウントのみ作成"
+
 else
-  # test環境など
-  puts "[#{Rails.env}環境] テストデータを作成します..."
+  puts "[#{Rails.env}環境] シード処理をスキップ"
 end
 
 puts "=== 完了 ==="

@@ -1,0 +1,28 @@
+<!-- app/views/layouts/admin.html.erb -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", media: "all" %>
+  <%= javascript_pack_tag "application" %>
+</head>
+<body>
+
+<header>
+  <h1>管理画面</h1>
+  <%= link_to "ログアウト",
+      destroy_admin_session_path,
+      method: :delete,
+      data: { confirm: "ログアウトしますか？" } %>
+</header>
+
+<%= yield %>
+
+</body>
+</html>
+
+</body>
+</html>
