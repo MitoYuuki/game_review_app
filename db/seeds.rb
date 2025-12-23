@@ -4,35 +4,35 @@ puts "=== Seedデータの作成を開始します (環境: #{Rails.env}) ==="
 # =====================================
 # 管理者アカウント（全環境共通）
 # =====================================
-puts "--- 管理者アカウントの作成 ---"
-Admin.find_or_create_by!(email: "admin@example.com") do |admin|
-  admin.password = "password"
-  admin.password_confirmation = "password"
-end
-puts "管理者作成: admin@example.com"
+  puts "--- 管理者アカウントの作成 ---"
+    Admin.find_or_create_by!(email: "admin@example.com") do |admin|
+      admin.password = "password"
+      admin.password_confirmation = "password"
+    end
+  puts "管理者作成: admin@example.com"
 
-case Rails.env
-when 'development'
-  puts "[開発環境] テストデータをリセットします..."
+  case Rails.env
+    when 'development'
+      puts "[開発環境] テストデータをリセットします..."
 
-  # 依存関係順に削除
-  Comment.destroy_all
-  Like.destroy_all
-  PostTag.destroy_all
-  Tag.destroy_all
-  Post.destroy_all
-  Group.destroy_all
-  User.destroy_all
+      # 依存関係順に削除
+      Comment.destroy_all
+      Like.destroy_all
+      PostTag.destroy_all
+      Tag.destroy_all
+      Post.destroy_all
+      Group.destroy_all
+      User.destroy_all
 
-  puts "--- ユーザーの作成（開発環境）---"
-  users = []
-  10.times do |n|
-    user = User.create!(
-      name: "ゲーマー#{n + 1}",
-      email: "gamer#{n + 1}@example.com",
-      password: "password",
-      password_confirmation: "password"
-    )
+    puts "--- ユーザーの作成（開発環境）---"
+      users = []
+      10.times do |n|
+        user = User.create!(
+          name: "ゲーマー#{n + 1}",
+          email: "gamer#{n + 1}@example.com",
+          password: "password",
+          password_confirmation: "password"
+      )
     users << user
     puts "ユーザー作成: #{user.name}"
   end
@@ -53,17 +53,17 @@ when 'development'
   end
 
   puts "--- タグの作成 ---"
-  tags = []
-  tag_names = ["グラフィックが綺麗", "ストーリー重視", "アクション爽快", "音楽が良い", "ボリューム満点"]
+    tags = []
+    tag_names = ["グラフィックが綺麗", "ストーリー重視", "アクション爽快", "音楽が良い", "ボリューム満点"]
 
-  tag_names.each do |tag_name|
-    tag = Tag.create!(name: tag_name)
-    tags << tag
-    puts "タグ作成: #{tag.name}"
-  end
+    tag_names.each do |tag_name|
+      tag = Tag.create!(name: tag_name)
+      tags << tag
+      puts "タグ作成: #{tag.name}"
+    end
 
   puts "--- 投稿データの作成 ---"
-  5.times do |n|
+    5.times do |n|
     post = Post.create!(
       user: users.sample,
       group: groups.sample,
@@ -78,15 +78,15 @@ when 'development'
     puts "投稿作成: #{post.title}"
   end
 
-when 'production'
-  puts "[本番環境] 必須データとテスト投稿を安全に投入します..."
+  when 'production'
+    puts "[本番環境] 必須データとテスト投稿を安全に投入します..."
   
-  # 1. テストレビュアー用ユーザーを作成（存在しない場合のみ）
-  test_user = User.find_or_create_by!(email: "reviewer@example.com") do |user|
-    user.name = "テストレビュアー"
-    user.password = "password123"
-    user.password_confirmation = "password123"
-  end
+    # 1. テストレビュアー用ユーザーを作成（存在しない場合のみ）
+    test_user = User.find_or_create_by!(email: "reviewer@example.com") do |user|
+      user.name = "テストレビュアー"
+      user.password = "password123"
+      user.password_confirmation = "password123"
+    end
   puts "✅ テストユーザー: #{test_user.email} (password: password123)"
   
   # 2. 必須グループ（ジャンル）を作成（存在しない場合のみ）
