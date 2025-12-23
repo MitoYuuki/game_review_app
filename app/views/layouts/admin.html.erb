@@ -1,28 +1,32 @@
 <!-- app/views/layouts/admin.html.erb -->
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Admin</title>
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
+  <head>
+    <title>GameReviewApp | Admin</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <%= stylesheet_link_tag "application", media: "all" %>
-  <%= javascript_pack_tag "application" %>
-</head>
-<body>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
 
-<header>
-  <h1>管理画面</h1>
-  <%= link_to "ログアウト",
-      destroy_admin_session_path,
-      method: :delete,
-      data: { confirm: "ログアウトしますか？" } %>
-</header>
+    <script src="https://kit.fontawesome.com/640d7a3cf3.js" crossorigin="anonymous"></script>
 
-<%= yield %>
+    <%= stylesheet_pack_tag 'application', media: 'all' %>
+    <%= javascript_pack_tag 'application' %>
+  </head>
 
-</body>
+  <body>
+    <!-- 共通ヘッダー（管理者/ユーザー切替） -->
+    <%= render "layouts/header" %>
+
+    <!-- フラッシュメッセージ -->
+    <% flash.each do |key, message| %>
+      <div class="alert alert-<%= flash_class(key) %> text-center mt-3">
+        <%= message %>
+      </div>
+    <% end %>
+
+    <!-- 管理者ページ本体 -->
+    <%= yield %>
+  </body>
 </html>
 
-</body>
-</html>
