@@ -1,6 +1,7 @@
 class LikesController < ApplicationController
   before_action :set_post
   before_action :reject_guest_user
+  before_action :authenticate_user!
 
   def create
     current_user.likes.create(post_id: @post.id)
@@ -24,9 +25,9 @@ class LikesController < ApplicationController
   end
 
   def reject_guest_user
-    if current_user.nil?
-      flash[:alert] = "この操作をするにはログインが必要です"
-      redirect_to new_user_session_path
+    if current_user&.guest?
+      redirect_back fallback_location: root_path,
+        alert: "ゲストユーザーはいいねできません"
     end
   end
 end

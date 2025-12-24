@@ -1,0 +1,9 @@
+<h3>ジャンル一覧</h3>
+
+<ul class="list-group">
+  <% @groups.each do |g| %>
+    <li class="list-group-item">
+      <%= link_to g.name, group_path(g) %>
+    </li>
+  <% end %>
+</ul>

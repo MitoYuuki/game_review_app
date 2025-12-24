@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update]
   before_action :authenticate_user!, except: [:new, :create, :guest_sign_in]
+  before_action :check_guest_user, only: [:edit, :update]
 
   def guest_sign_in
     user = User.guest
@@ -54,5 +55,10 @@ class UsersController < ApplicationController
     params.require(:user).permit(:name, :profile, :profile_image, :email, :password, :password_confirmation)
   end
 
+  def check_guest_user
+    if current_user.guest?
+      redirect_to root_path, alert: "ゲストユーザーはこの操作はできません"
+    end
+  end
 
 end
