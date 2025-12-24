@@ -24,8 +24,8 @@ Rails.application.routes.draw do
   end
   
   # タグ・グループ
-  resources :tags, only: [:show]
-  resources :groups, only: [:show]
+  resources :tags, only: [:show, :index]
+  resources :groups, only: [:show, :index]
   get "search", to: "searches#search"
 
   # 管理者側
@@ -38,12 +38,13 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: "users#index"
     resources :users, only: [:index, :show, :destroy]
+
+    resources :posts, only: [:index, :show, :destroy]
   end
 
   # ゲストログイン
-  post "/guest_sign_in", to: "sessions#guest_sign_in"
- 
-  
+  devise_scope :user do
+    post "/guest_sign_in", to: "users/sessions#guest_sign_in"
+  end
 
-  
 end

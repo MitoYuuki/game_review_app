@@ -2,7 +2,8 @@
   <h2 class="mb-2 d-flex align-items-center">
     <span><%= @post.title %></span>
     <small class="text-muted ms-3 fs-6">
-      投稿者：<%= link_to @post.user.name, user_path(@post.user), class: "text-decoration-none" %>
+      投稿者：
+      <%= link_to @post.user.name, user_path(@post.user), class: "text-decoration-none" %>
     </small>
   </h2>
 
@@ -28,19 +29,21 @@
   <p><strong>難易度：</strong> <%= @post.difficulty %></p>
 
   <!-- おすすめ度 -->
-  <p><strong>おすすめ度：</strong>
-  <%= case @post.recommend_level.to_i
-    when 1 then "おすすめしない"
-    when 2 then "微妙"
-    when 3 then "普通"
-    when 4 then "おすすめ"
-    when 5 then "超おすすめ"
-    else "未設定"
-    end %>
+  <p>
+    <strong>おすすめ度：</strong>
+    <%= case @post.recommend_level.to_i
+       when 1 then "おすすめしない"
+       when 2 then "微妙"
+       when 3 then "普通"
+       when 4 then "おすすめ"
+       when 5 then "超おすすめ"
+       else "未設定"
+       end %>
   </p>
 
   <!-- タグ -->
-  <p><strong>タグ：</strong>
+  <p>
+    <strong>タグ：</strong>
     <% @post.tags.each do |tag| %>
       <span class="badge bg-secondary"><%= tag.name %></span>
     <% end %>
@@ -53,49 +56,57 @@
   <!-- コメント一覧 -->
   <% @post.comments.each do |comment| %>
     <div class="mb-2 p-2 border rounded">
-
       <strong><%= comment.user.name %></strong>
       <p class="mb-1"><%= comment.body %></p>
 
       <% if comment.user == current_user %>
         <%= link_to "削除",
-          post_comment_path(@post, comment),
-          method: :delete,
-          data: { confirm: "このコメントを削除しますか？" },
-          class: "btn btn-sm btn-outline-danger" %>
+                    post_comment_path(@post, comment),
+                    method: :delete,
+                    data: { confirm: "このコメントを削除しますか？" },
+                    class: "btn btn-sm btn-outline-danger" %>
       <% end %>
     </div>
   <% end %>
 
-  <!-- コメント投稿フォーム（ここが重要） -->
-  <%= form_with model: [@post, Comment.new], local: true do |f| %>
-    <div class="mb-3">
-      <%= f.text_area :body,
-        class: "form-control",
-        placeholder: "コメントを入力" %>
-    </div>
-    <%= f.submit "コメント投稿", class: "btn btn-primary" %>
+  <!-- コメント投稿フォーム -->
+  <% if user_signed_in? && !current_user.guest? %>
+    <%= form_with model: [@post, Comment.new], local: true do |f| %>
+      <div class="mb-3">
+        <%= f.text_area :body,
+                        class: "form-control",
+                        placeholder: "コメントを入力" %>
+      </div>
+      <%= f.submit "コメント投稿", class: "btn btn-primary" %>
+    <% end %>
+
+  <% elsif user_signed_in? && current_user.guest? %>
+    <p class="text-muted">
+      ※ ゲストユーザーはコメントの投稿はできません
+    </p>
   <% end %>
 
-
-    <!-- いいね -->
-    <div id="like-area">
-      <%= render "likes/like", post: @post %>
-    </div>
-
+  <!-- いいね -->
+  <div id="like-area">
+    <%= render "likes/like", post: @post %>
+  </div>
 
   <!-- 編集・削除・一覧に戻るボタン -->
   <div class="mt-4">
-
     <% if @post.user == current_user %>
-      <%= link_to "編集", edit_post_path(@post), class: "btn btn-warning me-2" %>
-      <%= link_to "削除", post_path(@post),
-          method: :delete,
-          data: { confirm: "本当に削除しますか？" },
-          class: "btn btn-danger me-2" %>
+      <%= link_to "編集",
+                  edit_post_path(@post),
+                  class: "btn btn-warning me-2" %>
+
+      <%= link_to "削除",
+                  post_path(@post),
+                  method: :delete,
+                  data: { confirm: "本当に削除しますか？" },
+                  class: "btn btn-danger me-2" %>
     <% end %>
 
-    <%= link_to "一覧に戻る", posts_path, class: "btn btn-secondary" %>
-
+    <%= link_to "一覧に戻る",
+                posts_path,
+                class: "btn btn-secondary" %>
   </div>
 </div>

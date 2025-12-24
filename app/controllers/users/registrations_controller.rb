@@ -1,5 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  
+  before_action :check_guest_user, only: [:edit, :update, :destroy, :edit_account, :update_account]
+
    # アカウント編集画面
   def edit_account
     self.resource = current_user
@@ -27,6 +28,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  private
+
+  def check_guest_user
+    if current_user&.guest?
+      redirect_to root_path, alert: "ゲストユーザーはこの操作はできません"
+    end
+  end
+
   protected
 
   def after_update_path_for(resource)
@@ -36,4 +45,5 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def after_sign_out_path_for(resource_or_scope)
     new_user_registration_path
   end
+  
 end
