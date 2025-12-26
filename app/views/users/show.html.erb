@@ -18,16 +18,7 @@
     <!-- ▼ 右側：プロフィール情報 -->
     <div class="col-md-4 offset-md-1">
 
-      <!-- 名前 -->
-      <h4><%= @user.name %></h4>
-
-      <!-- プロフィール画像 -->
-      <%= image_tag @user.get_profile_image, class: "rounded-circle", size: "120x120" %>
-
-      <!-- 自己紹介 -->
-      <p class="text-muted">
-        <%= @user.profile.presence || "自己紹介はまだありません。" %>
-      </p>
+      <%= render "users/profile_summary", user: @user %>
 
       <!-- プロフィール編集（名前もここで編集） -->
       <!-- ログインユーザーと一致する場合のみ表示 -->

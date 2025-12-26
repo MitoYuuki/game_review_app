@@ -1,0 +1,242 @@
+body {
+  background: radial-gradient(ellipse at bottom, #0b0c2a 0%, #000000 100%);
+  color: white;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* きらきら星 */
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  opacity: 0.7;
+  z-index: 0;
+}
+
+/* homes#top だけ星アニメーション */
+body.homes.top .star {
+  animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.2; transform: scale(1); }
+  to   { opacity: 1;   transform: scale(1.6); }
+}
+
+/* 流れ星 */
+.shooting-star {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(45deg, white, rgba(255,255,255,0));
+  opacity: 0;
+  border-radius: 50%;
+  transform: rotate(20deg); /* 角度を浅くして右下に流れる感じ */
+  animation: shoot linear forwards;
+}
+
+/* 右上 → 右下へ斜めに移動 */
+@keyframes shoot {
+  0% {
+    opacity: 1;
+    transform: translateX(0) translateY(0) rotate(20deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(0px) translateY(180px) rotate(20deg);
+  }
+}
+
+/* 中身は前面に */
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+/* -------------------------------
+   左サイドのジャンルリスト
+---------------------------------*/
+.list-group {
+  background-color: rgba(20, 25, 50, 0.8);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 0;
+}
+
+.list-group-item {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+}
+
+.list-group-item a {
+  color: #aad4ff;
+  text-decoration: none;
+}
+
+.list-group-item a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* -------------------------------
+   投稿カード
+---------------------------------*/
+.card {
+  background-color: rgba(25, 30, 60, 0.85);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.card:hover {
+  filter: brightness(1.1);
+}
+
+/* カード内タイトルやテキスト */
+.card h5,
+.card p {
+  color: #fff;
+}
+
+/* カード内タグバッジ */
+.badge {
+  background-color: #3fb0fc;
+  color: #fff;
+  margin-right: 5px;
+}
+
+/* いいねやアクションリンク */
+.card .action-link {
+  color: #aad4ff;
+  text-decoration: none;
+}
+
+.card .action-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* 投稿一覧ページ */
+.post-header {
+  font-weight: bold;
+  border-top: 2px solid #fff; /* 上に線を引く */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+.post-row {
+  border-bottom: 1px solid rgba(170, 212, 255, 0.3); /* 行を分ける線は残す */
+}
+
+.odd-row {
+  background-color: rgba(20, 25, 50, 0.8); /* 濃い青紫 */
+}
+
+.even-row {
+  background-color: rgba(35, 45, 75, 0.8); /* ちょっと明るめ青紫 */
+}
+
+.post-row div {
+  color: #fff;
+}
+
+/* 投稿詳細ページ */
+.post-detail {
+  background-color: rgba(25, 30, 60, 0.85); 
+  padding: 20px;
+  border-radius: 12px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+.post-detail h2 {
+  color: #aad4ff;
+}
+
+.post-detail small {
+  color: #aaddff; /* 投稿者・日付を見やすく */
+}
+
+.post-detail p, .post-detail strong {
+  color: #fff;
+}
+
+.post-detail .badge {
+  background-color: #3fb0fc;
+  color: #fff;
+  margin-right: 5px;
+}
+
+/* コメント一覧 */
+.post-detail .comment-box {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+/* 奇数・偶数で色を変える */
+.post-detail .comment-box:nth-child(odd) {
+  background-color: rgba(35, 40, 70, 0.7); /* 暗め */
+}
+
+.post-detail .comment-box:nth-child(even) {
+  background-color: rgba(45, 50, 90, 0.7); /* 少し明るめ */
+}
+
+/* 投稿者名を強調 */
+.post-detail .comment-box strong {
+  color: #aad4ff;
+}
+
+/* テキスト色は白 */
+.post-detail .comment-box p {
+  color: #fff;
+}
+
+
+/* 入力フォームは通常スタイル */
+.post-detail textarea.form-control,
+.post-detail input.form-control {
+  background-color: #fff; /* 白背景 */
+  color: #000;           /* 黒文字 */
+  border: 1px solid #ccc;
+}
+
+.post-detail .btn-primary {
+  background-color: #3fb0fc;
+  border-color: #3fb0fc;
+}
+
+.post-detail .btn-primary:hover {
+  background-color: #5fc0ff;
+  border-color: #5fc0ff;
+}
+
+.comment-box small.text-muted {
+  color: #aad4ff !important; /* 明るい水色に固定 */
+}
+
+/* プロフィール画像 */
+.profile-square {
+  border: 3px solid #aad4ff;              /* 夜空に合う淡い水色 */
+  padding: 3px;                            /* 枠と画像の余白 */
+  border-radius: 8px;                       /* 角を少しだけ丸く（完全に四角なら 0 に） */
+  box-shadow: 0 0 12px rgba(170, 212, 255, .4); /* ほんのり光る夜空っぽさ */
+}
+
+.profile-intro {
+  background-color: rgba(20, 25, 50, 0.8);  /* 半透明の黒 */
+  color: #fff;                           /* 白文字 */
+  padding: 10px;
+  border-radius: 8px;
+  white-space: pre-line;                 /* 改行保持（してるなら便利） */
+}
+
