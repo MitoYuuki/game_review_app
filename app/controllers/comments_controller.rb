@@ -32,4 +32,10 @@ class CommentsController < ApplicationController
   def comment_params
     params.require(:comment).permit(:body)
   end
+
+  def reject_guest_user
+    if current_user&.guest?
+      redirect_to post_path(params[:post_id]), alert: "ゲストユーザーはコメントできません"
+    end
+  end
 end

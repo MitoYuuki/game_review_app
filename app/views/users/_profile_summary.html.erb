@@ -1,0 +1,17 @@
+<!-- ユーザー簡易プロフィール（共通パーツ） -->
+
+<% return unless user %>
+
+<div class="profile-card">
+  <h4><%= user.name %></h4>
+
+  <%= image_tag user.get_profile_image,
+        class: "profile-square",
+        size: "120x120" %>
+
+  <div class="profile-intro">
+    <h5>自己紹介文</h5>
+    <p><%= user.profile.presence || "自己紹介はまだありません。" %></p>
+  </div>
+</div>
+

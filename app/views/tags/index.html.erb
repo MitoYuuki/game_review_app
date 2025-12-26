@@ -1,0 +1,9 @@
+<h3>タグ一覧</h3>
+
+<ul class="list-group">
+  <% @tags.each do |tag| %>
+    <li class="list-group-item">
+      <%= link_to tag.name, tag_path(tag) %>
+    </li>
+  <% end %>
+</ul>

@@ -1,7 +1,3 @@
-import starOn from '../images/raty/star-on.png'
-import starOff from '../images/raty/star-off.png'
-import starHalf from '../images/raty/star-half.png'
-
 document.addEventListener('turbolinks:load', function () {
   let elem = document.querySelector('.post_raty')
   if (!elem) return
@@ -12,10 +8,8 @@ document.addEventListener('turbolinks:load', function () {
   raty(elem, {
     number: 5,
     score: hiddenField.value || 0,
-
-    starOn: starOn,
-    starOff: starOff,
-    starHalf: starHalf,
+    // ★ ここが超重要
+    path: '/assets/raty',
 
     half: true,
     hints: ['1', '2', '3', '4', '5'],

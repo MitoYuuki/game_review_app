@@ -16,33 +16,22 @@
     </div>
 
     <!-- ▼ 右側：プロフィール情報 -->
-<div class="col-md-4 offset-md-1">
+    <div class="col-md-4 offset-md-1">
 
-  <!-- 名前 -->
-  <h4><%= @user.name %></h4>
+      <%= render "users/profile_summary", user: @user %>
 
-  <!-- プロフィール画像 -->
-  <%= image_tag @user.get_profile_image, class: "rounded-circle", size: "120x120" %>
-
-  <!-- 自己紹介 -->
-  <p class="text-muted">
-    <%= @user.profile.presence || "自己紹介はまだありません。" %>
-  </p>
-
-  <!-- プロフィール編集（名前もここで編集） -->
-  <!-- ログインユーザーと一致する場合のみ表示 -->
-  <% if @user == current_user %>
-    <!-- プロフィール編集（名前もここで編集） -->
-    <%= link_to "プロフィールを編集する", edit_user_path(@user),
+      <!-- プロフィール編集（名前もここで編集） -->
+      <!-- ログインユーザーと一致する場合のみ表示 -->
+      <% if @user == current_user %>
+        <!-- プロフィール編集（名前もここで編集） -->
+        <%= link_to "プロフィールを編集する", edit_user_path(@user),
           class: "btn btn-primary btn-sm w-80 mt-2" %><br>
 
-    <!-- アカウント編集 -->
-    <%= link_to "アカウント設定（メール・パスワード変更）",
+        <!-- アカウント編集 -->
+        <%= link_to "アカウント設定（メール・パスワード変更）",
           edit_account_path,
           class: "btn btn-secondary btn-sm w-80 mt-2" %>
-  <% end %>
-
-</div>
-
+        <% end %>
+    </div>
   </div>
 </div>
