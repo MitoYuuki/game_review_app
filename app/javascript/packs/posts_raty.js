@@ -5,12 +5,16 @@ document.addEventListener('turbolinks:load', function () {
   let hiddenFieldId = elem.dataset.targetRating
   let hiddenField = document.getElementById(hiddenFieldId)
 
+  let starOn = elem.dataset.ratyStarOn
+  let starOff = elem.dataset.ratyStarOff
+  let starHalf = elem.dataset.ratyStarHalf
+
   raty(elem, {
     number: 5,
     score: hiddenField.value || 0,
-    // ★ ここが超重要
-    path: '/assets/raty',
-
+    starOn: starOn,
+    starOff: starOff,
+    starHalf: starHalf,
     half: true,
     hints: ['1', '2', '3', '4', '5'],
 
