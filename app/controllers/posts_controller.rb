@@ -17,10 +17,25 @@ class PostsController < ApplicationController
   end
 
   def index
-    @posts  = Post.includes(:group, :tags).order(created_at: :desc)
+    @posts = Post.includes(:user, :group, :tags, :likes, :comments)
     @groups = Group.all
     @tags   = Tag.all
+
+    case params[:sort]
+    when "rate"
+      @posts = @posts.order(rate: :desc)
+    when "likes"
+      @posts = @posts.left_joins(:likes).group(:id).order("COUNT(likes.id) DESC")
+    when "comments"
+      @posts = @posts.left_joins(:comments).group(:id).order("COUNT(comments.id) DESC")
+    when "platform"
+      @posts = @posts.order(:platform) # 昇順。必要なら desc にもできる
+    else
+      @posts = @posts.order(created_at: :desc)
+    end
   end
+
+  
 
   def show
   end

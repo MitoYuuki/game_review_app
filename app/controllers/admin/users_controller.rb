@@ -5,6 +5,7 @@ class Admin::UsersController < Admin::BaseController
 
   def index
     @users = User.all.order(created_at: :asc)
+    @users = User.where.not(email: "guest@example.com")
   end
 
   def show

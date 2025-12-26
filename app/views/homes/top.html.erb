@@ -1,19 +1,16 @@
 <div class="container mt-5">
 
-  <!-- ◆ サイト名 -->
   <div class="text-center mb-5">
     <h1 class="fw-bold">GameReview Hub</h1>
     <p class="text-muted">ゲーム好きのためのレビュー・共有コミュニティ</p>
   </div>
 
-  <!-- ◆ メイン画像 -->
   <div class="text-center mb-4">
     <%= image_tag "top_game_image.png",
-      class: "img-fluid rounded",
+      class: "img-fluid rounded shadow",
       style: "max-width: 70%; background: transparent;" %>
   </div>
 
-  <!-- ◆ アプリの特徴 -->
   <div class="row mt-5">
     <div class="col-md-4 text-center">
       <h4>🎮 レビュー投稿</h4>
@@ -29,7 +26,6 @@
     </div>
   </div>
 
-  <!-- ◆ ボタン -->
   <div class="text-center mt-5">
     <%= link_to "新規登録", new_user_registration_path,
           class: "btn btn-success btn-lg me-3" %>
@@ -43,3 +39,47 @@
   </div>
 
 </div>
+
+<script>
+if (document.body.classList.contains('homes') && document.body.classList.contains('top')) {
+
+  // ★ 星
+  const starCount = 100;
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.top = Math.random() * 100 + 'vh';
+    star.style.left = Math.random() * 100 + 'vw';
+    star.style.width = (Math.random() * 2 + 1) + 'px';
+    star.style.height = star.style.width;
+    star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    document.body.appendChild(star);
+  }
+
+  // ★ 流れ星（左右ランダム）
+  setInterval(() => {
+
+    for (let i = 0; i < 5; i++) {   // ★ ← ここで数を増やす（2→3→4）
+      const shootingStar = document.createElement('div');
+      shootingStar.className = 'shooting-star';
+
+      const side = Math.random() < 0.5 ? 'left' : 'right';
+
+      if (side === 'left') {
+        shootingStar.style.top  = Math.random() * 30 + 'vh';
+        shootingStar.style.left = Math.random() * 20 + 'vw';
+      } else {
+        shootingStar.style.top  = Math.random() * 30 + 'vh';
+        shootingStar.style.left = 80 + Math.random() * 20 + 'vw';
+      }
+
+      shootingStar.style.height = (Math.random() * 60 + 40) + 'px';
+      shootingStar.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+
+      document.body.appendChild(shootingStar);
+
+      setTimeout(() => shootingStar.remove(), 2500);
+    }
+   }, 1200);
+  }
+</script>
