@@ -8,7 +8,14 @@
 
       <% @posts.each do |post| %>
         <div class="card mb-3 p-3">
-          <h5><%= link_to post.title, post_path(post) %></h5>
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><%= link_to post.title, post_path(post) %></h5>
+            <% if post.published? %>
+              <span class="badge bg-success">公開</span>
+            <% else %>
+              <span class="badge bg-secondary">非公開</span>
+            <% end %>
+          </div>
           <p><%= truncate(post.body, length: 100) %></p>
         </div>
       <% end %>
@@ -18,20 +25,28 @@
     <!-- ▼ 右側：プロフィール情報 -->
     <div class="col-md-4 offset-md-1">
 
-      <%= render "users/profile_summary", user: @user %>
+      <!-- 公開 or 本人の場合のみ表示 -->
+      <% if @user.is_public? || @user == current_user %>
 
-      <!-- プロフィール編集（名前もここで編集） -->
-      <!-- ログインユーザーと一致する場合のみ表示 -->
-      <% if @user == current_user %>
+        <%= render "users/profile_summary", user: @user %>
+
+        <!-- フォロー・アンフォローボタン -->
+        <div id="follow-area-<%= @user.id %>">
+          <%= render "users/follow_button_core", user: @user %>
+        </div>
+
         <!-- プロフィール編集（名前もここで編集） -->
-        <%= link_to "プロフィールを編集する", edit_user_path(@user),
-          class: "btn btn-primary btn-sm w-80 mt-2" %><br>
+        <!-- ログインユーザーと一致する場合のみ表示 -->
+        
 
-        <!-- アカウント編集 -->
-        <%= link_to "アカウント設定（メール・パスワード変更）",
-          edit_account_path,
-          class: "btn btn-secondary btn-sm w-80 mt-2" %>
-        <% end %>
+      <% else %>
+
+        <!-- 非公開ユーザーを別アカウントで見た時 -->
+        <p class="alert alert-secondary">
+          このユーザーのプロフィールは非公開です
+        </p>
+
+      <% end %>
     </div>
   </div>
 </div>

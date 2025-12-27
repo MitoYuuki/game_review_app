@@ -2,9 +2,13 @@
   <div class="post-detail">
     <h2 class="mb-2 d-flex align-items-center">
       <span><%= @post.title %></span>
-      <small class="ms-3 fs-6">
+      <small class="ms-3 fs-6 d-flex align-items-center">
         投稿者：
-        <%= link_to @post.user.name, user_path(@post.user), class: "text-decoration-none text-info" %>
+        <%= link_to @post.user.name, user_path(@post.user), class: "text-decoration-none text-info me-2" %>
+
+        <% if user_signed_in? && current_user != @post.user %>
+          <%= render "users/follow_button", user: @post.user %>
+        <% end %>
       </small>
     </h2>
 

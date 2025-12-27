@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update]
+  before_action :set_user, only: [:show, :edit, :update, :following, :followers]
   before_action :authenticate_user!, except: [:new, :create, :guest_sign_in]
   before_action :check_guest_user, only: [:edit, :update]
 
@@ -18,7 +18,12 @@ class UsersController < ApplicationController
   end
 
   def show
-    @posts = @user.posts.order(created_at: :desc)
+    # 自分以外のユーザーなら非公開投稿は除外
+    if current_user == @user
+      @posts = @user.posts.order(created_at: :desc)
+    else
+      @posts = @user.posts.published.order(created_at: :desc)
+    end
   end
 
   def edit
@@ -45,6 +50,23 @@ class UsersController < ApplicationController
     end
   end
 
+  # いいねした投稿一覧
+  def liked_posts
+    @user = User.find(params[:id])
+    # likesテーブルを通して投稿を取得
+    @liked_posts = @user.likes.includes(:post).map(&:post)
+  end
+
+  # フォローしている人一覧
+  def following
+    @users = @user.following
+  end
+
+  # フォロワー一覧
+  def followers
+    @users = @user.followers
+  end
+
   private
 
   def set_user
@@ -52,7 +74,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :profile, :profile_image, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :profile, :profile_image, :email, :password, :password_confirmation, :is_public)
   end
 
   def check_guest_user

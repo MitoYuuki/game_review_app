@@ -1,0 +1,21 @@
+<div class="container mt-4">
+  <h3><%= @user.name %> のフォロワー</h3>
+
+  <% if @users.any? %>
+    <div class="list-group mt-3">
+      <% @users.each do |u| %>
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+
+          <%= link_to u.name, user_path(u) %>
+
+          <div id="follow-area-<%= u.id %>">
+            <%= render "users/follow_button_core", user: u %>
+          </div>
+
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p>まだフォロワーはいません。</p>
+  <% end %>
+</div>

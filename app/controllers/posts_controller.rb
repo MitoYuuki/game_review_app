@@ -17,7 +17,7 @@ class PostsController < ApplicationController
   end
 
   def index
-    @posts = Post.includes(:user, :group, :tags, :likes, :comments)
+    @posts = Post.published.includes(:user, :group, :tags, :likes, :comments)
     @groups = Group.all
     @tags   = Tag.all
 
@@ -38,6 +38,9 @@ class PostsController < ApplicationController
   
 
   def show
+    unless @post.published? || @post.user == current_user
+      redirect_to root_path, alert: "この投稿は非公開です"
+    end
   end
 
   def new
@@ -104,6 +107,7 @@ class PostsController < ApplicationController
       :play_time,
       :difficulty,
       :recommend_level,
+      :published,
       tag_ids: []
     )
   end

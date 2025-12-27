@@ -1,0 +1,10 @@
+// フォローボタン更新
+$("#follow-area-<%= @user.id %>").html("<%= j(render('users/follow_button_core', user: @user)) %>");
+
+// フォロー数 反映
+document.getElementById("following-count-<%= current_user.id %>").innerText =
+  "<%= current_user.following.count %>";
+
+// フォロワー数 反映（相手側）
+document.getElementById("followers-count-<%= @user.id %>").innerText =
+  "<%= @user.followers.count %>";

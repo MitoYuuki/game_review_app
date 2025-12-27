@@ -46,9 +46,9 @@
        	data-raty-star-on="<%= asset_path('raty/star-on.png') %>"
        	data-raty-star-off="<%= asset_path('raty/star-off.png') %>"
        	data-raty-star-half="<%= asset_path('raty/star-half.png') %>">
-       </div>
- 	 <%= f.hidden_field :rate, id: "post_rating" %>
-	</div>
+      </div>
+ 	    <%= f.hidden_field :rate, id: "post_rating" %>
+	  </div>
 
     <!-- ◆ レビュー内容 -->
     <div class="form-group mb-3">
@@ -94,6 +94,12 @@
 
       </div>
     </div>
+
+    <div class="mb-3">
+      <%= f.label :published, "公開する" %>
+      <%= f.check_box :published %>
+    </div>
+
 
     <!-- ◆ 送信ボタン -->
     <div class="mt-4">

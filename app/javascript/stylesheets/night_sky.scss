@@ -240,3 +240,15 @@ body.homes.top .star {
   white-space: pre-line;                 /* 改行保持（してるなら便利） */
 }
 
+/* プロフィールカード */
+.profile-card {
+  background-color: rgba(25, 30, 60, 0.9);   /* 夜空に合う半透明ネイビー */
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+/* 名前を少し光らせる */
+.profile-card h4 {
+  color: #aad4ff;
+}
