@@ -20,9 +20,11 @@
 
             <p><%= truncate(post.body, length: 80) %></p>
 
-            <small class="text-muted">
+            <small class="text-light">
               投稿者：
-              <%= link_to post.user.name, user_path(post.user) %>
+              <%= link_to post.user.name,
+              user_path(post.user),
+              class: "text-info" %>
             </small>
 
           </div>

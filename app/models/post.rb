@@ -1,6 +1,7 @@
 class Post < ApplicationRecord
   belongs_to :user
   belongs_to :group, optional: true
+  has_one_attached :image
   has_many :post_tags, dependent: :destroy
   has_many :tags, through: :post_tags
   has_many :likes, dependent: :destroy
@@ -12,6 +13,8 @@ class Post < ApplicationRecord
   validates :play_time, presence: true
   validates :difficulty, presence: true
   validates :recommend_level, presence: true
+  scope :published, -> { where(published: true) }
+  scope :drafts, -> { where(published: false) }
 
   before_save :round_rate
 

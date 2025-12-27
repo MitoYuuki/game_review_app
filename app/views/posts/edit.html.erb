@@ -48,12 +48,17 @@
     <div class="form-group mb-3">
       <%= f.label :rating, "評価（★）" %>
 
-      <!-- Raty表示ゾーン（編集時 初期値を反映） -->
-      <div class="post_raty" data-target-rating="post_rating" data-score="<%= @post.rate %>"></div>
+      <div class="post_raty"
+          data-target-rating="post_rating"
+          data-score="<%= @post.rate %>"
+          data-raty-star-on="<%= asset_path('raty/star-on.png') %>"
+          data-raty-star-off="<%= asset_path('raty/star-off.png') %>"
+          data-raty-star-half="<%= asset_path('raty/star-half.png') %>">
+      </div>
 
-      <!-- 評価値を受け取る hidden_field -->
       <%= f.hidden_field :rate, id: "post_rating" %>
     </div>
+
 
     <!-- ◆ レビュー内容 -->
     <div class="form-group mb-3">
@@ -100,6 +105,12 @@
 
       </div>
     </div>
+
+    <div class="mb-3">
+      <%= f.label :published, "公開する" %>
+      <%= f.check_box :published %>
+    </div>
+
 
     <!-- ◆ 更新ボタン -->
     <div class="mt-4">

@@ -14,7 +14,16 @@ Rails.application.routes.draw do
   end
 
   # ユーザー詳細・編集
-  resources :users, only: [:show, :edit, :update]
+  resources :users, only: [:show, :edit, :update] do
+  # いいねした投稿一覧用のカスタムアクション
+    get 'liked_posts', on: :member
+
+    # フォロー / フォロワー一覧
+    member do
+      get :following   # /users/:id/following
+      get :followers   # /users/:id/followers
+    end
+  end
 
   # 投稿関連
   get "home" => "posts#home"
@@ -46,5 +55,8 @@ Rails.application.routes.draw do
   devise_scope :user do
     post "/guest_sign_in", to: "users/sessions#guest_sign_in"
   end
+
+  # フォローフォロワー
+  resources :relationships, only: [:create, :destroy]
 
 end

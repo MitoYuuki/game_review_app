@@ -1,0 +1,21 @@
+<h2><%= @user.name %>さんがいいねした投稿一覧</h2>
+
+<% if @liked_posts.any? %>
+  <div class="row">
+    <% @liked_posts.each do |post| %>
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <% if post.image.attached? %>
+            <%= image_tag post.image, class: "card-img-top" %>
+          <% end %>
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to post.title, post_path(post) %></h5>
+            <p class="card-text"><%= truncate(post.body, length: 50) %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>まだいいねした投稿はありません。</p>
+<% end %>
