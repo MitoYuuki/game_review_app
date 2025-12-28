@@ -1,16 +1,16 @@
-<div class="d-flex align-items-center">
+<div class="d-flex align-items-center" id="like-area-<%= post.id %>">
   <% if user_signed_in? && !current_user.guest? %>
     <% if current_user.likes.exists?(post_id: post.id) %>
       <%= link_to post_likes_path(post),
                   method: :delete,
-                  data: { turbo_method: :delete },
+                  remote: true,
                   class: "text-danger fs-3 text-decoration-none me-2" do %>
         ❤️
       <% end %>
     <% else %>
       <%= link_to post_likes_path(post),
                   method: :post,
-                  data: { turbo_method: :post },
+                  remote: true,
                   class: "text-secondary fs-3 text-decoration-none me-2" do %>
         🤍
       <% end %>
@@ -23,8 +23,7 @@
   <% end %>
 
   <!-- Twitter風：いいね数 -->
-  <span class="ms-1"><%= post.likes.count %></span>
+  <span class="ms-1" id="like-count-<%= post.id %>">
+    <%= post.likes.count %>
+  </span>
 </div>
-
-
-
