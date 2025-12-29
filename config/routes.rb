@@ -1,22 +1,21 @@
 Rails.application.routes.draw do
-
   # トップページ
   root to: "homes#top"
 
   # Devise ルーティング
   devise_for :users, controllers: {
-    registrations: 'users/registrations'
+    registrations: "users/registrations"
     }
 
   devise_scope :user do
-    get 'account/edit', to: 'users/registrations#edit_account', as: :edit_account
-    patch 'account/update', to: 'users/registrations#update_account', as: :update_account
+    get "account/edit", to: "users/registrations#edit_account", as: :edit_account
+    patch "account/update", to: "users/registrations#update_account", as: :update_account
   end
 
   # ユーザー詳細・編集
   resources :users, only: [:show, :edit, :update] do
-  # いいねした投稿一覧用のカスタムアクション
-    get 'liked_posts', on: :member
+    # いいねした投稿一覧用のカスタムアクション
+    get "liked_posts", on: :member
 
     # フォロー / フォロワー一覧
     member do
@@ -27,11 +26,11 @@ Rails.application.routes.draw do
 
   # 投稿関連
   get "home" => "posts#home"
-   resources :posts do
-    resources :comments, only: [:create, :destroy]
-    resource :likes, only: [:create, :destroy]
-  end
-  
+  resources :posts do
+   resources :comments, only: [:create, :destroy]
+   resource :likes, only: [:create, :destroy]
+ end
+
   # タグ・グループ
   resources :tags, only: [:show, :index]
   resources :groups, only: [:show, :index]
@@ -39,9 +38,9 @@ Rails.application.routes.draw do
 
   # 管理者側
   devise_for :admins,
-    path: 'admin',
+    path: "admin",
     controllers: {
-      sessions: 'admin/sessions'
+      sessions: "admin/sessions"
     }
 
   namespace :admin do
@@ -58,5 +57,4 @@ Rails.application.routes.draw do
 
   # フォローフォロワー
   resources :relationships, only: [:create, :destroy]
-
 end

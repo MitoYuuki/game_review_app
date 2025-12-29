@@ -35,7 +35,7 @@ class PostsController < ApplicationController
     end
   end
 
-  
+
 
   def show
     unless @post.published? || @post.user == current_user
@@ -82,33 +82,32 @@ class PostsController < ApplicationController
   end
 
   private
-
-  def reject_guest_user
-    if current_user.guest?
-      redirect_to root_path, alert: "ゲストユーザーは投稿できません"
+    def reject_guest_user
+      if current_user.guest?
+        redirect_to root_path, alert: "ゲストユーザーは投稿できません"
+      end
     end
-  end
 
-  def set_post
-    @post = Post.find(params[:id])
-  end
+    def set_post
+      @post = Post.find(params[:id])
+    end
 
-  def correct_user
-    redirect_to posts_path, alert: "権限がありません。" unless @post.user == current_user
-  end
+    def correct_user
+      redirect_to posts_path, alert: "権限がありません。" unless @post.user == current_user
+    end
 
-  def post_params
-    params.require(:post).permit(
-      :platform,
-      :group_id,
-      :title,
-      :rate,
-      :body,
-      :play_time,
-      :difficulty,
-      :recommend_level,
-      :published,
-      tag_ids: []
-    )
-  end
+    def post_params
+      params.require(:post).permit(
+        :platform,
+        :group_id,
+        :title,
+        :rate,
+        :body,
+        :play_time,
+        :difficulty,
+        :recommend_level,
+        :published,
+        tag_ids: []
+      )
+    end
 end

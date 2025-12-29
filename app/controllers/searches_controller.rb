@@ -3,7 +3,7 @@ class SearchesController < ApplicationController
 
   def search
     @keyword = params[:keyword]
-    @model  = params[:model]
+    @model = params[:model]
     search_method = params[:method]
 
     if @model == "user"
@@ -20,30 +20,29 @@ class SearchesController < ApplicationController
   end
 
   private
-
-  def build_query(column, method)
-    case method
-    when "perfect"
-      "#{column} = ?"
-    when "forward"
-      "#{column} LIKE ?"
-    when "backward"
-      "#{column} LIKE ?"
-    else
-      "#{column} LIKE ?"
+    def build_query(column, method)
+      case method
+      when "perfect"
+        "#{column} = ?"
+      when "forward"
+        "#{column} LIKE ?"
+      when "backward"
+        "#{column} LIKE ?"
+      else
+        "#{column} LIKE ?"
+      end
     end
-  end
 
-  def build_keyword(method)
-    case method
-    when "perfect"
-      params[:keyword]
-    when "forward"
-      "#{params[:keyword]}%"
-    when "backward"
-      "%#{params[:keyword]}"
-    else
-      "%#{params[:keyword]}%"
+    def build_keyword(method)
+      case method
+      when "perfect"
+        params[:keyword]
+      when "forward"
+        "#{params[:keyword]}%"
+      when "backward"
+        "%#{params[:keyword]}"
+      else
+        "%#{params[:keyword]}%"
+      end
     end
-  end
 end

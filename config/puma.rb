@@ -16,7 +16,7 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 pidfile ENV.fetch("PIDFILE") { "tmp/pids/puma.pid" }
 
 # Specifies the `bind` (UNIXソケット)
-#bind "unix:///home/ubuntu/game_review_app/tmp/sockets/puma.sock"
+# bind "unix:///home/ubuntu/game_review_app/tmp/sockets/puma.sock"
 port ENV.fetch("PORT") { 3000 }
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
@@ -25,7 +25,7 @@ plugin :tmp_restart
 if ENV.fetch("RAILS_ENV") == "production"
   workers ENV.fetch("WEB_CONCURRENCY") { 2 }
   preload_app!
-  
+
   # ログ出力
   stdout_redirect(
     "log/puma.stdout.log",

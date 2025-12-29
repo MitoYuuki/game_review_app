@@ -9,7 +9,7 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validates :is_public, inclusion: { in: [true, false] }
   validates :password, presence: true, length: { minimum: 6 }, if: :password_required?
-  
+
   enum role: { user: 0, admin: 1, guest: 2 }
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
@@ -61,11 +61,9 @@ class User < ApplicationRecord
   end
 
   private
-  
-  # パスワードが必要な場合を判断
-  def password_required?
-    # 新規登録時、またはパスワード変更時にのみバリデーション
-    new_record? || password.present? || password_confirmation.present?
-  end
-
+    # パスワードが必要な場合を判断
+    def password_required?
+      # 新規登録時、またはパスワード変更時にのみバリデーション
+      new_record? || password.present? || password_confirmation.present?
+    end
 end

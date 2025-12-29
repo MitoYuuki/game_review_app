@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   end
 
   def self.guest
-    find_or_create_by!(email: 'guest@example.com') do |user|
+    find_or_create_by!(email: "guest@example.com") do |user|
       user.password = SecureRandom.urlsafe_base64
       user.name = "ゲスト"
       user.role = :guest
@@ -31,13 +31,13 @@ class UsersController < ApplicationController
   end
 
   def update
-  # パスワードが空の場合はパラメータから削除
-  if user_params[:password].blank?
-    params[:user].delete(:password)
-    params[:user].delete(:password_confirmation)
-  end
-  
-  if @user.update(user_params)
+    # パスワードが空の場合はパラメータから削除
+    if user_params[:password].blank?
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
+    end
+
+    if @user.update(user_params)
       # パスワードを変更した場合は再ログインが必要になることがある
       if user_params[:password].present?
         bypass_sign_in(@user)
@@ -68,19 +68,17 @@ class UsersController < ApplicationController
   end
 
   private
-
-  def set_user
-    @user = User.find(params[:id])
-  end
-
-  def user_params
-    params.require(:user).permit(:name, :profile, :profile_image, :email, :password, :password_confirmation, :is_public)
-  end
-
-  def check_guest_user
-    if current_user.guest?
-      redirect_to root_path, alert: "ゲストユーザーはこの操作はできません"
+    def set_user
+      @user = User.find(params[:id])
     end
-  end
 
+    def user_params
+      params.require(:user).permit(:name, :profile, :profile_image, :email, :password, :password_confirmation, :is_public)
+    end
+
+    def check_guest_user
+      if current_user.guest?
+        redirect_to root_path, alert: "ゲストユーザーはこの操作はできません"
+      end
+    end
 end

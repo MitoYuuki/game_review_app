@@ -100,7 +100,7 @@ game_review_app
 ・アプリケーション詳細設計書
 https://docs.google.com/spreadsheets/d/19y7zk8QVcCSTfmJ_d8RDJ9m7TAw3aA_WwSXf5d4Quzo/edit?usp=sharing
 
-・UI Flows  
+・UI Flows
 https://drive.google.com/file/d/1Ypy6hriU1iMVDO0Vj-AP6YpC1UOOdCB1/view?usp=drive_link
 
 ・ER図
