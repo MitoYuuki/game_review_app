@@ -5,7 +5,6 @@
       <small class="ms-3 fs-6 d-flex align-items-center">
         投稿者：
         <%= link_to @post.user.name, user_path(@post.user), class: "text-decoration-none text-info me-2" %>
-
         <% if user_signed_in? && current_user != @post.user %>
           <%= render "users/follow_button", user: @post.user %>
         <% end %>
@@ -15,21 +14,23 @@
     <p><strong>プラットフォーム：</strong> <%= @post.platform %></p>
     <p><strong>ジャンル：</strong> <%= @post.group.name if @post.group %></p>
     <p><strong>評価：</strong> <%= @post.rate %> ★</p>
+
     <div class="mb-3">
       <strong>レビュー内容：</strong>
       <p><%= simple_format(@post.body) %></p>
     </div>
+
     <p><strong>プレイ時間：</strong> <%= @post.play_time %></p>
     <p><strong>難易度：</strong> <%= @post.difficulty %></p>
     <p><strong>おすすめ度：</strong>
       <%= case @post.recommend_level.to_i
-         when 1 then "おすすめしない"
-         when 2 then "微妙"
-         when 3 then "普通"
-         when 4 then "おすすめ"
-         when 5 then "超おすすめ"
-         else "未設定"
-         end %>
+          when 1 then "おすすめしない"
+          when 2 then "微妙"
+          when 3 then "普通"
+          when 4 then "おすすめ"
+          when 5 then "超おすすめ"
+          else "未設定"
+          end %>
     </p>
 
     <p>
@@ -60,9 +61,7 @@
     <% if user_signed_in? && !current_user.guest? %>
       <%= form_with model: [@post, Comment.new], local: true do |f| %>
         <div class="mb-3">
-          <%= f.text_area :body,
-                          class: "form-control",
-                          placeholder: "コメントを入力" %>
+          <%= f.text_area :body, class: "form-control", placeholder: "コメントを入力" %>
         </div>
         <%= f.submit "コメント投稿", class: "btn btn-primary" %>
       <% end %>
@@ -78,20 +77,14 @@
 
     <div class="mt-4">
       <% if @post.user == current_user %>
-        <%= link_to "編集",
-                    edit_post_path(@post),
-                    class: "btn btn-warning me-2" %>
-
+        <%= link_to "編集", edit_post_path(@post), class: "btn btn-warning me-2" %>
         <%= link_to "削除",
                     post_path(@post),
                     method: :delete,
                     data: { confirm: "本当に削除しますか？" },
                     class: "btn btn-danger me-2" %>
       <% end %>
-
-      <%= link_to "一覧に戻る",
-                  posts_path,
-                  class: "btn btn-secondary" %>
+      <%= link_to "一覧に戻る", posts_path, class: "btn btn-secondary" %>
     </div>
   </div> <!-- post-detail -->
 </div> <!-- container -->
