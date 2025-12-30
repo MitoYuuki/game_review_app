@@ -1,8 +1,8 @@
 <div class="container mt-5">
   <div class="post-detail">
-    <h2 class="mb-2 d-flex align-items-center">
+    <h2 class="mb-2 d-flex flex-column flex-md-row align-items-md-center">
       <span><%= @post.title %></span>
-      <small class="ms-3 fs-6 d-flex align-items-center">
+      <small class="ms-md-3 mt-1 mt-md-0 fs-6 d-flex align-items-center">
         投稿者：
         <%= link_to @post.user.name, user_path(@post.user), class: "text-decoration-none text-info me-2" %>
         <% if user_signed_in? && current_user != @post.user %>
@@ -11,9 +11,12 @@
       </small>
     </h2>
 
-    <p><strong>プラットフォーム：</strong> <%= @post.platform %></p>
-    <p><strong>ジャンル：</strong> <%= @post.group.name if @post.group %></p>
-    <p><strong>評価：</strong> <%= @post.rate %> ★</p>
+
+    <div class="d-flex flex-column flex-md-row mb-3">
+      <p class="me-md-3"><strong>プラットフォーム：</strong> <%= @post.platform %></p>
+      <p class="me-md-3"><strong>ジャンル：</strong> <%= @post.group.name if @post.group %></p>
+      <p><strong>評価：</strong> <%= @post.rate %> ★</p>
+    </div>
 
     <div class="mb-3">
       <strong>レビュー内容：</strong>
@@ -36,7 +39,7 @@
     <p>
       <strong>タグ：</strong>
       <% @post.tags.each do |tag| %>
-        <span class="badge"><%= tag.name %></span>
+        <span class="badge me-1 mb-1"><%= tag.name %></span>
       <% end %>
     </p>
 
@@ -75,14 +78,12 @@
       <%= render "likes/like", post: @post %>
     </div>
 
-    <div class="mt-4">
+    <div class="mt-4 d-flex flex-column flex-md-row align-items-start align-items-md-center">
       <% if @post.user == current_user %>
-        <%= link_to "編集", edit_post_path(@post), class: "btn btn-warning me-2" %>
-        <%= link_to "削除",
-                    post_path(@post),
-                    method: :delete,
+        <%= link_to "編集", edit_post_path(@post), class: "btn btn-warning me-2 mb-2 mb-md-0" %>
+        <%= link_to "削除", post_path(@post), method: :delete,
                     data: { confirm: "本当に削除しますか？" },
-                    class: "btn btn-danger me-2" %>
+                    class: "btn btn-danger me-2 mb-2 mb-md-0" %>
       <% end %>
       <%= link_to "一覧に戻る", posts_path, class: "btn btn-secondary" %>
     </div>

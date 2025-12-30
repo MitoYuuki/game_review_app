@@ -2,9 +2,7 @@
   <div class="row">
 
     <!-- ▷ 左サイド：ジャンル & タグ -->
-    <aside class="col-md-2">
-
-      <!-- ▼ ジャンル -->
+    <aside class="col-12 col-md-2 mb-4 mb-md-0">
       <h5 data-bs-toggle="collapse" data-bs-target="#genreList" style="cursor: pointer;">ジャンル ▼</h5>
       <ul id="genreList" class="list-group mb-3 collapse show">
         <% @groups.each do |g| %>
@@ -14,7 +12,6 @@
         <% end %>
       </ul>
 
-      <!-- ▼ タグ -->
       <h5 data-bs-toggle="collapse" data-bs-target="#tagList" style="cursor: pointer;">タグ ▼</h5>
       <ul id="tagList" class="list-group collapse show">
         <% @tags.each do |tag| %>
@@ -23,65 +20,55 @@
           </li>
         <% end %>
       </ul>
-
     </aside>
 
     <!-- ▷ 中央メイン：最新投稿 -->
-    <div class="col-md-8">
-
+    <div class="col-12 col-md-8">
       <h3>新着投稿</h3>
 
-      <div class="mb-3">
+      <div class="mb-3 small">
         並び替え：
         <%= link_to "投稿日時 (新しい順)", posts_path(sort: "new") %> |
         <%= link_to "評価 (高い順)", posts_path(sort: "rate") %> |
         <%= link_to "いいね (多い順)", posts_path(sort: "likes") %> |
-        <%= link_to "コメント (多い順)", posts_path(sort: "comments") %> |
         <%= link_to "プラットフォーム順", posts_path(sort: "platform") %>
       </div>
 
-      <!-- 項目名ヘッダー -->
-      <div class="row post-header">
+      <!-- 項目名ヘッダー-->
+      <div class="row post-header d-none d-md-flex">
         <div class="col-md-3">ゲームタイトル</div>
         <div class="col-md-2">作成者</div>
         <div class="col-md-2">プラットフォーム</div>
         <div class="col-md-1">投稿日</div>
-        <div class="col-md-1">ジャンル</div>
+        <div class="col-md-2">ジャンル</div>
         <div class="col-md-1">評価</div>
         <div class="col-md-1">いいね</div>
-        <div class="col-md-1">コメント</div>
       </div>
 
       <!-- 投稿一覧 -->
       <% @posts.each_with_index do |post, index| %>
-        <div class="row post-row <%= index.even? ? 'even-row' : 'odd-row' %> py-2 d-flex align-items-stretch">
-          <div class="col-md-3 d-flex align-items-center"><%= link_to post.title, post_path(post) %></div>
-          <div class="col-md-2 d-flex align-items-center"><%= post.user.name %></div>
-          <div class="col-md-2 d-flex align-items-center"><%= post.platform %></div>
-          <div class="col-md-1 d-flex align-items-center"><%= post.created_at.strftime("%m/%d") %></div>
-          <div class="col-md-1 d-flex align-items-center"><%= post.group.name %></div>
-          <div class="col-md-1 d-flex align-items-center">⭐ <%= post.rate %></div>
-          <div class="col-md-1 d-flex align-items-center">❤️ <%= post.likes.count %></div>
-          <div class="col-md-1 d-flex align-items-center">💬 <%= post.comments.count %></div>
+        <div class="row post-row <%= index.even? ? 'even-row' : 'odd-row' %> py-2 d-flex align-items-center flex-column flex-md-row">
+          <div class="col-12 col-md-3 mb-1 mb-md-0"><%= link_to post.title, post_path(post) %></div>
+          <div class="col-6 col-md-2"><%= post.user.name %></div>
+          <div class="col-6 col-md-2"><%= post.platform %></div>
+          <div class="col-6 col-md-1">📅 <%= post.created_at.strftime("%m/%d") %></div>
+          <div class="col-6 col-md-2">🏷️ <%= post.group.name %></div>
+          <div class="col-6 col-md-1">⭐ <%= post.rate %></div>
+          <div class="col-6 col-md-1">❤️ <%= post.likes.count %></div>
         </div>
       <% end %>
-
     </div>
 
     <!-- ▷ 右サイド：プロフィール -->
-    <aside class="col-md-2">
-
+    <aside class="col-12 col-md-2 mt-4 mt-md-0">
       <% if user_signed_in? %>
         <div class="card p-3">
           <h5 class="mb-2">あなたのプロフィール</h5>
-
           <%= render "users/profile_summary", user: current_user %>
-
         </div>
       <% else %>
         <p class="text-muted">ログインするとプロフィールが表示されます。</p>
       <% end %>
-
     </aside>
 
   </div>

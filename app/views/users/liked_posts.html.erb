@@ -3,7 +3,7 @@
 <% if @liked_posts.any? %>
   <div class="row">
     <% @liked_posts.each do |post| %>
-      <div class="col-md-4 mb-3">
+      <div class="col-12 col-sm-6 col-md-4 mb-3">
         <div class="card">
           <% if post.image.attached? %>
             <%= image_tag post.image, class: "card-img-top" %>

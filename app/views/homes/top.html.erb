@@ -1,37 +1,41 @@
 <div class="container mt-5">
 
+  <!-- サイトタイトル -->
   <div class="text-center mb-5">
     <h1 class="fw-bold">GameReview Hub</h1>
     <p class="text-muted">ゲーム好きのためのレビュー・共有コミュニティ</p>
   </div>
 
+  <!-- メイン画像 -->
   <div class="text-center mb-4">
     <%= image_tag "top_game_image.png",
-      class: "img-fluid rounded shadow",
-      style: "max-width: 70%; background: transparent;" %>
+      class: "img-fluid rounded shadow top-image",
+      alt: "トップゲーム画像" %>
   </div>
 
+  <!-- 3カラム紹介 -->
   <div class="row mt-5">
-    <div class="col-md-4 text-center">
+    <div class="col-md-4 col-12 text-center mb-4 mb-md-0">
       <h4>🎮 レビュー投稿</h4>
       <p>あなたがプレイしたゲームの感想や評価を投稿できます。</p>
     </div>
-    <div class="col-md-4 text-center">
+    <div class="col-md-4 col-12 text-center mb-4 mb-md-0">
       <h4>🔍 タグ・ジャンル検索</h4>
       <p>気になるゲームをタグ/ジャンルから簡単検索。</p>
     </div>
-    <div class="col-md-4 text-center">
+    <div class="col-md-4 col-12 text-center">
       <h4>❤️ いいね機能</h4>
       <p>お気に入りのレビューを保存できます。</p>
     </div>
   </div>
 
-  <div class="text-center mt-5">
+  <!-- ボタン -->
+  <div class="text-center mt-5 d-flex flex-column flex-md-row justify-content-center gap-3">
     <%= link_to "新規登録", new_user_registration_path,
-          class: "btn btn-success btn-lg me-3" %>
+          class: "btn btn-success btn-lg" %>
 
     <%= link_to "ログイン", new_user_session_path,
-          class: "btn btn-primary btn-lg me-3" %>
+          class: "btn btn-primary btn-lg" %>
 
     <%= link_to "ゲストログイン", guest_sign_in_path,
           method: :post,
@@ -56,15 +60,13 @@ if (document.body.classList.contains('homes') && document.body.classList.contain
     document.body.appendChild(star);
   }
 
-  // ★ 流れ星（左右ランダム）
+  // ★ 流れ星
   setInterval(() => {
-
-    for (let i = 0; i < 5; i++) {   // ★ ← ここで数を増やす（2→3→4）
+    for (let i = 0; i < 5; i++) {
       const shootingStar = document.createElement('div');
       shootingStar.className = 'shooting-star';
 
       const side = Math.random() < 0.5 ? 'left' : 'right';
-
       if (side === 'left') {
         shootingStar.style.top  = Math.random() * 30 + 'vh';
         shootingStar.style.left = Math.random() * 20 + 'vw';
@@ -75,11 +77,10 @@ if (document.body.classList.contains('homes') && document.body.classList.contain
 
       shootingStar.style.height = (Math.random() * 60 + 40) + 'px';
       shootingStar.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
-
       document.body.appendChild(shootingStar);
 
       setTimeout(() => shootingStar.remove(), 2500);
     }
-   }, 1200);
-  }
+  }, 1200);
+}
 </script>

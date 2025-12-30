@@ -4,10 +4,10 @@ one:
   user: one
   group: one
   title: MyString
-  content: MyText
+  body: MyText
 
 two:
   user: two
   group: two
   title: MyString
-  content: MyText
+  body: MyText

@@ -1,9 +1,45 @@
+/* --------------------------
+   共通・トップページ
+--------------------------- */
 body {
   background: radial-gradient(ellipse at bottom, #0b0c2a 0%, #000000 100%);
   color: white;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+}
+
+/* メイン画像 */
+.top-image {
+  max-width: 70%;
+}
+
+@media (max-width: 768px) {
+  .top-image {
+    max-width: 90%;
+  }
+}
+
+/* 3カラム紹介 */
+.row > .col-md-4 {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .row > .col-md-4 {
+    margin-bottom: 2rem;
+  }
+}
+
+/* ボタン縦並び調整 */
+.d-flex.flex-column.flex-md-row > .btn {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .d-flex.flex-column.flex-md-row > .btn {
+    width: auto;
+  }
 }
 
 /* きらきら星 */
