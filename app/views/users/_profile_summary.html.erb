@@ -2,14 +2,14 @@
 
 <% return unless user %>
 
-<div class="profile-card">
+<div class="profile-card p-3 mb-3">
   <h4><%= user.name %></h4>
 
   <%= image_tag user.get_profile_image,
         class: "profile-square",
         size: "120x120" %>
 
-  <div class="profile-intro">
+  <div class="profile-intro mt-2">
     <h5>自己紹介文</h5>
     <p><%= user.profile.presence || "自己紹介はまだありません。" %></p>
   </div>
@@ -18,16 +18,12 @@
     <h5>記録</h5>
     <p>投稿数: <%= user.posts.count %></p>
     <p>いいね数: <%= user.likes.count %></p>
-
-    <p>
-      フォロー数:
+    <p>フォロー数: 
       <%= link_to following_user_path(user) do %>
         <span id="following-count-<%= user.id %>"><%= user.following.count %></span>
       <% end %>
     </p>
-
-    <p>
-      フォロワー数:
+    <p>フォロワー数: 
       <%= link_to followers_user_path(user) do %>
         <span id="followers-count-<%= user.id %>"><%= user.followers.count %></span>
       <% end %>
@@ -39,23 +35,15 @@
         class: "btn btn-success btn-sm w-75" %>
   </div>
 
-  <% if defined?(current_user) &&
-      current_user == user &&
-      controller_name == "users" &&
-      action_name == "show" %>
-
+  <%# 編集ボタンは自分のページだけ表示 %>
+  <% if current_user == user %>
     <div class="mt-2">
-      <%= link_to "プロフィールを編集する",
-          edit_user_path(user),
+      <%= link_to "プロフィールを編集する", edit_user_path(user),
           class: "btn btn-primary btn-sm w-75" %>
     </div>
-
     <div class="mt-2">
-      <%= link_to "アカウント設定（メール・パスワード変更）",
-          edit_account_path,
+      <%= link_to "アカウント設定（メール・パスワード変更）", edit_account_path,
           class: "btn btn-secondary btn-sm w-75" %>
     </div>
-
   <% end %>
-
 </div>

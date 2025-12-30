@@ -11,7 +11,7 @@
 
   <% if @results.present? %>
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-12 col-md-8">
 
         <% @results.each do |result| %>
           <div class="card mb-3 shadow-sm">
@@ -35,7 +35,7 @@
                   </div>
 
                   <!-- ユーザー名 -->
-                  <div>
+                  <div class="flex-grow-1">
                     <h5 class="mb-1">
                       <%= link_to result.name,
                           user_path(result),
@@ -48,7 +48,7 @@
 
               <% else %>
                 <!-- 投稿検索結果 -->
-                <h5 class="card-title">
+                <h5 class="card-title text-truncate">
                   <%= link_to result.title,
                       post_path(result),
                       class: "text-decoration-none fw-bold" %>
