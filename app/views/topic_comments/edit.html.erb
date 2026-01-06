@@ -1,0 +1,28 @@
+<div class="container mt-4">
+
+  <div class="post-detail">
+
+    <h3>コメントを編集</h3>
+
+    <%= form_with url: community_topic_topic_comment_path(@community, @topic, @topic_comment),
+              model: @topic_comment,
+              method: :patch,
+              local: true do |f| %>
+      <div class="mb-3">
+        <%= f.text_area :body,
+                        class: "form-control",
+                        rows: 4 %>
+      </div>
+
+      <%= f.submit "更新する",
+                   class: "btn btn-primary" %>
+
+      <%= link_to "キャンセル",
+                  community_topic_path(@community, @topic),
+                  class: "btn btn-outline-light ms-2" %>
+
+    <% end %>
+
+  </div>
+
+</div>

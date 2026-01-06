@@ -1,0 +1,17 @@
+<h2>トピック編集</h2>
+
+<%= render "devise/shared/error_messages", resource: @topic %>
+
+<%= form_with model: [@community, @topic], local: true do |f| %>
+  <div class="mb-3">
+    <%= f.label :title, "タイトル" %>
+    <%= f.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :body, "本文" %>
+    <%= f.text_area :body, rows: 8, class: "form-control" %>
+  </div>
+
+  <%= f.submit "更新する", class: "btn btn-primary" %>
+<% end %>

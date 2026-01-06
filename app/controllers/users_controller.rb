@@ -18,6 +18,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    @topics = @user.topics.order(created_at: :desc)
     # 自分以外のユーザーなら非公開投稿は除外
     if current_user == @user
       @posts = @user.posts.order(created_at: :desc)

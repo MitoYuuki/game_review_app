@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_12_27_051433) do
+ActiveRecord::Schema.define(version: 2026_01_04_075105) do
+
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -51,6 +52,12 @@ ActiveRecord::Schema.define(version: 2025_12_27_051433) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
+  create_table "categories", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "comments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "post_id", null: false
@@ -59,6 +66,28 @@ ActiveRecord::Schema.define(version: 2025_12_27_051433) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "communities", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.integer "owner_id", null: false
+    t.boolean "is_public", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "category_id"
+    t.index ["owner_id"], name: "index_communities_on_owner_id"
+  end
+
+  create_table "community_memberships", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "community_id", null: false
+    t.integer "role", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["community_id"], name: "index_community_memberships_on_community_id"
+    t.index ["user_id", "community_id"], name: "index_community_memberships_on_user_id_and_community_id", unique: true
+    t.index ["user_id"], name: "index_community_memberships_on_user_id"
   end
 
   create_table "groups", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -121,6 +150,27 @@ ActiveRecord::Schema.define(version: 2025_12_27_051433) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "topic_comments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "topic_id", null: false
+    t.bigint "user_id", null: false
+    t.text "body", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["topic_id"], name: "index_topic_comments_on_topic_id"
+    t.index ["user_id"], name: "index_topic_comments_on_user_id"
+  end
+
+  create_table "topics", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "community_id", null: false
+    t.bigint "user_id", null: false
+    t.string "title", null: false
+    t.text "body", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["community_id"], name: "index_topics_on_community_id"
+    t.index ["user_id"], name: "index_topics_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -141,10 +191,16 @@ ActiveRecord::Schema.define(version: 2025_12_27_051433) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "community_memberships", "communities"
+  add_foreign_key "community_memberships", "users"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
   add_foreign_key "post_tags", "posts"
   add_foreign_key "post_tags", "tags"
   add_foreign_key "posts", "groups"
   add_foreign_key "posts", "users"
+  add_foreign_key "topic_comments", "topics"
+  add_foreign_key "topic_comments", "users"
+  add_foreign_key "topics", "communities"
+  add_foreign_key "topics", "users"
 end

@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get 'topics/index'
+    get 'topics/show'
+    get 'topics/destroy'
+  end
+  namespace :admin do
+    get 'communities/index'
+    get 'communities/show'
+    get 'communities/destroy'
+  end
+  #レビュー関係
   # トップページ
   root to: "homes#top"
 
@@ -48,6 +59,12 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :show, :destroy]
 
     resources :posts, only: [:index, :show, :destroy]
+
+    resources :communities, only: [:index, :show, :destroy] do
+      resources :topics, only: [:index, :show, :destroy] do
+        resources :topic_comments, only: [:destroy]
+      end
+    end
   end
 
   # ゲストログイン
@@ -57,4 +74,21 @@ Rails.application.routes.draw do
 
   # フォローフォロワー
   resources :relationships, only: [:create, :destroy]
+
+  #コミュニティ関係
+  resources :communities do
+    member do
+      get :members   # ← コミュニティのメンバー一覧
+    end
+
+    resources :topics do
+      resources :topic_comments
+    end
+
+    resources :community_memberships, only: [:create, :destroy]
+  end
+
+    resources :categories, only: [:show]
+
 end
+

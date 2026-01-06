@@ -1,0 +1,103 @@
+<div class="container mt-4">
+
+  <!-- コミュニティ情報カード -->
+  <div class="card mb-4">
+    <div class="card-header fw-bold">
+      コミュニティ詳細
+    </div>
+
+    <div class="card-body">
+
+      <h3 class="card-title"><%= @community.name %></h3>
+
+      <p class="card-text mt-2">
+        <%= simple_format(@community.description.presence || "説明はありません") %>
+      </p>
+
+      <p class="mt-3">
+        <strong>オーナー：</strong>
+        <%= @community.owner&.name || "不明" %>
+      </p>
+
+      <p>
+        <strong>作成日時：</strong>
+        <%= @community.created_at.strftime("%Y-%m-%d") %>
+      </p>
+
+      <div class="mt-3">
+        <%= link_to "コミュニティ削除",
+          admin_community_path(@community),
+          method: :delete,
+          data: { confirm: "本当に削除しますか？トピック・コメントも削除されます。" },
+          class: "btn btn-danger" %>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- トピック一覧 -->
+  <div class="card">
+    <div class="card-header fw-bold">
+      トピック一覧
+    </div>
+
+    <div class="card-body">
+
+      <% if @topics.present? %>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>タイトル</th>
+                <th>投稿者</th>
+                <th>作成日時</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @topics.each do |topic| %>
+                <tr>
+                  <td><%= topic.id %></td>
+
+                  <td>
+                   <%= link_to topic.title,
+                        admin_community_topic_path(@community, topic),
+                        class: "text-decoration-none" %>
+                  </td>
+
+                  <td><%= topic.user.name %></td>
+
+                  <td><%= topic.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+
+                  <td class="text-end">
+
+                    <%= link_to "詳細",
+                        admin_community_topic_path(@community, topic),
+                        class: "btn btn-sm btn-outline-primary me-2" %>
+
+                    <%= link_to "削除",
+                        admin_community_topic_path(@community, topic),
+                        method: :delete,
+                        data: { confirm: "このトピックを削除してもよろしいですか？" },
+                        class: "btn btn-sm btn-outline-danger" %>
+
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+
+        <div class="alert alert-info">
+          トピックはまだありません
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+
+</div>

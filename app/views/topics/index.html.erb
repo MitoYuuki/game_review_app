@@ -1,0 +1,52 @@
+<div class="container mt-4">
+
+  <h2 class="mb-4 text-center">トピック一覧</h2>
+
+  <!-- 新規作成ボタン（ログイン中のみ表示） -->
+  <% if user_signed_in? %>
+    <div class="text-center mb-3">
+      <%= link_to "新しいトピックを作成",
+                  new_community_topic_path(@community),
+                  class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+  <% if @topics.present? %>
+
+    <% @topics.each do |topic| %>
+      <div class="card mb-3">
+
+        <div class="card-body">
+
+          <!-- タイトル -->
+          <h4 class="fw-bold">
+            <%= link_to topic.title,
+                        community_topic_path(@community, topic),
+                        class: "text-decoration-none text-light" %>
+          </h4>
+
+          <!-- 投稿者と日時 -->
+          <small class="text-muted">
+            作成者：
+            <%= topic.user.name %>
+            ／
+            <%= topic.created_at.strftime("%Y-%m-%d %H:%M") %>
+          </small>
+
+          <p class="mt-2">
+            <%= truncate(topic.body, length: 80) %>
+          </p>
+
+        </div>
+      </div>
+    <% end %>
+
+  <% else %>
+
+    <div class="alert alert-info text-center">
+      まだトピックはありません
+    </div>
+
+  <% end %>
+
+</div>

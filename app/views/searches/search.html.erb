@@ -4,10 +4,13 @@
     検索結果
     <% if @model == "user" %>
       （ユーザー）
-    <% else %>
+    <% elsif @model == "post" %>
       （投稿）
+    <% else %>
+      （コミュニティ）
     <% end %>
   </h3>
+
 
   <% if @results.present? %>
     <div class="row justify-content-center">
@@ -21,7 +24,6 @@
                 <!-- ユーザー検索結果 -->
                 <div class="d-flex align-items-center">
 
-                  <!-- プロフィール画像 -->
                   <div class="me-3">
                     <% if result.profile_image.attached? %>
                       <%= image_tag result.profile_image,
@@ -29,12 +31,11 @@
                             class: "rounded-circle object-fit-cover" %>
                     <% else %>
                       <%= image_tag "default-image.png",
-                            size: "60x60",
-                            class: "rounded-circle" %>
+                          size: "60x60",
+                          class: "rounded-circle" %>
                     <% end %>
                   </div>
 
-                  <!-- ユーザー名 -->
                   <div class="flex-grow-1">
                     <h5 class="mb-1">
                       <%= link_to result.name,
@@ -46,7 +47,7 @@
 
                 </div>
 
-              <% else %>
+              <% elsif @model == "post" %>
                 <!-- 投稿検索結果 -->
                 <h5 class="card-title text-truncate">
                   <%= link_to result.title,
@@ -55,6 +56,18 @@
                 </h5>
                 <p class="card-text text-muted mb-0">
                   <%= truncate(result.body, length: 80) %>
+                </p>
+
+              <% elsif @model == "community" %>
+                <!-- コミュニティ検索結果 -->
+                <h5 class="fw-bold">
+                  <%= link_to result.name,
+                      community_path(result),
+                      class: "text-decoration-none" %>
+                </h5>
+
+                <p class="text-muted">
+                  メンバー：<%= result.members.count rescue 0 %>人
                 </p>
 
               <% end %>

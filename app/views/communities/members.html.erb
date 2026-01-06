@@ -1,0 +1,58 @@
+<div class="container mt-4">
+
+  <h3 class="text-center mb-4">
+    <%= @community.name %> の参加メンバー
+  </h3>
+
+  <% if @members.any? %>
+
+    <div class="row justify-content-center">
+
+      <% @members.each do |user| %>
+        <div class="col-md-4 mb-3">
+
+          <div class="card p-3 text-center">
+
+            <% if user == @community.owner %>
+              <span class="badge bg-warning text-dark mb-1">
+                👑 オーナー
+              </span>
+            <% else %>
+              <span class="badge bg-primary mb-1">
+                メンバー
+              </span>
+            <% end %>
+
+            <% if user.profile_image.attached? %>
+              <%= image_tag user.profile_image,
+                    size: "80x80",
+                    class: "rounded-circle mb-2" %>
+            <% else %>
+              <%= image_tag "default-image.png",
+                    size: "80x80",
+                    class: "rounded-circle mb-2" %>
+            <% end %>
+
+            
+            <h5 class="fw-bold position-absolute top-50 start-50 translate-middle">
+              <%= link_to user.name,
+                          user_path(user),
+                          class: "text-decoration-none fw-bold" %>
+            </h5>
+
+          </div>
+
+        </div>
+      <% end %>
+
+    </div>
+
+  <% else %>
+
+    <div class="alert alert-info text-center">
+      まだ参加メンバーはいません
+    </div>
+
+  <% end %>
+
+</div>

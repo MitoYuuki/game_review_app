@@ -287,6 +287,140 @@ demo_posts.each_with_index do |post_data, index|
   end
 end
 
+# --- コミュニティ作成 ---
+# --- コミュニティカテゴリ作成 ---
+community_categories = [
+  "雑談",
+  "攻略情報",
+  "フレンド募集",
+  "クラン/ギルド募集",
+  "その他"
+]
+
+categories = {}
+
+community_categories.each do |name|
+  categories[name] = Category.find_or_create_by!(name: name)
+end
+
+puts "コミュニティカテゴリ作成完了"
+
+community1_owner = users.sample
+community2_owner = users.sample
+
+community1 = Community.create!(
+  name: "ゲーム雑談コミュニティ",
+  description: "好きなゲームについて自由に語り合いましょう。",
+  owner_id: community1_owner.id,
+  category_id: categories["雑談"].id,
+  is_public: true
+)
+
+community2 = Community.create!(
+  name: "攻略情報共有コミュニティ",
+  description: "ボス攻略やビルド相談など攻略情報メイン。",
+  owner_id: community2_owner.id,
+  category_id: categories["攻略情報"].id,
+  is_public: true
+)
+
+puts "コミュニティ作成完了"
+
+# --- メンバー登録（必ず作成者を含める）---
+[ [community1, community1_owner], [community2, community2_owner] ].each do |community, owner|
+  # まずオーナーを必ず参加
+  CommunityMembership.find_or_create_by!(
+    community_id: community.id,
+    user_id: owner.id
+  )
+
+  # 他のメンバーを追加（オーナー除く）
+  (users - [owner]).sample(3).each do |user|
+    CommunityMembership.find_or_create_by!(
+      community_id: community.id,
+      user_id: user.id
+    )
+  end
+end
+
+puts "メンバー登録完了"
+
+# --- トピック作成 ---
+topic1 = Topic.create!(
+  community_id: community1.id,
+  user_id: community1.owner_id,
+  title: "最近ハマっているゲームは？",
+  body: "ジャンル問わず語ってください！"
+)
+
+topic2 = Topic.create!(
+  community_id: community2.id,
+  user_id: community2.owner_id,
+  title: "このダンジョンの攻略方法を知りたいです",
+  body: "詰まっているのでアドバイスください！"
+)
+
+puts "トピック作成完了"
+
+# --- コメントテンプレ作成 ---
+topic1_comments = [
+  "それ自分もやってます！めちゃくちゃ面白いですよね！",
+  "気になってたゲームなので感想助かります！",
+  "積みゲーに入ってるので背中押されました！",
+  "神ゲーだと思います。サントラも最高でした。"
+]
+
+topic2_comments = [
+  "〇〇のスキルを取るとかなり楽になります！",
+  "まずは防御を固めるのがおすすめです。",
+  "属性耐性を揃えると一気に突破できますよ！",
+  "フレンドと協力すると攻略が楽になります！"
+]
+
+# --- トピックコメント作成（複数種類！）---
+# --- トピックコメント作成（被りなし・時間順を考慮）---
+
+# topic1
+topic1_created = topic1.created_at || Time.current
+
+topic1_comments.shuffle.each_with_index do |comment, i|
+  time = topic1_created + (i + 1).hours + rand(0..50).minutes
+
+  TopicComment.create!(
+    topic_id: topic1.id,
+    user_id: users.sample.id,
+    body: comment,
+    created_at: time,
+    updated_at: time
+  )
+end
+
+# topic2
+topic2_created = topic2.created_at || Time.current
+
+topic2_comments.shuffle.each_with_index do |comment, i|
+  time = topic2_created + (i + 1).hours + rand(0..50).minutes
+
+  TopicComment.create!(
+    topic_id: topic2.id,
+    user_id: users.sample.id,
+    body: comment,
+    created_at: time,
+    updated_at: time
+  )
+end
+
+
+puts "トピックコメント作成完了"
+
+puts "=== コミュニティ機能 seed 作成完了 ==="
+
 puts "=== Seed処理完了 ==="
 puts "ユーザー数: #{User.count}, グループ数: #{Group.count}, 投稿数: #{Post.count}"
 puts "タグ数: #{Tag.count}, コメント数: #{Comment.count}, いいね数: #{Like.count}"
+
+# コミュニティ関連も追加
+puts "コミュニティ数: #{Community.count}"
+puts "コミュニティメンバーシップ数: #{CommunityMembership.count}"
+puts "トピック数: #{Topic.count}"
+puts "トピックコメント数: #{TopicComment.count}"

@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  #レビュー関係
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   has_many :posts, dependent: :destroy
@@ -14,6 +15,18 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  #コミュニティ関係
+  has_many :owned_communities, class_name: "Community", foreign_key: "owner_id"
+
+  has_many :community_memberships, dependent: :destroy
+  has_many :joined_communities, through: :community_memberships, source: :community
+  has_many :topic_comments, dependent: :destroy
+
+
+  has_many :topics
+  has_many :comments
+
+  #レビュー関係
   # 自分がフォローしているユーザー
   has_many :active_relationships, class_name: "Relationship",
                                   foreign_key: "follower_id",
