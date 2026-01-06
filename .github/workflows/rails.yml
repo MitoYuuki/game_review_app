@@ -19,14 +19,14 @@ jobs:
         echo "$PRIVATE_KEY" > private_key
         chmod 600 private_key
 
-        # EC2 に SSH 接続してデプロイ
+        # EC2 に SSH 接続してデプロイ（サーバは起動しない）
         ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} '
           # nvm をロードして Node.js を有効化
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           nvm use 20
 
-          # 環境変数をセット
+          # 環境変数
           export RAILS_ENV=production
 
           # アプリディレクトリに移動
@@ -45,12 +45,5 @@ jobs:
           # DB マイグレーション
           ~/.rbenv/shims/bundle exec rails db:migrate
 
-          # Puma が動いていれば停止
-          if [[ -e tmp/pids/puma.pid ]]; then
-            sudo kill $(cat tmp/pids/puma.pid)
-            echo "killed old puma process"
-          fi
-
-          # Puma サーバをバックグラウンドで起動（daemonize）
-          ~/.rbenv/shims/bundle exec puma -C config/puma.rb -e production -d
+          echo "✅ デプロイ完了。Pumaはまだ起動していません。"
         '
