@@ -5,10 +5,11 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Deploy 
+    - uses: actions/checkout@v3
+    - name: Deploy
       env:
         PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
         USER_NAME: ${{ secrets.USER_NAME }}
@@ -26,13 +27,14 @@ jobs:
           nvm use 20
 
           # アプリディレクトリに移動
-          cd game_review_app
+          cd ~/game_review_app
 
           # 最新コードを取得
+          git reset --hard
           git pull origin main
 
           # Ruby gems インストール
-          ~/.rbenv/shims/bundle install
+          ~/.rbenv/shims/bundle install --deployment --without development test
 
           # JavaScript / CSS アセットのコンパイル
           ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production
@@ -43,9 +45,9 @@ jobs:
           # Puma が動いていれば停止
           if [[ -e tmp/pids/puma.pid ]]; then
             sudo kill $(cat tmp/pids/puma.pid)
-            echo "kill puma process"
+            echo "killed old puma process"
           fi
 
-          # Puma サーバ起動
-          ~/.rbenv/shims/rails s -e production
+          # Puma サーバをバックグラウンドで起動（daemonize）
+          ~/.rbenv/shims/bundle exec puma -C config/puma.rb -e production -d
         '
