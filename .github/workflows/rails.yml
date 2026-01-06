@@ -26,10 +26,13 @@ jobs:
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           nvm use 20
 
+          # 環境変数をセット
+          export RAILS_ENV=production
+
           # アプリディレクトリに移動
           cd ~/game_review_app
 
-          # 最新コードを取得
+          # 最新コードを取得（ローカル変更を無視）
           git reset --hard
           git pull origin main
 
@@ -37,10 +40,10 @@ jobs:
           ~/.rbenv/shims/bundle install --deployment --without development test
 
           # JavaScript / CSS アセットのコンパイル
-          ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production
+          ~/.rbenv/shims/bundle exec rails assets:precompile
 
           # DB マイグレーション
-          ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production
+          ~/.rbenv/shims/bundle exec rails db:migrate
 
           # Puma が動いていれば停止
           if [[ -e tmp/pids/puma.pid ]]; then
