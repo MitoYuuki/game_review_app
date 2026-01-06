@@ -14,11 +14,38 @@ jobs:
         USER_NAME: ${{ secrets.USER_NAME }}
         HOST_NAME: ${{ secrets.HOST_NAME }}
       run: |
-        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} 'cd game_review_app &&
-        git pull origin main &&
-        ~/.rbenv/shims/bundle install &&
-        ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production &&
-        ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production &&
-        if [[ -e tmp/pids/puma.pid ]];then sudo kill $(cat tmp/pids/puma.pid); echo kill puma process;fi &&
-        ~/.rbenv/shims/rails s -e production'
+        # 秘密鍵作成
+        echo "$PRIVATE_KEY" > private_key
+        chmod 600 private_key
+
+        # EC2 に SSH 接続してデプロイ
+        ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} '
+          # nvm をロードして Node.js を有効化
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm use 20
+
+          # アプリディレクトリに移動
+          cd game_review_app
+
+          # 最新コードを取得
+          git pull origin main
+
+          # Ruby gems インストール
+          ~/.rbenv/shims/bundle install
+
+          # JavaScript / CSS アセットのコンパイル
+          ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production
+
+          # DB マイグレーション
+          ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production
+
+          # Puma が動いていれば停止
+          if [[ -e tmp/pids/puma.pid ]]; then
+            sudo kill $(cat tmp/pids/puma.pid)
+            echo "kill puma process"
+          fi
+
+          # Puma サーバ起動
+          ~/.rbenv/shims/rails s -e production
+        '
