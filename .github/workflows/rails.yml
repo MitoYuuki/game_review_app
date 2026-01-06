@@ -5,77 +5,21 @@ on:
     branches: [main]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Deploy
+    - uses: actions/setup-node@v3
+    - name: Deploy 
       env:
         PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
         USER_NAME: ${{ secrets.USER_NAME }}
         HOST_NAME: ${{ secrets.HOST_NAME }}
       run: |
-        # 秘密鍵作成
-        echo "$PRIVATE_KEY" > private_key
-        chmod 600 private_key
-
-        # EC2 に SSH 接続してデプロイ
-        ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} '
-          # 環境変数
-          export RAILS_ENV=production
-          
-          # nvm をロード
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          nvm use 20
-
-          # アプリディレクトリに移動
-          cd ~/game_review_app
-
-          # 最新コードを取得
-          git fetch origin main
-          git reset --hard origin/main
-
-          # Ruby gems インストール
-          bundle install --deployment --without development test
-
-          # JavaScript / CSS アセットのコンパイル
-          RAILS_ENV=production bundle exec rails assets:precompile
-
-          # DB マイグレーション
-          RAILS_ENV=production bundle exec rails db:migrate
-
-          # 必要ならSeedデータ投入（本番環境用）
-          # RAILS_ENV=production bundle exec rails db:seed
-
-          # tmpディレクトリの権限設定
-          mkdir -p tmp/sockets tmp/pids
-          chmod 755 tmp tmp/sockets tmp/pids
-
-          # Pumaを再起動（systemdサービスがある場合）
-          if systemctl list-unit-files | grep -q puma.service; then
-            echo "🔧 systemdでPumaを再起動します..."
-            sudo systemctl restart puma
-          else
-            echo "⚠️ systemdサービスが見つかりません。手動でPumaを起動します..."
-            # 既存のPumaプロセスを終了
-            pkill -f puma || true
-            # 新しいPumaを起動
-            RAILS_ENV=production bundle exec puma -C config/puma.rb -d
-          fi
-
-          # Nginxを再起動
-          echo "🔧 Nginxを再起動します..."
-          sudo systemctl restart nginx
-
-          # ステータス確認
-          echo "📊 サービスステータス確認:"
-          sudo systemctl status puma --no-pager || echo "Puma service not found"
-          sudo systemctl status nginx --no-pager
-
-          # socketファイルの確認
-          echo "📁 Socketファイル確認:"
-          ls -la tmp/sockets/ 2>/dev/null || echo "tmp/sockets directory not found"
-
-          echo "✅ デプロイ完了"
-        '
+        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+        ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} 'cd game_review_app &&
+        git pull origin main &&
+        ~/.rbenv/shims/bundle install &&
+        ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production &&
+        ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production &&
+        if [[ -e tmp/pids/puma.pid ]];then sudo kill $(cat tmp/pids/puma.pid); echo kill puma process;fi &&
+        ~/.rbenv/shims/rails s -e production'
