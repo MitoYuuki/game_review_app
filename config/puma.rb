@@ -32,4 +32,6 @@ if ENV.fetch("RAILS_ENV") == "production"
     "log/puma.stderr.log",
     true
   )
+  # デーモン
+  daemonize
 end
