@@ -30,8 +30,9 @@ game_review_app
 
 ・ゲームの想定プレイ時間を知りたい時
 
-✨ 実装済み機能一覧
-▼ ユーザー関連
+✨ 実装済み機能一覧  
+■レビュー機能  
+▼ ユーザー関連  
 
 ・ユーザー登録 / ログイン（Devise）
 
@@ -89,24 +90,61 @@ game_review_app
 
 ・レビュー削除機能（管理者権限）
 
-🛠 今後追加予定の機能（任意）
+▼ レスポンシブ対応・UI改善
 
-・レスポンシブ対応（スマホ最適化）
+・トップページ、投稿一覧、投稿詳細、ユーザー関連ページのレスポンシブ対応  
 
-・通報・非表示機能
+・スマホ表示でのレイアウト調整（サイドバー折りたたみ、カードレイアウト最適化）  
+
+■ コミュニティ機能（新規追加）
+
+・コミュニティ作成 / 編集 / 削除
+・コミュニティ参加 / 退会機能
+・公開 / 非公開コミュニティ設定
+・コミュニティ詳細ページの表示
+
+▼ トピック機能
+
+・コミュニティ内でのトピック作成
+・トピック編集 / 削除
+・トピック一覧表示
+・トピック詳細ページの表示
+
+▼ トピックコメント機能
+
+・コメント投稿
+・コメント編集 / 削除
+・コメント一覧表示
+
+▼ 権限管理
+
+・トピック/コメントの編集削除権限
+　└ 投稿者本人
+　└ コミュニティオーナー
+　└ サイト管理者（Admin）
+
+▼ 管理者機能の拡張（Admin）
+
+・コミュニティ一覧表示
+・コミュニティ詳細表示
+・コミュニティ削除
+・コミュニティ内トピック一覧表示
+・トピック詳細表示
+・トピック削除
+・トピックコメント削除
 
 🗂 設計書
 
-・アプリケーション詳細設計書
+・アプリケーション詳細設計書  
 https://docs.google.com/spreadsheets/d/19y7zk8QVcCSTfmJ_d8RDJ9m7TAw3aA_WwSXf5d4Quzo/edit?usp=sharing
 
-・UI Flows
+・UI Flows  
 https://drive.google.com/file/d/1Ypy6hriU1iMVDO0Vj-AP6YpC1UOOdCB1/view?usp=drive_link
 
-・ER図
+・ER図  
 https://drive.google.com/file/d/11XtXkYWCsL09NUcxQTHYa2hlDBsw8SLb/view?usp=drive_link
 
-・テーブル定義書
+・テーブル定義書  
 https://docs.google.com/spreadsheets/d/1YN3FrZDZpxnb2ftKqjjg8fWrvIPiG34qIdKgLpcqU0g/edit?usp=sharing
 
 💻 開発環境

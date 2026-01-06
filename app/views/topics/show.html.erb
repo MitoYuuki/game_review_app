@@ -1,0 +1,100 @@
+<div class="d-flex justify-content-between align-items-start">
+
+  <!-- 左側：タイトル＋本文 -->
+  <div>
+    <h2><%= @topic.title %></h2>
+    <p><%= simple_format(@topic.body) %></p>
+  </div>
+
+  <!-- 右側：編集・削除ボタン -->
+  <% if user_signed_in? && (
+      @topic.user_id == current_user.id ||
+      @community.owner_id == current_user.id ||
+      current_user.admin?
+    ) %>
+
+    <div>
+      <%= link_to "トピック編集",
+          edit_community_topic_path(@community, @topic),
+          class: "btn btn-warning btn-sm" %>
+
+      <%= link_to "トピック削除",
+          community_topic_path(@community, @topic),
+          method: :delete,
+          data: { confirm: "本当に削除しますか？" },
+          class: "btn btn-danger btn-sm ms-2" %>
+    </div>
+
+  <% end %>
+
+</div>
+
+
+<hr>
+
+<h3>コメント</h3>
+
+<% @comments.each do |comment| %>
+  <div class="border p-2 mb-2">
+
+    <strong><%= comment.user.name %></strong>
+    <span class="text-white ms-2">
+      <%= comment.created_at&.strftime("%Y-%m-%d %H:%M") || "日時未設定" %>
+    </span><br>
+    <%= simple_format(comment.body) %>
+
+    <% if user_signed_in? && (
+      comment.user_id == current_user.id ||
+      @community.owner_id == current_user.id ||
+      current_user.admin?
+    ) %>
+      <%= link_to "編集",
+          edit_community_topic_topic_comment_path(@community, @topic, comment),
+          class: "btn btn-warning btn-sm mt-1" %>
+
+      <%= link_to "削除",
+          community_topic_topic_comment_path(@community, @topic, comment),
+          method: :delete,
+          data: { confirm: "本当に削除しますか？" },
+          class: "btn btn-danger btn-sm mt-1 ms-2" %>
+    <% end %>
+
+    <h2 class="d-flex align-items-center">
+
+    <% if user_signed_in? && current_user != comment.user %>
+      <span class="ms-3">
+        <div id="follow-area-<%= @topic.user.id %>">
+          <%= render "users/follow_button_core", user: comment.user %>
+        </div>
+      </span>
+    <% end %>
+
+</h2>
+
+  </div>
+<% end %>
+
+<hr>
+
+<% if user_signed_in? && @topic.community.members.include?(current_user) %>
+
+  <h4>コメントを書く</h4>
+
+  <%= form_with model: [@community, @topic, TopicComment.new], local: true do |f| %>
+    <div class="mb-3">
+      <%= f.text_area :body,
+          class: "form-control",
+          rows: 4,
+          placeholder: "コメントを書いてください" %>
+    </div>
+
+    <%= f.submit "送信", class: "btn btn-primary" %>
+  <% end %>
+
+<% else %>
+
+  <p class="text-warning">
+    コメントするにはコミュニティに参加してください。
+  </p>
+
+<% end %>

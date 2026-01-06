@@ -1,0 +1,63 @@
+<div class="container mt-4">
+
+  <h2>トピック一覧（コミュニティ：<%= @community.name %>）</h2>
+
+  <div class="mb-3">
+    <%= link_to "コミュニティ詳細に戻る",
+        admin_community_path(@community),
+        class: "btn btn-secondary btn-sm" %>
+  </div>
+
+  <% if @topics.present? %>
+
+    <table class="table table-striped mt-3">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>タイトル</th>
+          <th>投稿者</th>
+          <th>作成日</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @topics.each do |topic| %>
+          <tr>
+            <td><%= topic.id %></td>
+
+            <td>
+              <%= link_to topic.title,
+                  admin_community_topic_path(@community, topic),
+                  class: "text-decoration-none" %>
+            </td>
+
+            <td><%= topic.user.name %></td>
+
+            <td><%= topic.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+
+            <td>
+              <%= link_to "詳細",
+                  admin_community_topic_path(@community, topic),
+                  class: "btn btn-sm btn-outline-primary" %>
+
+              <%= link_to "削除",
+                  admin_community_topic_path(@community, topic),
+                  method: :delete,
+                  data: { confirm: "本当に削除しますか？" },
+                  class: "btn btn-sm btn-outline-danger ms-2" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  <% else %>
+
+    <div class="alert alert-info mt-3">
+      このコミュニティにはまだトピックがありません。
+    </div>
+
+  <% end %>
+
+</div>

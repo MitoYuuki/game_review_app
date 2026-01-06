@@ -6,17 +6,29 @@ class SearchesController < ApplicationController
     @model = params[:model]
     search_method = params[:method]
 
-    if @model == "user"
-      @results = User.where(
-        build_query("name", search_method),
-        build_keyword(search_method)
-      )
-    else
-      @results = Post.where(
-        build_query("title", search_method),
-        build_keyword(search_method)
-      )
-    end
+   @results =
+      case @model
+     when "user"
+        User.where(
+          build_query("name", search_method),
+          build_keyword(search_method)
+        )
+
+      when "post"
+        Post.where(
+          build_query("title", search_method),
+          build_keyword(search_method)
+        )
+
+     when "community"
+        Community.where(
+          build_query("name", search_method),
+          build_keyword(search_method)
+        )
+
+      else
+        []
+      end
   end
 
   private

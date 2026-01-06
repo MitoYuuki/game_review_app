@@ -1,67 +1,88 @@
 ja:
   activerecord:
+    models:
+      topic: トピック
+      community: コミュニティ
+
     attributes:
       post:
-        title: ""
-        group: ""
-        group_id: ""
-        body: ""
-        platform: ""
-        rate: ""
-        play_time: ""
-        difficulty: ""
-        recommend_level: ""
-        tag_ids: ""
-      
-      # Userモデルの属性
+        title: ゲームタイトル
+        group: ジャンル
+        group_id: ジャンル
+        body: レビュー本文
+        platform: プラットフォーム
+        rate: 評価
+        play_time: プレイ時間
+        difficulty: 難易度
+        recommend_level: おすすめ度
+        tag_ids: タグ
+
+      topic:
+        title: タイトル
+        body: 本文
+
       user:
-        name: "名前"
-        email: "メールアドレス"
-        password: "パスワード"
-        password_confirmation: "パスワード（確認）"
-        remember_me: "ログイン状態を保持する"
+        name: 名前
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認）
+        remember_me: ログイン状態を保持する
+
+      community:
+        name: コミュニティ名
+        description: 説明
+        category: カテゴリ
+        category_id: カテゴリ
 
     errors:
-      # エラーメッセージのフォーマットを変更（属性名を表示しない）
-      format: "%{message}"
-      
+      full_messages:
+        format: "%{message}"
+
       models:
         post:
           attributes:
             title:
               blank: "ゲームタイトルを入力してください"
               required: "ゲームタイトルを入力してください"
+
             group:
               blank: "ジャンルを選択してください"
               required: "ジャンルを選択してください"
+
             group_id:
               blank: "ジャンルを選択してください"
               required: "ジャンルを選択してください"
+
             body:
               blank: "レビュー本文を入力してください"
               required: "レビュー本文を入力してください"
+
             rate:
               blank: "評価を入力してください"
               required: "評価を入力してください"
-              not_a_number: "評価は数値で入力してください"  # 追加
-              greater_than_or_equal_to: "評価は0以上で入力してください"  # 追加
-              less_than_or_equal_to: "評価は5以下で入力してください"  # 追加
+              not_a_number: "評価は数値で入力してください"
+              greater_than_or_equal_to: "評価は0以上で入力してください"
+              less_than_or_equal_to: "評価は5以下で入力してください"
+
             platform:
               blank: "プラットフォームを選択してください"
               required: "プラットフォームを選択してください"
+
             play_time:
               blank: "プレイ時間を入力してください"
-              required: "プレイ時間を入力してください"  # 追加
+              required: "プレイ時間を入力してください"
+
             difficulty:
               blank: "難易度を選択してください"
-              required: "難易度を選択してください"  # 追加
+              required: "難易度を選択してください"
+
             recommend_level:
               blank: "おすすめ度を選択してください"
-              required: "おすすめ度を選択してください"  # 追加
-              not_a_number: "おすすめ度は数値で入力してください"  # 追加
-              greater_than_or_equal_to: "おすすめ度は1以上で入力してください"  # 追加
-              less_than_or_equal_to: "おすすめ度は5以下で入力してください"  # 追加
-              
+              required: "おすすめ度を選択してください"
+              not_a_number: "おすすめ度は数値で入力してください"
+              greater_than_or_equal_to: "おすすめ度は1以上で入力してください"
+              less_than_or_equal_to: "おすすめ度は5以下で入力してください"
+
         user:
           attributes:
             email:
@@ -75,7 +96,7 @@ ja:
               confirmation: "パスワードが一致しません"
             name:
               blank: "名前を入力してください"
-              
+
       messages:
         blank: "%{attribute}を入力してください"
         required: "%{attribute}を選択してください"
@@ -99,7 +120,6 @@ ja:
         inclusion: "%{attribute}は一覧にありません"
         exclusion: "%{attribute}は利用できません"
 
-  # フォームラベル用の別設定（必要に応じて使用）
   form_labels:
     post:
       title: "ゲームタイトル"
@@ -111,15 +131,14 @@ ja:
       difficulty: "難易度"
       recommend_level: "おすすめレベル"
       tag_ids: "タグ"
-    
+
     user:
       name: "名前"
       email: "メールアドレス"
       password: "パスワード"
       password_confirmation: "パスワード（確認）"
       remember_me: "ログイン状態を保持する"
-      
-  # その他の一般的な設定（オプション）
+
   helpers:
     select:
       prompt: "選択してください"
@@ -129,8 +148,7 @@ ja:
       submit: "送信する"
       post: "投稿する"
       review: "レビューを投稿する"
-      
-  # 共通メッセージ
+
   views:
     common:
       required_field: "必須項目"
@@ -144,8 +162,7 @@ ja:
       successfully_updated: "の更新が成功しました"
       successfully_deleted: "の削除が成功しました"
       cannot_delete: "を削除できませんでした"
-      
-  # 投稿関連のメッセージ
+
   posts:
     new:
       title: "新規レビュー投稿"
@@ -170,8 +187,7 @@ ja:
       updated: "レビューを更新しました"
       deleted: "レビューを削除しました"
       cannot_post: "レビューを投稿できませんでした"
-  
-  # Devise関連（サインイン/サインアップ用）
+
   devise:
     shared:
       links:
@@ -181,6 +197,7 @@ ja:
         sign_in_with_provider: "%{provider}でログイン"
         didn_t_receive_confirmation_instructions: "確認メールが届いていませんか？"
         didn_t_receive_unlock_instructions: "アカウントの凍結解除メールが届いていませんか？"
+
     sessions:
       new:
         sign_in: "ログイン"
@@ -188,70 +205,55 @@ ja:
       signed_in: "ログインしました。"
       signed_out: "ログアウトしました。"
       already_signed_out: "既にログアウトしています。"
+
     registrations:
       new:
         sign_up: "新規登録"
       signed_up: "アカウント登録が完了しました。"
-      signed_up_but_unconfirmed: "確認メールを送信しました。メールに記載されたリンクをクリックしてアカウントを有効化してください。"
-      signed_up_but_inactive: "アカウント登録が完了しましたが、アカウントが有効化されるまでログインできません。"
-      signed_up_but_locked: "アカウント登録が完了しましたが、アカウントが凍結されているためログインできません。"
-      update_needs_confirmation: "アカウント情報を更新しました。確認メールを送信しましたので、メールに記載されたリンクをクリックして更新を完了してください。"
+      signed_up_but_unconfirmed: "確認メールを送信しました。メールのリンクをクリックして有効化してください。"
+      signed_up_but_inactive: "アカウントが有効化されるまでログインできません。"
+      signed_up_but_locked: "アカウントが凍結されているためログインできません。"
+      update_needs_confirmation: "確認メールを送信しました。リンクをクリックして更新を完了してください。"
       updated: "アカウント情報を更新しました。"
-      destroyed: "アカウントを削除しました。またのご利用をお待ちしております。"
+      destroyed: "アカウントを削除しました。"
+
     passwords:
       new:
         forgot_password: "パスワードをリセット"
       send_instructions: "パスワードリセット方法を記載したメールを送信しました。"
       updated: "パスワードを変更しました。"
-      updated_not_active: "パスワードを変更しました。"
-      send_paranoid_instructions: "メールアドレスが登録済みの場合、パスワードリセット方法を記載したメールを送信します。"
+
     confirmations:
-      send_instructions: "アカウント確認方法を記載したメールを送信しました。"
+      send_instructions: "確認メールを送信しました。"
       confirmed: "アカウントを確認しました。ログインしてください。"
-      new:
-        resend_confirmation: "確認メールを再送信"
+
     unlocks:
-      send_instructions: "アカウントの凍結解除方法を記載したメールを送信しました。"
+      send_instructions: "凍結解除方法を記載したメールを送信しました。"
       unlocked: "アカウントの凍結を解除しました。ログインしてください。"
-      new:
-        resend_unlock: "凍結解除メールを再送信"
-    mailer:
-      confirmation_instructions:
-        subject: "アカウント確認メール"
-      reset_password_instructions:
-        subject: "パスワードリセット"
-      unlock_instructions:
-        subject: "アカウント凍結解除"
-      email_changed:
-        subject: "メールアドレス変更のお知らせ"
-      password_change:
-        subject: "パスワード変更のお知らせ"
+
     failure:
       not_found_in_database: "メールアドレスまたはパスワードが無効です。"
       invalid: "メールアドレスまたはパスワードが無効です。"
-      unconfirmed: "アカウントが確認されていません。確認メールを再送信してください。"
+      unconfirmed: "アカウントが確認されていません。"
       locked: "アカウントが凍結されています。"
       inactive: "アカウントが有効化されていません。"
-      timeout: "セッションがタイムアウトしました。再度ログインしてください。"
-      unauthenticated: "この操作を行うにはログインが必要です。"
-  
-  # 認証・認可関連
+      timeout: "セッションがタイムアウトしました。"
+      unauthenticated: "この操作にはログインが必要です。"
+
   authentication:
     unauthorized: "この操作を実行する権限がありません。"
     not_authenticated: "ログインが必要です。"
     invalid_credentials: "メールアドレスまたはパスワードが間違っています。"
-    account_locked: "アカウントがロックされています。しばらく経ってから再度お試しください。"
+    account_locked: "アカウントがロックされています。"
     account_inactive: "アカウントが無効です。"
-  
-  # ユーザー関連
+
   users:
     profile: "プロフィール"
     edit_profile: "プロフィール編集"
     change_password: "パスワード変更"
     my_posts: "自分の投稿"
     favorites: "お気に入り"
-  
-  # ボタン・リンク
+
   buttons:
     sign_in: "ログイン"
     sign_up: "新規登録"
@@ -269,8 +271,7 @@ ja:
     clear: "クリア"
     download: "ダウンロード"
     upload: "アップロード"
-  
-  # ナビゲーション
+
   navigation:
     home: "ホーム"
     posts: "レビュー一覧"

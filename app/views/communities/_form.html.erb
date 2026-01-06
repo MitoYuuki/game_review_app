@@ -1,0 +1,9 @@
+<div class="mb-3">
+  <%= f.label :category_id, "カテゴリ" %>
+  <%= f.collection_select :category_id,
+        Category.all,
+        :id,
+        :name,
+        { prompt: "選択してください" },
+        class: "form-select" %>
+</div>
