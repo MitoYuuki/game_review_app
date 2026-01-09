@@ -1,0 +1,45 @@
+<h3><%= @community.name %> の参加申請一覧</h3>
+
+<% pending_members = @pending_memberships.reject { |m| m.user == @community.owner } %>
+
+<% if pending_members.any? %>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ユーザー</th>
+        <th>申請日</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% pending_members.each do |membership| %>
+        <tr>
+          <td><%= membership.user.name %></td>
+          <td><%= membership.created_at.strftime("%Y-%m-%d") %></td>
+          <td>
+            <%= button_to "承認",
+                approve_community_community_membership_path(@community, membership),
+                method: :patch,
+                class: "btn btn-success btn-sm" %>
+
+            <%= button_to "拒否",
+                reject_community_community_membership_path(@community, membership),
+                method: :patch,
+                class: "btn btn-danger btn-sm" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+
+  <p>現在、申請中のユーザーはいません。</p>
+
+<% end %>
+
+<%= link_to "コミュニティに戻る",
+    community_path(@community),
+    class: "btn btn-secondary mt-3" %>

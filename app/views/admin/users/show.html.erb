@@ -7,13 +7,17 @@
   <p><strong>メール：</strong><%= @user.email %></p>
   <p><strong>登録日：</strong><%= @user.created_at.strftime("%Y-%m-%d") %></p>
 
+  <hr>
+
   <%= link_to "退会させる",
       admin_user_path(@user),
       method: :delete,
       data: { confirm: "本当に退会させますか？" },
-      class: "btn btn-danger mt-3" %>
+      class: "btn btn-danger" %>
 
-  <div class="mt-3">
-    <%= link_to "一覧に戻る", admin_users_path %>
-  </div>
+  
+    <%= link_to "一覧に戻る", 
+            admin_users_path,
+            class: "btn btn-secondary ms-2" %>
+  
 </div>

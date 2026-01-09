@@ -19,13 +19,25 @@ class UsersController < ApplicationController
 
   def show
     @topics = @user.topics.order(created_at: :desc)
-    # 自分以外のユーザーなら非公開投稿は除外
+
+    # ▼ 投稿（公開・非公開の制御）
     if current_user == @user
       @posts = @user.posts.order(created_at: :desc)
     else
       @posts = @user.posts.published.order(created_at: :desc)
     end
+
+      # ▼ 参加中コミュニティ取得
+    if current_user == @user
+      # 自分のページ: 承認済み＋承認待ち
+      @joined_communities = Community.joins(:community_memberships)
+                                    .where(community_memberships: { user_id: @user.id })
+    else
+      # 他人のページ: 承認済みのみ
+      @joined_communities = @user.joined_communities
+    end
   end
+
 
   def edit
     @user = User.find(params[:id])

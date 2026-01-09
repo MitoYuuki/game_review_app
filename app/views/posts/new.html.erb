@@ -5,7 +5,7 @@
     <div class="alert alert-danger">
       <h4>投稿できませんでした：</h4>
       <ul>
-        <% @post.errors.full_messages.each do |msg| %>
+        <% @post.errors.map(&:message).uniq.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
       </ul>
@@ -43,6 +43,7 @@
       <%= f.label :rating, "評価（★）" %>
       <div class="post_raty"
        	data-target-rating="post_rating"
+        data-read-only="false"
        	data-raty-star-on="<%= asset_path('raty/star-on.png') %>"
        	data-raty-star-off="<%= asset_path('raty/star-off.png') %>"
        	data-raty-star-half="<%= asset_path('raty/star-half.png') %>">

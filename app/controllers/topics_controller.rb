@@ -3,6 +3,7 @@ class TopicsController < ApplicationController
   before_action :set_community
   before_action :set_topic, only: [:show, :edit, :update, :destroy]
   before_action :require_membership, only: [:new, :create]
+  before_action :reject_guest_user, only: [:new, :create]
 
   # トピック管理権限
   # 投稿者 / コミュニティオーナー / 管理者
@@ -68,6 +69,12 @@ class TopicsController < ApplicationController
   def require_membership
     unless @community.members.exists?(current_user.id)
       redirect_to @community, alert: "まずコミュニティに参加してください"
+    end
+  end
+
+  def reject_guest_user
+    if current_user&.guest?
+      redirect_to community_path(params[:community_id]), alert: "ゲストユーザーはトピックを作成できません。"
     end
   end
 

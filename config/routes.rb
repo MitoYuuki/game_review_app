@@ -85,7 +85,12 @@ Rails.application.routes.draw do
       resources :topic_comments
     end
 
-    resources :community_memberships, only: [:create, :destroy]
+    resources :community_memberships, only: [:create, :update, :destroy, :index]  do
+      member do
+        patch :approve
+        patch :reject
+      end
+    end
   end
 
     resources :categories, only: [:show]

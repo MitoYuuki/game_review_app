@@ -49,16 +49,13 @@
       <%= f.label :rating, "評価（★）" %>
 
       <div class="post_raty"
-          data-target-rating="post_rating"
           data-score="<%= @post.rate %>"
+          data-read-only="true"
           data-raty-star-on="<%= asset_path('raty/star-on.png') %>"
           data-raty-star-off="<%= asset_path('raty/star-off.png') %>"
           data-raty-star-half="<%= asset_path('raty/star-half.png') %>">
       </div>
-
-      <%= f.hidden_field :rate, id: "post_rating" %>
     </div>
-
 
     <!-- ◆ レビュー内容 -->
     <div class="form-group mb-3">
