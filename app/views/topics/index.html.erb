@@ -1,5 +1,12 @@
 <div class="container mt-4">
 
+  <!-- ▼ コミュニティ詳細に戻る -->
+  <div class="mb-3">
+    <%= link_to "← コミュニティ詳細に戻る",
+          community_path(@community),
+          class: "btn btn-outline-secondary" %>
+  </div>
+
   <h2 class="mb-4 text-center">トピック一覧</h2>
 
   <!-- 新規作成ボタン（ログイン中のみ表示） -->
@@ -26,7 +33,7 @@
           </h4>
 
           <!-- 投稿者と日時 -->
-          <small class="text-muted">
+          <small class="text-white">
             作成者：
             <%= topic.user.name %>
             ／

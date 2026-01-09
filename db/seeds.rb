@@ -313,7 +313,8 @@ community1 = Community.create!(
   description: "好きなゲームについて自由に語り合いましょう。",
   owner_id: community1_owner.id,
   category_id: categories["雑談"].id,
-  is_public: true
+  is_public: true,
+  approval_type: [:auto, :manual].sample # ランダムに自動承認 or 承認制
 )
 
 community2 = Community.create!(
@@ -321,7 +322,8 @@ community2 = Community.create!(
   description: "ボス攻略やビルド相談など攻略情報メイン。",
   owner_id: community2_owner.id,
   category_id: categories["攻略情報"].id,
-  is_public: true
+  is_public: true,
+  approval_type: [:auto, :manual].sample
 )
 
 puts "コミュニティ作成完了"
@@ -329,17 +331,21 @@ puts "コミュニティ作成完了"
 # --- メンバー登録（必ず作成者を含める）---
 [ [community1, community1_owner], [community2, community2_owner] ].each do |community, owner|
   # まずオーナーを必ず参加
-  CommunityMembership.find_or_create_by!(
+  CommunityMembership.find_or_create_by!( 
     community_id: community.id,
-    user_id: owner.id
-  )
+     user_id: owner.id
+    ) do |m|
+      m.status = :approved
+    end
+
 
   # 他のメンバーを追加（オーナー除く）
   (users - [owner]).sample(3).each do |user|
-    CommunityMembership.find_or_create_by!(
-      community_id: community.id,
-      user_id: user.id
-    )
+    CommunityMembership.find_or_create_by!(community: community, user: user) do |m|
+      # 自動承認なら approved、承認制なら pending
+      m.status = community.auto? ? "approved" : "pending"
+    end
+
   end
 end
 

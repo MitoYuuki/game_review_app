@@ -5,14 +5,18 @@
     <h2><%= @community.name %></h2>
 
     <p>
-          <strong>カテゴリ：</strong>
-          <%= @community.category&.name || "未設定" %>
-        </p>
+      <strong>カテゴリ：</strong>
+      <%= @community.category&.name || "未設定" %>
+    </p>
 
     <p>
-    
       作成者：
       <%= link_to @community.owner.name, user_path(@community.owner) %>
+    </p>
+
+    <p>
+      <strong>参加方式：</strong>
+      <%= approval_badge(@community) %>
     </p>
 
     <p>
@@ -20,72 +24,119 @@
       （<%= link_to "一覧を見る", members_community_path(@community) %>）
     </p>
 
-    <p><%= simple_format @community.description %></p>
+    <p><%= simple_format(@community.description) %></p>
 
     <% if user_signed_in? %>
-      <% if @community.members.include?(current_user) %>
 
-        <!-- 参加者だけトピック作成可能 -->
-          <%= link_to "トピックを作成する",
-            new_community_topic_path(@community),
-            class: "btn btn-primary" %>
+      <!-- ▼ 参加状態表示 -->
+      <div class="mb-2">
+        <% if current_user == @community.owner %>
+          <span class="badge bg-success">
+            参加中（オーナー）
+          </span>
 
-        <div class="d-flex justify-content-end gap-2">
+        <% elsif @membership&.approved? %>
+          <span class="badge bg-success">
+            参加中
+          </span>
 
-          <!-- 参加中の場合 -->
-         <%= button_to "退会する",
-            community_community_membership_path(@community, current_user),
-            method: :delete,
-            class: "btn btn-outline-danger" %>
+        <% elsif @membership&.pending? %>
+          <span class="badge bg-secondary">
+            承認待ち
+          </span>
+
+        <% elsif @membership&.rejected? %>
+          <span class="badge bg-danger">
+            申請拒否
+          </span>
+        <% end %>
+      </div>
+
+      <!-- ▼ 操作ボタン -->
+      <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-2">
+
+        <!-- 左側：管理・作成系 -->
+        <div class="d-flex gap-2 flex-wrap">
+
+          <% if current_user == @community.owner %>
+            <%= link_to "編集",
+                  edit_community_path(@community),
+                  class: "btn btn-outline-primary" %>
+
+            <% if @community.manual? %>
+              <%= link_to "申請一覧を見る",
+                    community_community_memberships_path(@community),
+                    class: "btn btn-warning" %>
+            <% end %>
+
+            <%= link_to "トピックを作成",
+                  new_community_topic_path(@community),
+                  class: "btn btn-primary" %>
+
+          <% elsif @membership&.approved? %>
+            <%= link_to "トピックを作成",
+                  new_community_topic_path(@community),
+                  class: "btn btn-primary" %>
+          <% end %>
 
         </div>
 
-      <% else %>
+        <!-- 右側：参加・退会・戻る -->
+        <div class="d-flex gap-2 flex-wrap">
 
-        <!-- 未参加の場合 -->
-        <%= button_to "参加する",
-            community_community_memberships_path(@community),
-            method: :post,
-            class: "btn btn-success" %>
+          <% unless current_user == @community.owner %>
+            <% if @membership&.approved? && !current_user.guest? %>
+              <%= button_to "退会する",
+                    community_community_membership_path(@community, @membership),
+                    method: :delete,
+                    class: "btn btn-outline-danger" %>
 
-      <% end %>
+            <% elsif @membership.nil? %>
+              <%= button_to "参加申請する",
+                    community_community_memberships_path(@community),
+                    method: :post,
+                    class: "btn btn-success" %>
+
+            <% elsif @membership&.rejected? %>
+              <%= button_to "再申請する",
+                    community_community_memberships_path(@community),
+                    method: :post,
+                    class: "btn btn-warning" %>
+            <% end %>
+          <% end %>
+
+          <%= link_to "コミュニティ一覧に戻る",
+                communities_path,
+                class: "btn btn-outline-secondary" %>
+
+        </div>
+
+      </div>
+
     <% end %>
-
-    <% if user_signed_in? && current_user == @community.owner %>
-      <%= link_to "編集",
-              edit_community_path(@community),
-              class: "btn btn-outline-primary" %>
-    <% end %>
-
   </div>
 
   <!-- トピック一覧 -->
   <h4>トピック一覧</h4>
 
   <% if @community.topics.any? %>
-
     <% @community.topics.order(created_at: :desc).each do |topic| %>
       <div class="card p-3 mb-2">
-
         <h5 class="mb-1">
           <%= link_to topic.title,
-              community_topic_path(@community, topic),
-              class: "text-info fw-bold" %>
+                community_topic_path(@community, topic),
+                class: "text-info fw-bold" %>
         </h5>
 
         <small class="text-white">
           作成者：
           <%= link_to topic.user.name, user_path(topic.user) %> /
-          <%= topic.created_at.strftime("%Y-%m-%d ") %>
+          <%= topic.created_at.strftime("%Y-%m-%d") %>
         </small>
-
       </div>
     <% end %>
-
   <% else %>
-
     <p>まだトピックはありません。</p>
-
   <% end %>
 
 </div>

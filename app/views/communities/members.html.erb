@@ -1,5 +1,12 @@
 <div class="container mt-4">
 
+  <!-- ▼ 戻るボタン -->
+  <div class="mb-3">
+    <%= link_to "← コミュニティ詳細に戻る",
+          community_path(@community),
+          class: "btn btn-outline-secondary" %>
+  </div>
+
   <h3 class="text-center mb-4">
     <%= @community.name %> の参加メンバー
   </h3>
@@ -11,34 +18,45 @@
       <% @members.each do |user| %>
         <div class="col-md-4 mb-3">
 
-          <div class="card p-3 text-center">
+          <div class="card p-0 text-center"> <!-- p-0でカードの内側パディングを削除 -->
 
-            <% if user == @community.owner %>
-              <span class="badge bg-warning text-dark mb-1">
-                👑 オーナー
+            <!-- バッジ（幅いっぱい） -->
+            <div class="w-100 py-2 <%= user == @community.owner ? 'bg-warning' : 'bg-primary' %>">
+              <span class="text-white fw-bold">
+                <% if user == @community.owner %>
+                  👑 オーナー
+                <% else %>
+                  メンバー
+                <% end %>
               </span>
-            <% else %>
-              <span class="badge bg-primary mb-1">
-                メンバー
-              </span>
-            <% end %>
+            </div>
 
-            <% if user.profile_image.attached? %>
-              <%= image_tag user.profile_image,
-                    size: "80x80",
-                    class: "rounded-circle mb-2" %>
-            <% else %>
-              <%= image_tag "default-image.png",
-                    size: "80x80",
-                    class: "rounded-circle mb-2" %>
-            <% end %>
-
-            
-            <h5 class="fw-bold position-absolute top-50 start-50 translate-middle">
-              <%= link_to user.name,
-                          user_path(user),
-                          class: "text-decoration-none fw-bold" %>
-            </h5>
+            <!-- 画像と名前を横並び -->
+            <div class="d-flex align-items-center p-3" style="min-height: 120px;">
+              
+              <!-- 画像（左端） -->
+              <div class="me-5">
+                <% if user.profile_image.attached? %>
+                  <%= image_tag user.profile_image,
+                        size: "80x80",
+                        class: "rounded-circle" %>
+                <% else %>
+                  <%= image_tag "default-image.png",
+                        size: "80x80",
+                        class: "rounded-circle" %>
+                <% end %>
+              </div>
+              
+              <!-- 名前（右側） -->
+              <div class="flex-grow-1 text-start">
+                <h5 class="fw-bold mb-0">
+                  <%= link_to user.name,
+                        user_path(user),
+                        class: "text-decoration-none fw-bold" %>
+                </h5>
+              </div>
+              
+            </div>
 
           </div>
 

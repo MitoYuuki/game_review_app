@@ -36,21 +36,29 @@
             <li class="nav-item">
               <%= link_to "レビュー一覧", posts_path, class: "nav-link" %>
             </li>
+            
             <% if !current_user.guest? %>
+              <!-- ゲスト用ナビ -->
               <li class="nav-item">
                 <%= link_to "新規投稿", new_post_path, class: "nav-link" %>
               </li>
             <% else %>
               <li class="nav-item">
-                <span class="nav-link text-muted">ゲストは投稿不可</span>
+                <span class="nav-link text-white">ゲストは投稿不可</span>
               </li>
             <% end %>
             <li class="nav-item">
               <%= link_to "コミュニティ一覧", communities_path, class: "nav-link" %>
             </li>
-            <li class="nav-item">
-              <%= link_to "新規コミュニティ作成", new_community_path, class: "nav-link" %>
-            </li>
+            <% if !current_user.guest? %>
+              <li class="nav-item">
+                <%= link_to "新規コミュニティ作成", new_community_path, class: "nav-link" %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <span class="nav-link text-white">ゲストは作成不可</span>
+              </li>
+            <% end %>
             <li class="nav-item">
               <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "nav-link" %>
             </li>

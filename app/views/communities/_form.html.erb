@@ -6,4 +6,33 @@
         :name,
         { prompt: "選択してください" },
         class: "form-select" %>
+
+  <%= f.label :approval_type, "参加方法" %><br>
+
+  <% if @community.persisted? %>
+    <!-- 編集時 -->
+    <% if current_user == @community.owner %>
+      <%= f.radio_button :approval_type, :auto %>
+      <%= f.label :approval_type_auto, "自動承認（申請と同時に参加）" %><br>
+
+      <%= f.radio_button :approval_type, :manual %>
+      <%= f.label :approval_type_manual, "承認制（オーナーが承認）" %>
+    <% else %>
+      <%= f.radio_button :approval_type, :auto, disabled: true %>
+      <%= f.label :approval_type_auto, "自動承認（申請と同時に参加）" %><br>
+
+      <%= f.radio_button :approval_type, :manual, disabled: true %>
+      <%= f.label :approval_type_manual, "承認制（オーナーが承認）" %><br>
+
+      <small class="text-muted">参加方法を変更できるのはオーナーのみです</small>
+      <%= f.hidden_field :approval_type %>
+    <% end %>
+  <% else %>
+    <!-- 新規作成時は誰でも選べる -->
+    <%= f.radio_button :approval_type, :auto %>
+    <%= f.label :approval_type_auto, "自動承認（申請と同時に参加）" %><br>
+
+    <%= f.radio_button :approval_type, :manual %>
+    <%= f.label :approval_type_manual, "承認制（オーナーが承認）" %>
+  <% end %>
 </div>
