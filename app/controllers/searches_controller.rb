@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SearchesController < ApplicationController
   before_action :authenticate_user!
 
@@ -6,21 +8,21 @@ class SearchesController < ApplicationController
     @model = params[:model]
     search_method = params[:method]
 
-   @results =
-      case @model
-     when "user"
+    @results =
+       case @model
+      when "user"
         User.where(
           build_query("name", search_method),
           build_keyword(search_method)
         )
 
-      when "post"
-        Post.where(
-          build_query("title", search_method),
-          build_keyword(search_method)
-        )
+       when "post"
+         Post.where(
+           build_query("title", search_method),
+           build_keyword(search_method)
+         )
 
-     when "community"
+      when "community"
         Community.where(
           build_query("name", search_method),
           build_keyword(search_method)
@@ -28,7 +30,7 @@ class SearchesController < ApplicationController
 
       else
         []
-      end
+       end
   end
 
   private

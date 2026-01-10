@@ -1,0 +1,7 @@
+<div id="follow-area-<%= user.id %>">
+  <p class="mb-1 text-white">
+    フォロワー：<strong><%= user.followers.count %></strong>
+  </p>
+
+  <%= render "users/follow_button_core", user: user %>
+</div>

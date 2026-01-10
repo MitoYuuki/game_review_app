@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/controllers/admin/users_controller.rb
 class Admin::UsersController < Admin::BaseController
   before_action :authenticate_admin!

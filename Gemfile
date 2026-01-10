@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -50,6 +52,9 @@ group :development do
   gem "rubocop-packaging", require: false
   gem "rubocop-rspec"
   gem "rubocop-md"
+  gem "rails_best_practices"
+  gem "brakeman"
+  gem "erb_lint"
 end
 
 group :test do

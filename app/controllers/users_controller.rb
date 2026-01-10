@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :following, :followers]
   before_action :authenticate_user!, except: [:new, :create, :guest_sign_in]
@@ -27,7 +29,7 @@ class UsersController < ApplicationController
       @posts = @user.posts.published.order(created_at: :desc)
     end
 
-      # ▼ 参加中コミュニティ取得
+    # ▼ 参加中コミュニティ取得
     if current_user == @user
       # 自分のページ: 承認済み＋承認待ち
       @joined_communities = Community.joins(:community_memberships)

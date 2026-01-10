@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommunityMembershipsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_community
@@ -32,14 +34,7 @@ class CommunityMembershipsController < ApplicationController
       return
     end
 
-    if @community.auto?
-      membership.status = :approved
-      notice_message = "参加が完了しました！（自動承認）"
-    else
-      membership.status = :pending
-      notice_message = "参加申請を送信しました（承認待ち）"
-    end
-
+    notice_message = membership.apply_for(@community)
     membership.save!
     redirect_to @community, notice: notice_message
   end
@@ -60,6 +55,13 @@ class CommunityMembershipsController < ApplicationController
 
   # 退会（参加済ユーザーのみ）
   def destroy
+    # オーナーは退会不可
+    if current_user == @community.owner
+      redirect_to @community,
+                  alert: "オーナーはコミュニティを退会できません"
+      return
+    end
+
     membership =
       @community.community_memberships.find_by(user: current_user)
 
@@ -68,26 +70,25 @@ class CommunityMembershipsController < ApplicationController
   end
 
   private
-
-  def set_community
-    @community = Community.find(params[:community_id])
-  end
-
-  def set_membership
-    @membership = @community.community_memberships.find(params[:id])
-  end
-
-  def reject_guest_user
-    if current_user&.guest?
-      redirect_to @community,
-                  alert: "ゲストユーザーは参加できません"
+    def set_community
+      @community = Community.find(params[:community_id])
     end
-  end
 
-  # コミュニティ作成者のみ許可
-  def ensure_owner!
-    return if @community.owner == current_user
+    def set_membership
+      @membership = @community.community_memberships.find(params[:id])
+    end
 
-    redirect_to root_path, alert: "権限がありません"
-  end
+    def reject_guest_user
+      if current_user&.guest?
+        redirect_to @community,
+                    alert: "ゲストユーザーは参加できません"
+      end
+    end
+
+    # コミュニティ作成者のみ許可
+    def ensure_owner!
+      return if @community.owner == current_user
+
+      redirect_to root_path, alert: "権限がありません"
+    end
 end

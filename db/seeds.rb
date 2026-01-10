@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # db/seeds.rb を以下のように一時的に変更
 puts "=== Seedデータの作成を開始します (環境: #{Rails.env}) ==="
 
@@ -226,7 +228,7 @@ PostTag.destroy_all
 demo_posts.each_with_index do |post_data, index|
   # 投稿グループを取得（ジャンル名で指定）
   group = groups[post_data[:group_name]]
-  
+
   post = Post.create!(
     user: users.sample,
     group: group,
@@ -241,19 +243,19 @@ demo_posts.each_with_index do |post_data, index|
     created_at: post_data[:created_at],
     updated_at: post_data[:created_at] + rand(0..240).minutes
   )
-  
+
   # 指定されたタグを付与
   if post_data[:tags]
     tag_objects = tags.select { |tag| post_data[:tags].include?(tag.name) }
     post.tags << tag_objects if tag_objects.any?
   end
-  
-  puts "投稿作成 #{index+1}/10: #{post.title}"
+
+  puts "投稿作成 #{index + 1}/10: #{post.title}"
   puts "  → ジャンル: #{post.group.name}"
   puts "  → ユーザー: #{post.user.name}"
   puts "  → 投稿日時: #{post.created_at.strftime('%Y/%m/%d %H:%M')}"
   puts "  → タグ: #{post.tags.pluck(:name).join(', ')}" if post.tags.any?
-  
+
   # コメントをランダムに追加（0-8件）
   comment_count = rand(0..8)
   if comment_count > 0
@@ -331,10 +333,10 @@ puts "コミュニティ作成完了"
 # --- メンバー登録（必ず作成者を含める）---
 [ [community1, community1_owner], [community2, community2_owner] ].each do |community, owner|
   # まずオーナーを必ず参加
-  CommunityMembership.find_or_create_by!( 
+  CommunityMembership.find_or_create_by!(
     community_id: community.id,
      user_id: owner.id
-    ) do |m|
+  ) do |m|
       m.status = :approved
     end
 
@@ -345,7 +347,6 @@ puts "コミュニティ作成完了"
       # 自動承認なら approved、承認制なら pending
       m.status = community.auto? ? "approved" : "pending"
     end
-
   end
 end
 

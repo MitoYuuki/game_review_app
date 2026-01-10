@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :check_guest_user, only: [:edit, :update, :destroy, :edit_account, :update_account]
 
