@@ -61,29 +61,6 @@ body.homes.top .star {
   to   { opacity: 1;   transform: scale(1.6); }
 }
 
-/* 流れ星 */
-.shooting-star {
-  position: absolute;
-  width: 2px;
-  background: linear-gradient(45deg, white, rgba(255,255,255,0));
-  opacity: 0;
-  border-radius: 50%;
-  transform: rotate(20deg); /* 角度を浅くして右下に流れる感じ */
-  animation: shoot linear forwards;
-}
-
-/* 右上 → 右下へ斜めに移動 */
-@keyframes shoot {
-  0% {
-    opacity: 1;
-    transform: translateX(0) translateY(0) rotate(20deg);
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(0px) translateY(180px) rotate(20deg);
-  }
-}
-
 /* 中身は前面に */
 .container {
   position: relative;

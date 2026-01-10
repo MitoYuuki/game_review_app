@@ -3,7 +3,7 @@
   <!-- サイトタイトル -->
   <div class="text-center mb-5">
     <h1 class="fw-bold">GameReview Hub</h1>
-    <p class="text-muted">ゲーム好きのためのレビュー・共有コミュニティ</p>
+    <p class="text-white">ゲーム好きのためのレビュー・共有コミュニティ</p>
   </div>
 
   <!-- メイン画像 -->
@@ -13,19 +13,23 @@
       alt: "トップゲーム画像" %>
   </div>
 
-  <!-- 3カラム紹介 -->
+  <!-- 4カラム紹介 -->
   <div class="row mt-5">
-    <div class="col-md-4 col-12 text-center mb-4 mb-md-0">
+    <div class="col-md-3 col-6 text-center mb-4 mb-md-0">
       <h4>🎮 レビュー投稿</h4>
       <p>あなたがプレイしたゲームの感想や評価を投稿できます。</p>
     </div>
-    <div class="col-md-4 col-12 text-center mb-4 mb-md-0">
+    <div class="col-md-3 col-6 text-center mb-4 mb-md-0">
       <h4>🔍 タグ・ジャンル検索</h4>
       <p>気になるゲームをタグ/ジャンルから簡単検索。</p>
     </div>
-    <div class="col-md-4 col-12 text-center">
+    <div class="col-md-3 col-6 text-center mb-4 mb-md-0">
       <h4>❤️ いいね機能</h4>
       <p>お気に入りのレビューを保存できます。</p>
+    </div>
+    <div class="col-md-3 col-6 text-center mb-4 mb-md-0">
+      <h4>🤝 コミュニティ</h4>
+      <p>共通のゲームが好きな仲間と交流したり、情報交換ができます。</p>
     </div>
   </div>
 
@@ -45,42 +49,50 @@
 </div>
 
 <script>
+// ページがトップページ（bodyに 'homes' と 'top' クラスがある場合）だけ実行
 if (document.body.classList.contains('homes') && document.body.classList.contains('top')) {
 
-  // ★ 星
-  const starCount = 100;
+  // =========================
+  // ★ 星（背景の点のような星をランダムに配置）
+  // =========================
+  const starCount = 200; // 星の数
+  let stars = [];
+
+  // 星の色のバリエーション（リアルな星っぽく）
+  const starColors = ['#ffffff', '#fff9c4', '#cce0ff', '#ffd6d6'];
+
   for (let i = 0; i < starCount; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    star.style.top = Math.random() * 100 + 'vh';
+    const star = document.createElement('div'); // 星用の div を作成
+    star.className = 'star';                     // CSSクラス 'star' を付与
+
+    // 星の位置をランダムに決定（画面全体）
+    star.style.top  = Math.random() * 100 + 'vh';
     star.style.left = Math.random() * 100 + 'vw';
-    star.style.width = (Math.random() * 2 + 1) + 'px';
-    star.style.height = star.style.width;
+
+    // 星のサイズをランダムに設定
+    const size = Math.random() * 2 + 1;
+    star.style.width  = size + 'px';
+    star.style.height = size + 'px';
+
+    // 星の色をランダムに選択
+    star.style.backgroundColor = starColors[Math.floor(Math.random() * starColors.length)];
+
+    // 星の透明度をランダムにして奥行き感
+    star.style.opacity = (Math.random() * 0.5 + 0.5).toFixed(2); // 0.5~1
+
+    // 星の点滅アニメーションの速さをランダムに設定
     star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+
+    // body に星を追加
     document.body.appendChild(star);
+    stars.push(star);
   }
 
-  // ★ 流れ星
-  setInterval(() => {
-    for (let i = 0; i < 5; i++) {
-      const shootingStar = document.createElement('div');
-      shootingStar.className = 'shooting-star';
-
-      const side = Math.random() < 0.5 ? 'left' : 'right';
-      if (side === 'left') {
-        shootingStar.style.top  = Math.random() * 30 + 'vh';
-        shootingStar.style.left = Math.random() * 20 + 'vw';
-      } else {
-        shootingStar.style.top  = Math.random() * 30 + 'vh';
-        shootingStar.style.left = 80 + Math.random() * 20 + 'vw';
-      }
-
-      shootingStar.style.height = (Math.random() * 60 + 40) + 'px';
-      shootingStar.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
-      document.body.appendChild(shootingStar);
-
-      setTimeout(() => shootingStar.remove(), 2500);
-    }
-  }, 1200);
+  // ページ遷移前に星を削除して DOM を軽量化
+  window.addEventListener('beforeunload', function() {
+    stars.forEach(star => {
+      if (star.parentNode) star.remove();
+    });
+  });
 }
 </script>
