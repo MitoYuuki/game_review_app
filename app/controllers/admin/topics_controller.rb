@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::TopicsController < ApplicationController
   before_action :authenticate_admin!
   before_action :set_community
@@ -21,12 +23,11 @@ class Admin::TopicsController < ApplicationController
   end
 
   private
+    def set_community
+      @community = Community.find(params[:community_id])
+    end
 
-  def set_community
-    @community = Community.find(params[:community_id])
-  end
-
-  def set_topic
-    @topic = @community.topics.find(params[:id])
-  end
+    def set_topic
+      @topic = @community.topics.find(params[:id])
+    end
 end

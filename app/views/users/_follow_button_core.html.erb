@@ -5,10 +5,9 @@
 <% if user_signed_in? && !current_user.guest? %>
 
   <% if current_user.following?(user) %>
+    <% relationship = current_user.active_relationships.find_by(followed_id: user.id) %>
     <%= button_to "フォロー中",
-          relationship_path(
-            current_user.active_relationships.find_by(followed_id: user.id)
-          ),
+          relationship_path(relationship),
           method: :delete,
           remote: true,
           data: { turbo: false },

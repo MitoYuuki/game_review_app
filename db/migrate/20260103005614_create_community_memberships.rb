@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCommunityMemberships < ActiveRecord::Migration[6.1]
   def change
     create_table :community_memberships do |t|
@@ -11,4 +13,3 @@ class CreateCommunityMemberships < ActiveRecord::Migration[6.1]
     add_index :community_memberships, [:user_id, :community_id], unique: true
   end
 end
-

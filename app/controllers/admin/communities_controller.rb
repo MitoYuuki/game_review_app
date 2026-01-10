@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::CommunitiesController < ApplicationController
   before_action :authenticate_admin!
 

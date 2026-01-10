@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
-  #レビュー関係
+  # レビュー関係
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_one_attached :profile_image
@@ -12,7 +14,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  #コミュニティ関係
+  # コミュニティ関係
   has_many :owned_communities, class_name: "Community", foreign_key: "owner_id"
 
   has_many :community_memberships, dependent: :destroy
@@ -30,7 +32,7 @@ class User < ApplicationRecord
           through: :approved_community_memberships,
           source: :community
 
-  #共通
+  # 共通
   # 自分がフォローしているユーザー
   has_many :active_relationships, class_name: "Relationship",
                                   foreign_key: "follower_id",
@@ -45,17 +47,23 @@ class User < ApplicationRecord
 
   # フォローする
   def follow(other_user)
-    following << other_user unless self == other_user
+    return if self == other_user
+    return if following?(other_user)
+    
+    Relationship.create!(follower_id: self.id, followed_id: other_user.id)
+    reload
   end
 
   # フォロー解除
   def unfollow(other_user)
-    following.delete(other_user)
+    relationship = active_relationships.find_by(followed_id: other_user.id)
+    relationship&.destroy!
+    reload
   end
 
   # フォローしているか？
   def following?(other_user)
-    following.include?(other_user)
+    active_relationships.exists?(followed_id: other_user.id)
   end
 
   def get_profile_image
@@ -78,5 +86,4 @@ class User < ApplicationRecord
   end
 
   private
-
 end

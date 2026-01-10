@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCommunities < ActiveRecord::Migration[6.1]
   def change
     create_table :communities do |t|
@@ -12,4 +14,3 @@ class CreateCommunities < ActiveRecord::Migration[6.1]
     add_index :communities, :owner_id
   end
 end
-
