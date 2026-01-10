@@ -2,7 +2,17 @@
 
   <h2 class="fw-bold mb-3">コミュニティを編集する</h2>
 
-  <p class="text-muted">
+  <% if @community.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% @community.errors.each do |attr, msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p class="text-white">
     変更後は「更新する」ボタンを押してください。
   </p>
 

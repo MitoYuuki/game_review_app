@@ -58,7 +58,7 @@ class UsersController < ApplicationController
       redirect_to @user, notice: "プロフィールを更新しました"
     else
       # エラーメッセージを表示
-      flash.now[:alert] = @user.errors.full_messages.join(", ")
+      flash.now[:alert] = @user.errors.map(&:message).uniq.join(", ")
       render :edit
     end
   end

@@ -5,7 +5,7 @@
     <div class="alert alert-danger">
       <h4>更新できませんでした：</h4>
       <ul>
-        <% @post.errors.full_messages.each do |msg| %>
+        <% @post.errors.map(&:message).uniq.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
       </ul>
