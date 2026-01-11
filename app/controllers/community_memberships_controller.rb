@@ -34,9 +34,16 @@ class CommunityMembershipsController < ApplicationController
       return
     end
 
-    notice_message = membership.apply_for(@community)
-    membership.save!
-    redirect_to @community, notice: notice_message
+    membership.status =
+      @community.auto? ? :approved : :pending
+
+    if membership.save
+      notice =
+        @community.auto? ? "コミュニティに参加しました" : "参加申請を送信しました"
+      redirect_to @community, notice: notice
+    else
+      redirect_to @community, alert: "参加処理に失敗しました"
+    end
   end
 
   # 承認
