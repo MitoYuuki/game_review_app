@@ -1,6 +1,15 @@
 <h2>トピック編集</h2>
 
-<%= render "devise/shared/error_messages", resource: @topic %>
+<% if @topic.errors.any? %>
+  <div class="alert alert-danger">
+    <strong>トピックの更新に失敗しました。</strong>
+    <ul class="mb-0">
+      <% @topic.errors.full_messages.each do |msg| %>
+        <li><%= msg.gsub(/\A.+ /, "") %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
 
 <%= form_with model: [@community, @topic], local: true do |f| %>
   <div class="mb-3">
