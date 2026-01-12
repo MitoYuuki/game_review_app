@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddPublishedToPosts < ActiveRecord::Migration[6.1]
   def change
     add_column :posts, :published, :boolean, default: true, null: false

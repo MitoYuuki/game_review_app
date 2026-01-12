@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CommunitiesHelper
   def approval_badge(community)
     if community.auto?
@@ -7,4 +9,3 @@ module CommunitiesHelper
     end
   end
 end
-
