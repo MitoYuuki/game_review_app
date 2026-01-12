@@ -1,21 +1,83 @@
 <div class="container mt-4">
-  <h2>投稿詳細（管理者）</h2>
 
-  <p><strong>ID:</strong> <%= @post.id %></p>
-  <p><strong>ユーザー:</strong> <%= @post.user.name %></p>
-  <p><strong>タイトル:</strong> <%= @post.title %></p>
-  <p><strong>本文:</strong></p>
-  <p><%= simple_format(@post.body) %></p>
+  <!-- ▼ 上部：戻る -->
+  <div class="mb-3">
+    <%= link_to "← レビュー一覧に戻る",
+          admin_posts_path,
+          class: "btn btn-outline-secondary" %>
+  </div>
 
-  <hr>
+  <!-- ▼ レビュー詳細 -->
+  <div class="card mb-3">
+    <div class="card-header fw-bold">
+      レビュー詳細（管理者）
+    </div>
 
-  <%= link_to "削除する",
-            admin_post_path(@post),
-            method: :delete,
-            data: { confirm: "本当に削除しますか？" },
-            class: "btn btn-danger" %>
+    <div class="card-body">
+      <h3 class="mb-2"><%= @post.title %></h3>
 
-  <%= link_to "一覧に戻る",
-            admin_posts_path,
-            class: "btn btn-secondary ms-2" %>
+      <p class="text-white small">
+        投稿者：<%= @post.user.name %><br>
+        投稿日：<%= @post.created_at.strftime("%Y-%m-%d %H:%M") %>
+      </p>
+
+      <p class="text-break">
+        <%= simple_format(@post.body) %>
+      </p>
+
+      <div class="d-flex justify-content-end">
+        <%= link_to "レビュー削除",
+              admin_post_path(@post),
+              method: :delete,
+              data: { confirm: "本当に削除しますか？" },
+              class: "btn btn-danger" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ コメント一覧 -->
+  <div class="card">
+    <div class="card-header fw-bold">
+      コメント一覧
+    </div>
+
+    <div class="card-body">
+
+      <% if @comments.present? %>
+
+        <% @comments.each do |comment| %>
+          <div class="border rounded p-2 mb-2">
+
+            <div class="d-flex justify-content-between flex-wrap">
+              <strong><%= comment.user.name %></strong>
+
+              <span class="text-white small">
+                <%= comment.created_at.strftime("%Y-%m-%d %H:%M") %>
+              </span>
+            </div>
+
+            <p class="mt-1 text-break">
+              <%= simple_format(comment.body) %>
+            </p>
+
+            <div class="text-end">
+              <%= link_to "削除",
+                    admin_post_comment_path(@post, comment),
+                    method: :delete,
+                    data: { confirm: "このコメントを削除しますか？" },
+                    class: "btn btn-sm btn-outline-danger" %>
+            </div>
+
+          </div>
+        <% end %>
+
+      <% else %>
+        <div class="alert alert-info">
+          コメントはまだありません
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+
 </div>
