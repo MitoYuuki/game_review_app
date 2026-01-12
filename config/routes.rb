@@ -60,7 +60,9 @@ Rails.application.routes.draw do
     root to: "users#index"
     resources :users, only: [:index, :show, :destroy]
 
-    resources :posts, only: [:index, :show, :destroy]
+    resources :posts, only: [:index, :show, :destroy] do
+      resources :comments, only: [:destroy]
+    end
 
     resources :communities, only: [:index, :show, :destroy] do
       resources :topics, only: [:index, :show, :destroy] do
