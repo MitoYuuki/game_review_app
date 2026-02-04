@@ -45,6 +45,13 @@ class User < ApplicationRecord
                                    dependent: :destroy
   has_many :followers, through: :passive_relationships, source: :follower
 
+  # 自分宛の通知
+  has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
+
+  # 自分が行動したことによる通知（フォローした、コメントしたなど）
+  has_many :sent_notifications, class_name: "Notification", foreign_key: :actor_id, dependent: :destroy
+
+
   # フォローする
   def follow(other_user)
     return if self == other_user

@@ -265,3 +265,29 @@ body.homes.top .star {
 .profile-card h4 {
   color: #aad4ff;
 }
+
+.notification-item {
+  padding: 12px 15px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  list-style: none;
+}
+
+/*通知機能*/
+.notification-unread {
+  background: #fff8d1; /* 薄い黄色で読みやすい */
+  border-left: 5px solid #f5c518; /* 黄系の強調線 */
+  font-weight: bold;
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 6px;
+  color: #333; /* 文字色を濃くして可読性UP！ */
+}
+
+.notification-read {
+  background: #ffffff;
+  color: #555;
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 6px;
+}

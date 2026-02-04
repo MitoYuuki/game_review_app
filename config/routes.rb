@@ -97,5 +97,14 @@ Rails.application.routes.draw do
     end
   end
 
+  #カテゴリ
   resources :categories, only: [:show]
+
+  #通知機能
+  resources :notifications, only: [:index, :show] do
+    collection do
+      patch :mark_all_as_read
+      delete :delete_read
+    end
+  end
 end
