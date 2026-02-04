@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_01_08_015258) do
+ActiveRecord::Schema.define(version: 2026_02_04_022339) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -109,6 +109,20 @@ ActiveRecord::Schema.define(version: 2026_01_08_015258) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "notifications", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "recipient_id", null: false
+    t.bigint "actor_id", null: false
+    t.string "notifiable_type", null: false
+    t.bigint "notifiable_id", null: false
+    t.integer "action", null: false
+    t.boolean "read", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["actor_id"], name: "index_notifications_on_actor_id"
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
+    t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
+  end
+
   create_table "post_tags", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "post_id", null: false
     t.bigint "tag_id", null: false
@@ -197,6 +211,8 @@ ActiveRecord::Schema.define(version: 2026_01_08_015258) do
   add_foreign_key "community_memberships", "users"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
+  add_foreign_key "notifications", "users", column: "actor_id"
+  add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "post_tags", "posts"
   add_foreign_key "post_tags", "tags"
   add_foreign_key "posts", "groups"

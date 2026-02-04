@@ -1,0 +1,47 @@
+<h2>通知一覧</h2>
+
+<div class="mb-3 d-flex gap-2">
+  <%= link_to "すべて既読にする",
+              mark_all_as_read_notifications_path,
+              method: :patch,
+              class: "btn btn-primary" %>
+
+  <%= link_to "既読通知を削除",
+              delete_read_notifications_path,
+              method: :delete,
+              data: { confirm: "本当に既読通知を削除しますか？" },
+              class: "btn btn-danger" %>
+</div>
+
+<ul class="p-0">
+  <% @notifications.each do |n| %>
+    <li class="<%= n.read ? 'notification-read' : 'notification-unread' %>">
+      
+      <%= n.actor.name %>
+
+      <% case n.action %>
+      <% when "comment" %>
+        があなたのレビュー
+        「<%= n.notifiable.post.title %>」
+        にコメントしました
+
+      <% when "like" %>
+        があなたのレビュー
+        「<%= n.notifiable.post.title %>」
+        にいいねしました
+
+      <% when "follow" %>
+        があなたをフォローしました
+
+      <% when "community_request" %>
+        がコミュニティ「<%= n.notifiable.community.name %>」に参加申請しました
+
+      <% when "community_approved" %>
+        コミュニティ「<%= n.notifiable.community.name %>」への参加が承認されました
+      <% end %>
+
+      <%= link_to "詳細", notification_path(n), class: "ms-2" %>
+
+    </li>
+  <% end %>
+</ul>

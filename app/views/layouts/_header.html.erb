@@ -59,6 +59,19 @@
                 <span class="nav-link text-white">ゲストは作成不可</span>
               </li>
             <% end %>
+
+            <!-- ⭐ 通知バッジ -->
+            <li class="nav-item">
+              <%= link_to notifications_path, class: "nav-link position-relative" do %>
+                通知
+                <% unread_count = current_user.notifications.where(read: false).count %>
+                <% if unread_count > 0 %>
+                  <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                    <%= unread_count %>
+                  </span>
+                <% end %>
+              <% end %>
+            </li>
             <li class="nav-item">
               <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "nav-link" %>
             </li>
