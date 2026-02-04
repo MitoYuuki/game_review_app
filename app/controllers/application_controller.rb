@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   # Deviseコントローラが呼ばれた場合、追加のパラメータを許可
   before_action :configure_permitted_parameters, if: :devise_controller?

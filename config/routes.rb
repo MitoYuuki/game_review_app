@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   namespace :admin do
-    get 'topics/index'
-    get 'topics/show'
-    get 'topics/destroy'
+    get "topics/index"
+    get "topics/show"
+    get "topics/destroy"
   end
   namespace :admin do
-    get 'communities/index'
-    get 'communities/show'
-    get 'communities/destroy'
+    get "communities/index"
+    get "communities/show"
+    get "communities/destroy"
   end
-  #レビュー関係
+  # レビュー関係
   # トップページ
   root to: "homes#top"
 
@@ -77,7 +79,7 @@ Rails.application.routes.draw do
   # フォローフォロワー
   resources :relationships, only: [:create, :destroy]
 
-  #コミュニティ関係
+  # コミュニティ関係
   resources :communities do
     member do
       get :members   # ← コミュニティのメンバー一覧
@@ -106,4 +108,3 @@ Rails.application.routes.draw do
     end
   end
 end
-

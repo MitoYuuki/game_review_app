@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TopicsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_community
@@ -52,45 +54,42 @@ class TopicsController < ApplicationController
 
 
   private
-
-  def set_community
-    @community = Community.find(params[:community_id])
-  end
-
-  def set_topic
-    @topic = @community.topics.find(params[:id])
-  end
-
-  def topic_params
-    params.require(:topic).permit(:title, :body)
-  end
-
-  # 参加者のみトピック作成可
-  def require_membership
-    unless @community.members.exists?(current_user.id)
-      redirect_to @community, alert: "まずコミュニティに参加してください"
+    def set_community
+      @community = Community.find(params[:community_id])
     end
-  end
 
-  def reject_guest_user
-    if current_user&.guest?
-      redirect_to community_path(params[:community_id]), alert: "ゲストユーザーはトピックを作成できません。"
+    def set_topic
+      @topic = @community.topics.find(params[:id])
     end
-  end
 
-  # ===============================
-  #  トピック管理権限
-  #  投稿者 / owner / admin
-  # ===============================
-  def ensure_topic_manageable!
-    community_owner_id = @community.owner_id
-
-    unless (
-      @topic.user_id == current_user.id ||        # トピック投稿者
-      community_owner_id == current_user.id ||    # コミュニティオーナー
-      current_user.admin?                         # サイト管理者
-    )
-      redirect_to community_topic_path(@community, @topic), alert: "権限がありません"
+    def topic_params
+      params.require(:topic).permit(:title, :body)
     end
-  end
+
+    # 参加者のみトピック作成可
+    def require_membership
+      unless @community.members.exists?(current_user.id)
+        redirect_to @community, alert: "まずコミュニティに参加してください"
+      end
+    end
+
+    def reject_guest_user
+      if current_user&.guest?
+        redirect_to community_path(params[:community_id]), alert: "ゲストユーザーはトピックを作成できません。"
+      end
+    end
+
+    # ===============================
+    #  トピック管理権限
+    #  投稿者 / owner / admin
+    # ===============================
+    def ensure_topic_manageable!
+      community_owner_id = @community.owner_id
+
+      unless @topic.user_id == current_user.id ||        # トピック投稿者
+        community_owner_id == current_user.id ||    # コミュニティオーナー
+        current_user.admin?                         # サイト管理者
+        redirect_to community_topic_path(@community, @topic), alert: "権限がありません"
+      end
+    end
 end

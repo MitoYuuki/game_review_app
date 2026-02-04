@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # db/seeds.rb を以下のように一時的に変更
 puts "=== Seedデータの作成を開始します (環境: #{Rails.env}) ==="
 
@@ -226,7 +228,7 @@ PostTag.destroy_all
 demo_posts.each_with_index do |post_data, index|
   # 投稿グループを取得（ジャンル名で指定）
   group = groups[post_data[:group_name]]
-  
+
   post = Post.create!(
     user: users.sample,
     group: group,
@@ -241,19 +243,19 @@ demo_posts.each_with_index do |post_data, index|
     created_at: post_data[:created_at],
     updated_at: post_data[:created_at] + rand(0..240).minutes
   )
-  
+
   # 指定されたタグを付与
   if post_data[:tags]
     tag_objects = tags.select { |tag| post_data[:tags].include?(tag.name) }
     post.tags << tag_objects if tag_objects.any?
   end
-  
-  puts "投稿作成 #{index+1}/10: #{post.title}"
+
+  puts "投稿作成 #{index + 1}/10: #{post.title}"
   puts "  → ジャンル: #{post.group.name}"
   puts "  → ユーザー: #{post.user.name}"
   puts "  → 投稿日時: #{post.created_at.strftime('%Y/%m/%d %H:%M')}"
   puts "  → タグ: #{post.tags.pluck(:name).join(', ')}" if post.tags.any?
-  
+
   # コメントをランダムに追加（0-8件）
   comment_count = rand(0..8)
   if comment_count > 0
@@ -305,128 +307,8 @@ end
 
 puts "コミュニティカテゴリ作成完了"
 
-community1_owner = users.sample
-community2_owner = users.sample
-
-community1 = Community.create!(
-  name: "ゲーム雑談コミュニティ",
-  description: "好きなゲームについて自由に語り合いましょう。",
-  owner_id: community1_owner.id,
-  category_id: categories["雑談"].id,
-  is_public: true,
-  approval_type: [:auto, :manual].sample # ランダムに自動承認 or 承認制
-)
-
-community2 = Community.create!(
-  name: "攻略情報共有コミュニティ",
-  description: "ボス攻略やビルド相談など攻略情報メイン。",
-  owner_id: community2_owner.id,
-  category_id: categories["攻略情報"].id,
-  is_public: true,
-  approval_type: [:auto, :manual].sample
-)
-
-puts "コミュニティ作成完了"
-
-# --- メンバー登録（必ず作成者を含める）---
-[ [community1, community1_owner], [community2, community2_owner] ].each do |community, owner|
-  # まずオーナーを必ず参加
-  CommunityMembership.find_or_create_by!( 
-    community_id: community.id,
-     user_id: owner.id
-    ) do |m|
-      m.status = :approved
-    end
-
-
-  # 他のメンバーを追加（オーナー除く）
-  (users - [owner]).sample(3).each do |user|
-    CommunityMembership.find_or_create_by!(community: community, user: user) do |m|
-      # 自動承認なら approved、承認制なら pending
-      m.status = community.auto? ? "approved" : "pending"
-    end
-
-  end
-end
-
-puts "メンバー登録完了"
-
-# --- トピック作成 ---
-topic1 = Topic.create!(
-  community_id: community1.id,
-  user_id: community1.owner_id,
-  title: "最近ハマっているゲームは？",
-  body: "ジャンル問わず語ってください！"
-)
-
-topic2 = Topic.create!(
-  community_id: community2.id,
-  user_id: community2.owner_id,
-  title: "このダンジョンの攻略方法を知りたいです",
-  body: "詰まっているのでアドバイスください！"
-)
-
-puts "トピック作成完了"
-
-# --- コメントテンプレ作成 ---
-topic1_comments = [
-  "それ自分もやってます！めちゃくちゃ面白いですよね！",
-  "気になってたゲームなので感想助かります！",
-  "積みゲーに入ってるので背中押されました！",
-  "神ゲーだと思います。サントラも最高でした。"
-]
-
-topic2_comments = [
-  "〇〇のスキルを取るとかなり楽になります！",
-  "まずは防御を固めるのがおすすめです。",
-  "属性耐性を揃えると一気に突破できますよ！",
-  "フレンドと協力すると攻略が楽になります！"
-]
-
-# --- トピックコメント作成（複数種類！）---
-# --- トピックコメント作成（被りなし・時間順を考慮）---
-
-# topic1
-topic1_created = topic1.created_at || Time.current
-
-topic1_comments.shuffle.each_with_index do |comment, i|
-  time = topic1_created + (i + 1).hours + rand(0..50).minutes
-
-  TopicComment.create!(
-    topic_id: topic1.id,
-    user_id: users.sample.id,
-    body: comment,
-    created_at: time,
-    updated_at: time
-  )
-end
-
-# topic2
-topic2_created = topic2.created_at || Time.current
-
-topic2_comments.shuffle.each_with_index do |comment, i|
-  time = topic2_created + (i + 1).hours + rand(0..50).minutes
-
-  TopicComment.create!(
-    topic_id: topic2.id,
-    user_id: users.sample.id,
-    body: comment,
-    created_at: time,
-    updated_at: time
-  )
-end
-
-
-puts "トピックコメント作成完了"
-
 puts "=== コミュニティ機能 seed 作成完了 ==="
 
 puts "=== Seed処理完了 ==="
 puts "ユーザー数: #{User.count}, グループ数: #{Group.count}, 投稿数: #{Post.count}"
 puts "タグ数: #{Tag.count}, コメント数: #{Comment.count}, いいね数: #{Like.count}"
-
-# コミュニティ関連も追加
-puts "コミュニティ数: #{Community.count}"
-puts "コミュニティメンバーシップ数: #{CommunityMembership.count}"
-puts "トピック数: #{Topic.count}"
-puts "トピックコメント数: #{TopicComment.count}"

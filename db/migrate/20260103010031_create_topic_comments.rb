@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateTopicComments < ActiveRecord::Migration[6.1]
   def change
     create_table :topic_comments do |t|
@@ -9,4 +11,3 @@ class CreateTopicComments < ActiveRecord::Migration[6.1]
     end
   end
 end
-
