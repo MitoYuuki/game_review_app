@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_02_04_022339) do
+ActiveRecord::Schema.define(version: 2026_02_05_024157) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 2026_02_04_022339) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0, null: false
+    t.datetime "approved_at"
     t.index ["community_id"], name: "index_community_memberships_on_community_id"
     t.index ["user_id", "community_id"], name: "index_community_memberships_on_user_id_and_community_id", unique: true
     t.index ["user_id"], name: "index_community_memberships_on_user_id"

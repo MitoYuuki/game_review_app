@@ -1,45 +1,63 @@
-<h3><%= @community.name %> の参加申請一覧</h3>
+<div class="container d-flex justify-content-center mt-4">
+  <div class="w-75">
 
-<% pending_members = @pending_memberships.reject { |m| m.user == @community.owner } %>
+    <h3 class="text-center mb-4"><%= @community.name %> の参加申請一覧</h3>
 
-<% if pending_members.any? %>
+    <% pending_members = @pending_memberships.reject { |m| m.user == @community.owner } %>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ユーザー</th>
-        <th>申請日</th>
-        <th>操作</th>
-      </tr>
-    </thead>
+    <% if pending_members.any? %>
 
-    <tbody>
-      <% pending_members.each do |membership| %>
-        <tr>
-          <td><%= membership.user.name %></td>
-          <td><%= membership.created_at.strftime("%Y-%m-%d") %></td>
-          <td>
-            <%= button_to "承認",
-                approve_community_community_membership_path(@community, membership),
-                method: :patch,
-                class: "btn btn-success btn-sm" %>
+      <!-- ヘッダー -->
+      <div class="d-flex justify-content-between px-3 py-2 mb-2 bg-dark rounded text-white fw-bold">
+        <div style="flex: 2;">名前</div>
+        <div style="flex: 1; text-align: center;">申請日</div>
+        <div style="flex: 2; text-align: right;">操作</div>
+      </div>
 
-            <%= button_to "拒否",
-                reject_community_community_membership_path(@community, membership),
-                method: :patch,
-                class: "btn btn-danger btn-sm" %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+      <div class="list-group">
 
-<% else %>
+        <% pending_members.each do |membership| %>
+          <div class="d-flex justify-content-between align-items-center px-3 py-2 mb-2 bg-secondary rounded">
 
-  <p>現在、申請中のユーザーはいません。</p>
+            <!-- 名前 + 申請日 -->
+            <div class="d-flex align-items-center" style="flex: 3;">
+              <span style="flex: 2;">
+                <%= link_to membership.user.name, user_path(membership.user), class: "text-white fw-bold text-decoration-none" %>
+              </span>
+              <span style="color: #ddd; flex: 1; text-align: center;">
+                <%= membership.created_at.strftime("%Y/%m/%d") %>
+              </span>
+            </div>
 
-<% end %>
+            <!-- ボタン -->
+            <div class="d-flex justify-content-end" style="flex: 2;">
+              <%= button_to "承認",
+                  approve_community_community_membership_path(@community, membership),
+                  method: :patch,
+                  class: "btn btn-success btn-sm me-2" %>
 
-<%= link_to "コミュニティに戻る",
-    community_path(@community),
-    class: "btn btn-secondary mt-3" %>
+              <%= button_to "拒否",
+                  reject_community_community_membership_path(@community, membership),
+                  method: :patch,
+                  class: "btn btn-danger btn-sm" %>
+            </div>
+
+          </div>
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <p class="text-center mt-3 text-white">現在、申請中のユーザーはいません。</p>
+
+    <% end %>
+
+    <div class="text-center">
+      <%= link_to "コミュニティに戻る",
+          community_path(@community),
+          class: "btn btn-secondary mt-4" %>
+    </div>
+
+  </div>
+</div>
