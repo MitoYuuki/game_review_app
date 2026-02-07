@@ -16,49 +16,47 @@
       </ul>
     </aside>
 
+
     <!-- ▼ 右側：コミュニティ一覧 -->
     <div class="col-12 col-md-9">
-
-      <h2 class="mb-3">コミュニティ一覧</h2>
-
-      <% if user_signed_in? && !current_user.guest? %>
-        <%= link_to "コミュニティを作成する",
-              new_community_path,
-              class: "btn btn-primary mb-3" %>
-      <% end %>
-
-
       <% @communities.each do |community| %>
-        <div class="card p-3 mb-3">
+        <div class="card p-3 mb-3 d-flex flex-row justify-content-between align-items-start">
 
-          <h4>
-            <%= link_to community.name, community_path(community), class: "text-info" %>
-          </h4>
+          <!-- コミュニティ情報 -->
+          <div class="flex-grow-1 pe-3">
+            <h4>
+              <%= link_to community.name, community_path(community), class: "text-info" %>
+            </h4>
 
-          <p>
-              <%= approval_badge(community) %>
-          </p>
+            <p><%= approval_badge(community) %></p>
 
-          <p>
-            <strong>カテゴリ：</strong>
-            <%= community.category&.name || "未設定" %>
-          </p>
+            <p>
+              <strong>カテゴリ：</strong>
+              <%= community.category&.name || "未設定" %>
+            </p>
 
-          <p>
-            作成者：
-            <%= link_to community.owner.name, user_path(community.owner) %>
-          </p>
+            <p>
+              作成者：
+              <%= link_to community.owner.name, user_path(community.owner) %>
+            </p>
 
-          <p>
-            メンバー：<%= community.members.count %>人　
-            トピック：<%= community.topics.count %>件
-          </p>
+            <p>
+              メンバー：<%= community.members.count %>人　
+              トピック：<%= community.topics.count %>件
+            </p>
 
-          <p><%= truncate(community.description, length: 80) %></p>
+            <p><%= truncate(community.description, length: 80) %></p>
+          </div>
+
+          <!-- コミュニティ画像（あれば） -->
+          <% if community.image.attached? %>
+            <div>
+              <%= image_tag community.image, size: "230x230", class: "rounded", style: "object-fit: cover;" %>
+            </div>
+          <% end %>
 
         </div>
       <% end %>
-
     </div>
 
   </div>

@@ -43,6 +43,14 @@
       <% end %>
     </p>
 
+    <% if @post.image.attached? %>
+      <div class="mb-3 text-center">
+        <p><strong>投稿画像：</strong></p>
+        <%= image_tag @post.image.variant(resize_to_limit: [600, 600]),
+                      class: "img-fluid rounded shadow" %>
+      </div>
+    <% end %>
+
     <p>投稿日時：<%= @post.created_at.strftime("%Y-%m-%d %H:%M") %></p>
 
     <h4>コメント</h4>

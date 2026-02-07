@@ -109,6 +109,7 @@ class PostsController < ApplicationController
         :difficulty,
         :recommend_level,
         :published,
+        :image,
         tag_ids: []
       )
     end

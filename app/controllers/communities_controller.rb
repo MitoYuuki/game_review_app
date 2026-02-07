@@ -83,7 +83,8 @@ class CommunitiesController < ApplicationController
         :name,
         :description,
         :category_id,
-        :approval_type
+        :approval_type,
+        :image
       )
     end
 

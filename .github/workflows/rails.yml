@@ -8,7 +8,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/setup-node@v3
+      # ▼ Node16 固定（OpenSSL 問題を完全回避）
+    - name: Setup Node 16
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
     - name: Deploy 
       env:
         PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}

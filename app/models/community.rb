@@ -3,6 +3,7 @@
 class Community < ApplicationRecord
   belongs_to :owner, class_name: "User"
   belongs_to :category
+  has_one_attached :image
 
   has_many :community_memberships, dependent: :destroy
 
