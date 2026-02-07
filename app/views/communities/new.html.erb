@@ -27,6 +27,17 @@
                       class: "form-control" %>
     </div>
 
+    <!-- ◆ 画像アップロード -->
+      <div class="form-group mb-3">
+        <%= f.label :image, "コミュニティ画像（任意）" %>
+        <%= f.file_field :image, class: "form-control" %>
+
+        <% if @community.image.attached? %>
+          <p class="mt-2">現在の画像：</p>
+          <%= image_tag @community.image.variant(resize_to_limit: [300, 300]) %>
+        <% end %>
+      </div>
+
     <%= f.submit "作成する",
                  class: "btn btn-primary" %>
   <% end %>

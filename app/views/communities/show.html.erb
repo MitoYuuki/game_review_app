@@ -2,53 +2,60 @@
 
   <!-- コミュニティ情報 -->
   <div class="post-detail mb-4">
-    <h2><%= @community.name %></h2>
 
-    <p>
-      <strong>カテゴリ：</strong>
-      <%= @community.category&.name || "未設定" %>
-    </p>
+    <!-- タイトル + 画像 -->
+    <div class="d-flex justify-content-between align-items-start mb-3">
+      <div>
+        <h2><%= @community.name %></h2>
 
-    <p>
-      作成者：
-      <%= link_to @community.owner.name, user_path(@community.owner) %>
-    </p>
+        <p>
+          <strong>カテゴリ：</strong>
+          <%= @community.category&.name || "未設定" %>
+        </p>
 
-    <p>
-      <strong>参加方式：</strong>
-      <%= approval_badge(@community) %>
-    </p>
+        <p>
+          作成者：
+          <%= link_to @community.owner.name, user_path(@community.owner) %>
+        </p>
 
-    <p>
-      メンバー数：<%= @community.members.count %>人
-      （<%= link_to "一覧を見る", members_community_path(@community) %>）
-    </p>
+        <p>
+          <strong>参加方式：</strong>
+          <%= approval_badge(@community) %>
+        </p>
 
-    <p><%= simple_format(@community.description) %></p>
+        <p>
+          メンバー数：<%= @community.members.count %>人
+          （<%= link_to "一覧を見る", members_community_path(@community) %>）
+        </p>
+
+        <p><%= simple_format(@community.description) %></p>
+      </div>
+
+      <% if @community.image.attached? %>
+        <div class="ms-3">
+          <%= image_tag @community.image,
+                size: "250x250",
+                class: "rounded shadow-sm",
+                style: "object-fit: cover;" %>
+        </div>
+      <% end %>
+    </div>
 
     <% if user_signed_in? %>
 
       <!-- ▼ 参加状態表示 -->
       <div class="mb-2">
         <% if current_user == @community.owner %>
-          <span class="badge bg-success">
-            参加中（オーナー）
-          </span>
+          <span class="badge bg-success">参加中（オーナー）</span>
 
         <% elsif @membership&.approved? %>
-          <span class="badge bg-success">
-            参加中
-          </span>
+          <span class="badge bg-success">参加中</span>
 
         <% elsif @membership&.pending? %>
-          <span class="badge bg-secondary">
-            承認待ち
-          </span>
+          <span class="badge bg-secondary">承認待ち</span>
 
         <% elsif @membership&.rejected? %>
-          <span class="badge bg-danger">
-            申請拒否
-          </span>
+          <span class="badge bg-danger">申請拒否</span>
         <% end %>
       </div>
 
@@ -110,7 +117,6 @@
                 class: "btn btn-outline-secondary" %>
 
         </div>
-
       </div>
 
     <% end %>
