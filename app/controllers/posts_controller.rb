@@ -35,6 +35,9 @@ class PostsController < ApplicationController
     else
       @posts = @posts.order(created_at: :desc)
     end
+
+    # ページネーション
+    @posts = @posts.page(params[:page]).per(10)
   end
 
 

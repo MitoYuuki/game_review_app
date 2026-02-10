@@ -9,6 +9,8 @@ class CommunitiesController < ApplicationController
   # 一覧
   def index
     @communities = Community.order(created_at: :desc)
+                            .page(params[:page])
+                            .per(5)
     @categories  = Category.all
   end
 

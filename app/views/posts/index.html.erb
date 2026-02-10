@@ -57,6 +57,12 @@
           <div class="col-6 col-md-1">❤️ <%= post.likes.count %></div>
         </div>
       <% end %>
+
+      <!-- ページネーション -->
+      <div class="mt-4">
+        <%= paginate @posts %>
+      </div>
+
     </div>
 
     <!-- ▷ 右サイド：プロフィール -->
