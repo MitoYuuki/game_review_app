@@ -8,6 +8,9 @@ class Admin::UsersController < Admin::BaseController
   def index
     @users = User.all.order(created_at: :asc)
     @users = User.where.not(email: "guest@example.com")
+                  .order(created_at: :asc)
+                  .page(params[:page])
+                  .per(10)
   end
 
   def show

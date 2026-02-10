@@ -299,3 +299,59 @@ body.homes.top .star {
 .membership-header {
   background-color: rgba(255, 255, 255, 0.1);
 }
+
+/* ページネーション */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 25px 0;
+}
+
+.pagination a,
+.pagination span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  text-decoration: none;
+
+  font-size: 15px;
+  transition: 0.25s ease;
+  backdrop-filter: blur(2px);
+}
+
+/* ホバー（青く光る） */
+.pagination a:hover {
+  background: rgba(0, 140, 255, 0.3);
+  border-color: rgba(0, 140, 255, 0.8);
+  box-shadow: 0 0 6px rgba(0, 140, 255, 0.7);
+}
+
+/* 現在ページ（光る青丸） */
+.pagination .current {
+  background: rgba(0, 140, 255, 0.8);
+  border-color: rgba(0, 140, 255, 1);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 140, 255, 0.9);
+  font-weight: bold;
+}
+
+/* disabled（薄くして非活性っぽく） */
+.pagination .disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* 前へ・次へボタン（矢印アイコン向けにサイズ調整） */
+.pagination .prev,
+.pagination .next {
+  font-size: 18px;
+}
