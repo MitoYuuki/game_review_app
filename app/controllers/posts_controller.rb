@@ -46,6 +46,13 @@ class PostsController < ApplicationController
     unless @post.published? || @post.user == current_user
       redirect_to root_path, alert: "この投稿は非公開です"
     end
+
+    # ★ 閲覧数を 1 増やす（投稿者は除外）
+    if user_signed_in?
+      @post.increment!(:views) unless current_user == @post.user
+    else
+      @post.increment!(:views)
+    end
   end
 
   def new

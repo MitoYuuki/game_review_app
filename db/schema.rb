@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_02_05_024157) do
+ActiveRecord::Schema.define(version: 2026_02_11_020308) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(version: 2026_02_05_024157) do
     t.string "difficulty"
     t.integer "recommend_level"
     t.boolean "published", default: true, null: false
+    t.integer "views"
     t.index ["group_id"], name: "index_posts_on_group_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
