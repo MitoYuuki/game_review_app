@@ -355,3 +355,26 @@ body.homes.top .star {
 .pagination .next {
   font-size: 18px;
 }
+
+/* ------------------------------------
+   投稿一覧ページだけプロフィール画像を縮小
+------------------------------------- */
+
+/* 投稿一覧ページのプロフィール画像（スマホ） */
+body.posts.index .profile-square {
+  width: 80px !important;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+/* PC以上（大きい画面） */
+@media (min-width: 768px) {
+  body.posts.index .profile-square {
+    width: 120px !important;
+  }
+}
+
+body.users.show .profile-square {
+  width: 120px !important;
+  height: 120px !important;
+}

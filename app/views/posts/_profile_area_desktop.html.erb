@@ -1,0 +1,8 @@
+<% if user_signed_in? %>
+        <div class="card p-3">
+          <h5 class="mb-2">あなたのプロフィール</h5>
+          <%= render "users/profile_summary", user: current_user %>
+        </div>
+      <% else %>
+        <p class="text-muted">ログインするとプロフィールが表示されます。</p>
+      <% end %>

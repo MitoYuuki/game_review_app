@@ -24,16 +24,16 @@ class PostsController < ApplicationController
     @tags   = Tag.all
 
     case params[:sort]
+    when "new"
+      @posts = @posts.order(created_at: :desc, updated_at: :desc)
     when "rate"
       @posts = @posts.order(rate: :desc)
     when "likes"
       @posts = @posts.left_joins(:likes).group(:id).order("COUNT(likes.id) DESC")
-    when "comments"
-      @posts = @posts.left_joins(:comments).group(:id).order("COUNT(comments.id) DESC")
     when "platform"
-      @posts = @posts.order(:platform) # 昇順。必要なら desc にもできる
-    else
-      @posts = @posts.order(created_at: :desc)
+      @posts = @posts.order(:platform)
+    when "views"
+      @posts = @posts.order(views: :desc)
     end
 
     # ページネーション
@@ -43,6 +43,8 @@ class PostsController < ApplicationController
 
 
   def show
+    @post = Post.find(params[:id])
+
     unless @post.published? || @post.user == current_user
       redirect_to root_path, alert: "この投稿は非公開です"
     end

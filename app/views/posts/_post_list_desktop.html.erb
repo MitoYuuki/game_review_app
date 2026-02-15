@@ -1,0 +1,95 @@
+<h3>新着投稿</h3>
+
+      <div class="mb-3 small">
+        並び替え：
+        <%= link_to "投稿日時 (新しい順)", posts_path(sort: "new") %> |
+        <%= link_to "評価 (高い順)", posts_path(sort: "rate") %> |
+        <%= link_to "いいね (多い順)", posts_path(sort: "likes") %> |
+        <%= link_to "プラットフォーム順", posts_path(sort: "platform") %> |
+        <%= link_to "閲覧数 (多い順)", posts_path(sort: "views") %>
+      </div>
+
+      <!-- 項目名ヘッダー-->
+      <div class="row post-header d-none d-md-flex">
+        <div class="col-md-2">ゲームタイトル</div>
+        <div class="col-md-2">作成者</div>
+        <div class="col-md-2">プラットフォーム</div>
+        <div class="col-md-1">投稿日</div>
+        <div class="col-md-2">ジャンル</div>
+        <div class="col-md-1">評価</div>
+        <div class="col-md-1">いいね</div>
+        <div class="col-md-1">閲覧</div>
+      </div>
+
+      <!-- 投稿一覧 -->
+      <% @posts.each_with_index do |post, index| %>
+        <div class="row post-row <%= index.even? ? 'even-row' : 'odd-row' %> py-2 d-flex align-items-center flex-column flex-md-row">
+
+          <!-- タイトル -->
+          <div class="col-12 col-md-2 mb-1 mb-md-0">
+            <%= link_to post.title, post_path(post) %>
+          </div>
+
+          <!-- 作成者 -->
+          <div class="col-6 col-md-2">
+            <%= post.user.name %>
+          </div>
+
+          <!-- プラットフォーム -->
+          <div class="col-6 col-md-2">
+            <%= post.platform %>
+          </div>
+
+          <!-- 投稿日（スマホ〜LG：アイコンなし） -->
+          <div class="col-6 col-md-1 d-flex d-xl-none">
+            <%= post.created_at.strftime("%m/%d") %>
+          </div>
+          <!-- 投稿日（XL〜：アイコンあり） -->
+          <div class="col-6 col-md-1 d-none d-xl-flex">
+            📅 <%= post.created_at.strftime("%m/%d") %>
+          </div>
+
+          <!-- ジャンル（スマホ〜LG：アイコンなし） -->
+          <div class="col-6 col-md-2 d-flex d-xl-none">
+            <%= post.group.name %>
+          </div>
+          <!-- ジャンル（XL〜：アイコンあり） -->
+          <div class="col-6 col-md-2 d-none d-xl-flex">
+            🏷️ <%= post.group.name %>
+          </div>
+
+          <!-- 評価（スマホ〜LG：アイコンなし） -->
+          <div class="col-6 col-md-1 d-flex d-xl-none">
+            <%= post.rate %>
+          </div>
+          <!-- 評価（XL〜：アイコンあり） -->
+          <div class="col-6 col-md-1 d-none d-xl-flex">
+            ⭐ <%= post.rate %>
+          </div>
+
+          <!-- いいね（スマホ〜LG：アイコンなし） -->
+          <div class="col-6 col-md-1 d-flex d-xl-none">
+            <%= post.likes.count %>
+          </div>
+          <!-- いいね（XL〜：アイコンあり） -->
+          <div class="col-6 col-md-1 d-none d-xl-flex">
+            ❤️ <%= post.likes.count %>
+          </div>
+
+          <!-- 閲覧数（スマホ〜LG：アイコンなし） -->
+          <div class="col-6 col-md-1 d-flex d-xl-none">
+            <%= post.views || 0 %>
+          </div>
+
+          <!-- 閲覧数（XL〜：アイコンあり） -->
+          <div class="col-6 col-md-1 d-none d-xl-flex">
+            👁️ <%= post.views || 0 %>
+          </div>
+
+        </div>
+      <% end %>
+
+      <!-- ページネーション -->
+      <div class="mt-4">
+        <%= paginate @posts %>
+      </div>
