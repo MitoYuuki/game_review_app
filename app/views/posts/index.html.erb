@@ -1,80 +1,40 @@
-<div class="container">
+<div class="container-fluid">
   <div class="row">
 
     <!-- ▷ 左サイド：ジャンル & タグ -->
     <aside class="col-12 col-md-2 mb-4 mb-md-0">
-      <h5 data-bs-toggle="collapse" data-bs-target="#genreList" style="cursor: pointer;">ジャンル ▼</h5>
-      <ul id="genreList" class="list-group mb-3 collapse show">
-        <% @groups.each do |g| %>
-          <li class="list-group-item">
-            <%= link_to g.name, group_path(g) %>
-          </li>
-        <% end %>
-      </ul>
-
-      <h5 data-bs-toggle="collapse" data-bs-target="#tagList" style="cursor: pointer;">タグ ▼</h5>
-      <ul id="tagList" class="list-group collapse show">
-        <% @tags.each do |tag| %>
-          <li class="list-group-item">
-            <%= link_to tag.name, tag_path(tag) %>
-          </li>
-        <% end %>
-      </ul>
+      <!-- スマホ用 -->
+      <div class="d-md-none">
+        <%= render "posts/sidebar_mobile", groups: @groups, tags: @tags %>
+      </div>
+      <!-- PC用 -->
+      <div class="d-none d-md-block">
+        <%= render "posts/sidebar_desktop", groups: @groups, tags: @tags %>
+      </div>
     </aside>
 
     <!-- ▷ 中央メイン：最新投稿 -->
     <div class="col-12 col-md-8">
-      <h3>新着投稿</h3>
-
-      <div class="mb-3 small">
-        並び替え：
-        <%= link_to "投稿日時 (新しい順)", posts_path(sort: "new") %> |
-        <%= link_to "評価 (高い順)", posts_path(sort: "rate") %> |
-        <%= link_to "いいね (多い順)", posts_path(sort: "likes") %> |
-        <%= link_to "プラットフォーム順", posts_path(sort: "platform") %>
+      <!-- スマホ用投稿一覧 -->
+      <div class="d-md-none">
+        <%= render "posts/post_list_mobile", posts: @posts %>
       </div>
-
-      <!-- 項目名ヘッダー-->
-      <div class="row post-header d-none d-md-flex">
-        <div class="col-md-3">ゲームタイトル</div>
-        <div class="col-md-2">作成者</div>
-        <div class="col-md-2">プラットフォーム</div>
-        <div class="col-md-1">投稿日</div>
-        <div class="col-md-2">ジャンル</div>
-        <div class="col-md-1">評価</div>
-        <div class="col-md-1">いいね</div>
+      <!-- PC用投稿一覧 -->
+      <div class="d-none d-md-block">
+        <%= render "posts/post_list_desktop", posts: @posts %>
       </div>
-
-      <!-- 投稿一覧 -->
-      <% @posts.each_with_index do |post, index| %>
-        <div class="row post-row <%= index.even? ? 'even-row' : 'odd-row' %> py-2 d-flex align-items-center flex-column flex-md-row">
-          <div class="col-12 col-md-3 mb-1 mb-md-0"><%= link_to post.title, post_path(post) %></div>
-          <div class="col-6 col-md-2"><%= post.user.name %></div>
-          <div class="col-6 col-md-2"><%= post.platform %></div>
-          <div class="col-6 col-md-1">📅 <%= post.created_at.strftime("%m/%d") %></div>
-          <div class="col-6 col-md-2">🏷️ <%= post.group.name %></div>
-          <div class="col-6 col-md-1">⭐ <%= post.rate %></div>
-          <div class="col-6 col-md-1">❤️ <%= post.likes.count %></div>
-        </div>
-      <% end %>
-
-      <!-- ページネーション -->
-      <div class="mt-4">
-        <%= paginate @posts %>
-      </div>
-
     </div>
 
     <!-- ▷ 右サイド：プロフィール -->
     <aside class="col-12 col-md-2 mt-4 mt-md-0">
-      <% if user_signed_in? %>
-        <div class="card p-3">
-          <h5 class="mb-2">あなたのプロフィール</h5>
-          <%= render "users/profile_summary", user: current_user %>
-        </div>
-      <% else %>
-        <p class="text-muted">ログインするとプロフィールが表示されます。</p>
-      <% end %>
+      <!-- スマホ用 -->
+      <div class="d-md-none">
+        <%= render "posts/profile_area_mobile" %>
+      </div>
+      <!-- PC用 -->
+      <div class="d-none d-md-block">
+        <%= render "posts/profile_area_desktop" %>
+      </div>
     </aside>
 
   </div>

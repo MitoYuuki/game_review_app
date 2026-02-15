@@ -1,0 +1,33 @@
+<div class="accordion" id="sidebarAccordion">
+
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#genreMobile">
+        ジャンル
+      </button>
+    </h2>
+    <div id="genreMobile" class="accordion-collapse collapse show">
+      <ul class="list-group">
+        <% groups.each do |g| %>
+          <li class="list-group-item"><%= link_to g.name, group_path(g) %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#tagMobile">
+        タグ
+      </button>
+    </h2>
+    <div id="tagMobile" class="accordion-collapse collapse">
+      <ul class="list-group">
+        <% tags.each do |tag| %>
+          <li class="list-group-item"><%= link_to tag.name, tag_path(tag) %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+</div>

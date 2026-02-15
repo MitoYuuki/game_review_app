@@ -1,0 +1,17 @@
+<h5 data-bs-toggle="collapse" data-bs-target="#genreList" style="cursor: pointer;">ジャンル ▼</h5>
+      <ul id="genreList" class="list-group mb-3 collapse show">
+        <% @groups.each do |g| %>
+          <li class="list-group-item">
+            <%= link_to g.name, group_path(g) %>
+          </li>
+        <% end %>
+      </ul>
+
+      <h5 data-bs-toggle="collapse" data-bs-target="#tagList" style="cursor: pointer;">タグ ▼</h5>
+      <ul id="tagList" class="list-group collapse show">
+        <% @tags.each do |tag| %>
+          <li class="list-group-item">
+            <%= link_to tag.name, tag_path(tag) %>
+          </li>
+        <% end %>
+      </ul>
