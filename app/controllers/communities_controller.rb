@@ -2,7 +2,7 @@
 
 class CommunitiesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy, :members]
-  before_action :reject_guest_user, only: [:new, :create]
+  before_action :restrict_guest_actions, only: [:new, :create]
   before_action :set_community, only: [:show, :edit, :update, :destroy, :members]
   before_action :ensure_owner!, only: [:edit, :update, :destroy]
 
@@ -66,6 +66,15 @@ class CommunitiesController < ApplicationController
   end
 
   private
+    # ゲスト制限
+    def restrict_guest_actions
+      restrict_user!(
+        condition: current_user.guest?,
+        redirect_path: communities_path,
+        message: "ゲストユーザーはこの操作はできません"
+      )
+    end
+
     # 共通：コミュニティ取得
     def set_community
       @community = Community.find(params[:id])
@@ -90,11 +99,4 @@ class CommunitiesController < ApplicationController
       )
     end
 
-    # ゲスト制限
-    def reject_guest_user
-      if current_user.guest?
-        redirect_to communities_path,
-                    alert: "ゲストユーザーはコミュニティを作成できません。"
-      end
-    end
 end

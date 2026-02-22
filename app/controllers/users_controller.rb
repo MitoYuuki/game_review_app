@@ -3,20 +3,12 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :following, :followers]
   before_action :authenticate_user!, except: [:new, :create, :guest_sign_in]
-  before_action :check_guest_user, only: [:edit, :update]
+  before_action :restrict_guest_actions, only: [:edit, :update]
 
   def guest_sign_in
     user = User.guest
     sign_in user
     redirect_to root_path, notice: "ゲストログインしました"
-  end
-
-  def self.guest
-    find_or_create_by!(email: "guest@example.com") do |user|
-      user.password = SecureRandom.urlsafe_base64
-      user.name = "ゲスト"
-      user.role = :guest
-    end
   end
 
   def show
@@ -91,9 +83,11 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :profile, :profile_image, :email, :password, :password_confirmation, :is_public)
     end
 
-    def check_guest_user
-      if current_user.guest?
-        redirect_to root_path, alert: "ゲストユーザーはこの操作はできません"
-      end
+    def restrict_guest_actions
+      restrict_user!(
+        condition: current_user.guest?,
+        redirect_path: root_path,
+        message: "ゲストユーザーはこの操作はできません"
+      )
     end
 end
