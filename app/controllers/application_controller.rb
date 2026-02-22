@@ -40,10 +40,9 @@ class ApplicationController < ActionController::Base
     # ===========================
     # ゲストユーザー制御
     # ===========================
-    def reject_guest_user
-      return if current_user.present?
-
-      flash[:alert] = "この操作をするにはログインが必要です"
-      redirect_to new_user_session_path
+    def restrict_user!(condition:, redirect_path:, message:)
+      if condition
+        redirect_to redirect_path, alert: message
+      end
     end
 end

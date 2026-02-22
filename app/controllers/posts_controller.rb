@@ -2,9 +2,10 @@
 
 class PostsController < ApplicationController
   before_action :authenticate_user!
-  before_action :reject_guest_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :restrict_guest_actions, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :set_groups_and_tags, only: [:home, :index, :new, :edit, :create, :update]
 
   # トップページ
   def home
@@ -13,15 +14,10 @@ class PostsController < ApplicationController
     else
       @posts = Post.order(created_at: :desc).limit(10)
     end
-
-    @groups = Group.all
-    @tags   = Tag.all
   end
 
   def index
     @posts = Post.published.includes(:user, :group, :tags, :likes, :comments)
-    @groups = Group.all
-    @tags   = Tag.all
 
     case params[:sort]
     when "new"
@@ -40,8 +36,6 @@ class PostsController < ApplicationController
     @posts = @posts.page(params[:page]).per(10)
   end
 
-
-
   def show
     @post = Post.find(params[:id])
 
@@ -59,13 +53,10 @@ class PostsController < ApplicationController
 
   def new
     @post   = Post.new
-    @groups = Group.all
-    @tags   = Tag.all
   end
 
   def edit
-    @groups = Group.all
-    @tags   = Tag.all
+  
   end
 
   def create
@@ -74,8 +65,6 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to @post, notice: "投稿を作成しました"
     else
-      @groups = Group.all
-      @tags   = Tag.all
       render :new
     end
   end
@@ -84,8 +73,6 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to @post, notice: "投稿を更新しました"
     else
-      @groups = Group.all
-      @tags   = Tag.all
       render :edit
     end
   end
@@ -96,10 +83,17 @@ class PostsController < ApplicationController
   end
 
   private
-    def reject_guest_user
-      if current_user.guest?
-        redirect_to root_path, alert: "ゲストユーザーは投稿できません"
-      end
+    def restrict_guest_actions
+      restrict_user!(
+        condition: current_user.guest?,
+        redirect_path: root_path,
+        message: "ゲストユーザーはこの操作はできません"
+      )
+    end
+
+    def set_groups_and_tags
+      @groups = Group.all
+      @tags   = Tag.all
     end
 
     def set_post
