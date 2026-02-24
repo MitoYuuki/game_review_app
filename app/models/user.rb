@@ -82,15 +82,13 @@ class User < ApplicationRecord
   end
 
   def self.guest
-    find_or_create_by!(email: "guest@example.com") do |user|
-      user.password = SecureRandom.urlsafe_base64
-      user.name = "ゲストユーザー"
-      user.role = :guest
+    find_or_create_by!(email: "guest@example.com").tap do |user|
+      user.update!(
+        password: SecureRandom.urlsafe_base64,
+        name: "ゲストユーザー",
+        role: :guest
+      ) if user.role != "guest"
     end
-  end
-
-  def guest?
-    email == "guest@example.com"
   end
 
   private
