@@ -48,16 +48,24 @@ class CommunityMembershipsController < ApplicationController
 
   # 承認
   def approve
-    @membership.update!(status: :approved)
-    redirect_to community_community_memberships_path(@community),
-                notice: "参加を承認しました"
+    if @membership.update(status: :approved)
+      redirect_to community_community_memberships_path(@community),
+                  notice: "参加を承認しました"
+    else
+      redirect_to community_community_memberships_path(@community),
+                  alert: "承認に失敗しました"
+    end
   end
 
   # 拒否
   def reject
-    @membership.update!(status: :rejected)
-    redirect_to community_community_memberships_path(@community),
-                alert: "申請を拒否しました"
+    if @membership.update(status: :rejected)
+      redirect_to community_community_memberships_path(@community),
+                  alert: "申請を拒否しました"
+    else
+      redirect_to community_community_memberships_path(@community),
+                  alert: "拒否処理に失敗しました"
+    end
   end
 
   # 退会（参加済ユーザーのみ）

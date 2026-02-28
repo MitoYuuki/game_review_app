@@ -2,11 +2,10 @@
 
 class PostsController < ApplicationController
   before_action :authenticate_user!
-  before_action :restrict_guest_actions, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :restrict_guest_actions, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_groups_and_tags, only: [:home, :index, :new, :edit, :create, :update]
-
   # トップページ
   def home
     if params[:keyword].present?
@@ -37,10 +36,9 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
-
     unless @post.published? || @post.user == current_user
       redirect_to root_path, alert: "この投稿は非公開です"
+      return
     end
 
     # ★ 閲覧数を 1 増やす（投稿者は除外）

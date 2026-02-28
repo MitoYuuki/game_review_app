@@ -6,11 +6,21 @@ class Admin::TopicCommentsController < ApplicationController
   before_action :set_topic
 
   def destroy
-    comment = @topic.topic_comments.find(params[:id])
-    comment.destroy
+    comment = @topic.topic_comments.find_by(id: params[:id])
 
-    redirect_to admin_community_topic_path(@community, @topic),
-                notice: "コメントを削除しました"
+    unless comment
+      redirect_to admin_community_topic_path(@community, @topic),
+                  alert: "コメントが見つかりませんでした"
+      return
+    end
+
+    if comment.destroy
+      redirect_to admin_community_topic_path(@community, @topic),
+                  notice: "コメントを削除しました"
+    else
+      redirect_to admin_community_topic_path(@community, @topic),
+                  alert: "コメントの削除に失敗しました"
+    end
   end
 
   private

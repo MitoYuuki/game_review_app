@@ -59,12 +59,10 @@ class TopicCommentsController < ApplicationController
     # 権限チェック
     # ＝ 管理者 / コミュニティオーナー / コメント投稿者
     def ensure_editable!
-      community_owner_id = @topic.community.owner_id
+      return if @topic_comment.user_id == current_user.id     # コメント投稿者
+      return if @topic.community.owner_id == current_user.id  # コミュニティオーナー
+      return if current_user.admin?                           # サイト管理者
 
-      unless @topic_comment.user_id == current_user.id ||   # コメント投稿者
-        community_owner_id == current_user.id ||       # コミュニティオーナー
-        current_user.admin?                            # サイト管理者
-        redirect_to [@topic.community, @topic], alert: "権限がありません。"
-      end
+      redirect_to [@topic.community, @topic], alert: "権限がありません。"
     end
 end

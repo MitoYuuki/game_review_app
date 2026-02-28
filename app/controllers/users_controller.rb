@@ -1,58 +1,54 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :following, :followers]
   before_action :authenticate_user!, except: [:new, :create, :guest_sign_in]
+  before_action :set_user, only: [:show, :edit, :update, :following, :followers, :liked_posts]
   before_action :restrict_guest_actions, only: [:edit, :update]
 
+  # ゲストログイン
   def guest_sign_in
     user = User.guest
     sign_in user
     redirect_to root_path, notice: "ゲストログインしました"
   end
 
+  # ユーザー詳細
   def show
     @topics = @user.topics.order(created_at: :desc)
 
-    # ▼ 投稿（公開・非公開の制御）
-    if current_user == @user
-      @posts = @user.posts.order(created_at: :desc)
-    else
-      @posts = @user.posts.published.order(created_at: :desc)
-    end
+    # 投稿（公開・非公開の制御）
+    @posts =
+      if current_user == @user
+        @user.posts.order(created_at: :desc)
+      else
+        @user.posts.published.order(created_at: :desc)
+      end
 
-    # ▼ 参加中コミュニティ取得
-    if current_user == @user
-      # 自分のページ: 承認済み＋承認待ち
-      @joined_communities = Community.joins(:community_memberships)
-                                    .where(community_memberships: { user_id: @user.id })
-    else
-      # 他人のページ: 承認済みのみ
-      @joined_communities = @user.joined_communities
-    end
+    # 参加中コミュニティ取得
+    @joined_communities =
+      if current_user == @user
+        # 自分のページ: 承認済み＋承認待ち
+        Community.joins(:community_memberships)
+                 .where(community_memberships: { user_id: @user.id })
+      else
+        # 他人のページ: 承認済みのみ
+        @user.joined_communities
+      end
   end
 
-
+  # 編集
   def edit
-    @user = User.find(params[:id])
   end
 
+  # 更新
   def update
-    # パスワードが空の場合はパラメータから削除
-    if user_params[:password].blank?
-      params[:user].delete(:password)
-      params[:user].delete(:password_confirmation)
-    end
+    sanitize_password_if_blank!
 
     if @user.update(user_params)
-      # パスワードを変更した場合は再ログインが必要になることがある
-      if user_params[:password].present?
-        bypass_sign_in(@user)
-      end
+      bypass_sign_in(@user) if user_params[:password].present?
       redirect_to @user, notice: "プロフィールを更新しました"
     else
-      # エラーメッセージを表示
-      flash.now[:alert] = @user.errors.map(&:message).uniq.join(", ")
+      flash.now[:alert] = @user.errors.full_messages.uniq.join(", ")
       render :edit
     end
   end
@@ -60,7 +56,6 @@ class UsersController < ApplicationController
   # いいねした投稿一覧
   def liked_posts
     @user = User.find(params[:id])
-    # likesテーブルを通して投稿を取得
     @liked_posts = @user.likes.includes(:post).map(&:post)
   end
 
@@ -75,12 +70,24 @@ class UsersController < ApplicationController
   end
 
   private
+
     def set_user
       @user = User.find(params[:id])
     end
 
     def user_params
-      params.require(:user).permit(:name, :profile, :profile_image, :email, :password, :password_confirmation, :is_public)
+      params.require(:user).permit(
+        :name, :profile, :profile_image,
+        :email, :password, :password_confirmation, :is_public
+      )
+    end
+
+    # パスワード欄が空欄ならパスワード変更しない
+    def sanitize_password_if_blank!
+      return if user_params[:password].blank?
+
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
     end
 
     def restrict_guest_actions
