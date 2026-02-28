@@ -10,16 +10,17 @@ class Admin::TopicsController < ApplicationController
   end
 
   def show
-    @topic = @community.topics.find(params[:id])
     @comments = @topic.topic_comments.includes(:user)
   end
 
   def destroy
-    @community = Community.find(params[:community_id])
-    @topic = @community.topics.find(params[:id])
-    @topic.destroy
-    redirect_to admin_community_topics_path(@community),
-      notice: "トピックを削除しました"
+    if @topic.destroy
+      redirect_to admin_community_topics_path(@community),
+                  notice: "トピックを削除しました"
+    else
+      redirect_to admin_community_topics_path(@community),
+                  alert: "トピックの削除に失敗しました"
+    end
   end
 
   private

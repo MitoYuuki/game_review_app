@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class LikesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_post
   before_action :reject_guest_user
-  before_action :authenticate_user!
 
   def create
     @like = current_user.likes.create(post_id: @post.id)
@@ -16,7 +16,7 @@ class LikesController < ApplicationController
 
   def destroy
     @like = current_user.likes.find_by(post_id: @post.id)
-    @like&.destroy
+    @like&.destroy # @like が nil ではない場合 destroy を実行
 
     respond_to do |format|
       format.js   # JavaScript形式のレスポンスを追加
@@ -30,16 +30,12 @@ class LikesController < ApplicationController
     end
 
     def reject_guest_user
-      if current_user&.guest?
-        respond_to do |format|
-          format.js do
-            render js: "alert('ゲストユーザーはいいねできません');"
-          end
-          format.html do
-            redirect_back fallback_location: root_path,
-              alert: "ゲストユーザーはいいねできません"
-          end
-        end
+      return unless current_user.guest? # ゲストユーザーかどうか判定
+
+      respond_to do |format|
+        format.js   { render js: "alert('ゲストユーザーはいいねできません');" }
+        format.html { redirect_back fallback_location: root_path,
+                      alert: "ゲストユーザーはいいねできません" }
       end
     end
 end

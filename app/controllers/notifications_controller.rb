@@ -11,33 +11,10 @@ class NotificationsController < ApplicationController
     @notification = current_user.notifications.find(params[:id])
 
     # 未読の場合は既読にする
-    @notification.update(read: true) unless @notification.read
+    @notification.update(read: true) if @notification.read? == false
 
     # 種類ごとに遷移先を切り替え
-    path =
-      case @notification.action
-
-      when "comment"
-        # Comment → post に飛ぶ
-        post_path(@notification.notifiable.post)
-
-      when "like"
-        # Like → post に飛ぶ
-        post_path(@notification.notifiable.post)
-
-      when "follow"
-        # フォローした相手のプロフィールへ
-        user_path(@notification.actor)
-
-      when "community_request", "community_approved"
-        # community_membership → community に飛ぶ
-        community_path(@notification.notifiable.community)
-
-      else
-        notifications_path
-      end
-
-    redirect_to path
+    redirect_to @notification.redirect_path
   end
 
   #既読ボタン
@@ -51,5 +28,4 @@ class NotificationsController < ApplicationController
     current_user.notifications.where(read: true).destroy_all
     redirect_to notifications_path, notice: "既読通知を削除しました！"
   end
-
 end

@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-
-# app/controllers/users/sessions_controller.rb
 class Users::SessionsController < Devise::SessionsController
   def guest_sign_in
     user = User.guest
