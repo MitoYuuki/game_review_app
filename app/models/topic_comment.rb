@@ -12,9 +12,10 @@ class TopicComment < ApplicationRecord
   def manageable_by?(user)
     return false unless user
 
-    return true if user.admin?
-    return true if topic.community.owner_id == user.id
-    return true if self.user_id == user.id
+    # コメントを管理できるユーザーか判定
+    user.admin? ||  # - 管理者
+    topic.community.owner_id == user.id ||  # - コミュニティのオーナー
+    user_id == user.id  # - コメントの投稿者
 
     false
   end

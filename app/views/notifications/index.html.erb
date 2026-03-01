@@ -19,29 +19,44 @@
       
       <%= n.actor.name %>
 
-      <% case n.action %>
-      <% when "comment" %>
-        があなたのレビュー
-        「<%= n.notifiable.post.title %>」
-        にコメントしました
+      <% case n.action
+      when "comment" %>
+        <% if n.notifiable&.post %>
+          があなたのレビュー「<%= n.notifiable.post.title %>」にコメントしました
+        <% else %>
+          （このレビューは削除されました）
+        <% end %>
 
       <% when "like" %>
-        があなたのレビュー
-        「<%= n.notifiable.post.title %>」
-        にいいねしました
+        <% if n.notifiable&.post %>
+          があなたのレビュー「<%= n.notifiable.post.title %>」にいいねしました
+        <% else %>
+          （このレビューは削除されました）
+        <% end %>
 
       <% when "follow" %>
         があなたをフォローしました
 
       <% when "community_request" %>
-        がコミュニティ「<%= n.notifiable.community.name %>」に参加申請しました
+        <% if n.notifiable&.community.present? %>
+          がコミュニティ「<%= n.notifiable.community.name %>」に参加申請しました
+        <% else %>
+          （このコミュニティの情報は削除されました）
+        <% end %>
 
       <% when "community_approved" %>
-        コミュニティ「<%= n.notifiable.community.name %>」への参加が承認されました
+        <% if n.notifiable&.community.present? %>
+          コミュニティ「<%= n.notifiable.community.name %>」への参加が承認されました
+        <% else %>
+          （このコミュニティの情報は削除されたため表示できません）
+        <% end %>
+
       <% end %>
 
-      <%= link_to "詳細", notification_path(n), class: "ms-2" %>
-
+      <%# notifiable が存在する場合だけ詳細を表示 %>
+      <% if n.notifiable.present? %>
+        <%= link_to "詳細", notification_path(n), class: "ms-2" %>
+      <% end %>
     </li>
   <% end %>
 </ul>

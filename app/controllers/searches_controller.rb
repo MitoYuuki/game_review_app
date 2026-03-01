@@ -11,9 +11,10 @@ class SearchesController < ApplicationController
     @results =
        case @model
       when "user"
-        User.where(
-          build_query("name", search_method),
-          build_keyword(search_method)
+        User.where.not(id: User.guest.id)  # まずゲストを除外
+            .where(
+            build_query("name", search_method),
+            build_keyword(search_method)
         )
 
        when "post"

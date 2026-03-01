@@ -26,15 +26,9 @@ class Topic < ApplicationRecord
   def manageable_by?(user)
     return false unless user
 
-    # サイト管理者(admin)
-    return true if user.admin?
-
-    # コミュニティオーナー
-    return true if community.owner_id == user.id
-
-    # トピック投稿者
-    return true if self.user_id == user.id
-
-    false
+    # トピックを管理できるユーザーか判定する
+    user.admin? ||  # サイト管理者(admin)
+    community.owner_id == user.id ||  # コミュニティオーナー
+    user_id == user.id  # トピック投稿者
   end
 end

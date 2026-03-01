@@ -35,6 +35,8 @@ class Community < ApplicationRecord
     return unless approval_type == "auto"  # manual → auto の場合のみ
 
     pending_memberships = community_memberships.where(status: "pending")
-    pending_memberships.update_all(status: "approved", approved_at: Time.current)
+    pending_memberships.find_each do |membership|
+      membership.update(status: :approved, approved_at: Time.current)
+    end
   end
 end
