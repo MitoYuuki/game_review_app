@@ -11,7 +11,9 @@ class Notification < ApplicationRecord
 
     case action
     when "comment", "like"
-      # Comment / Like → Post に飛ぶ
+      # Post が削除されていたら notifications に戻す
+      return helpers.notifications_path if notifiable&.post.nil?
+      
       helpers.post_path(notifiable.post)
 
     when "follow"
@@ -19,7 +21,10 @@ class Notification < ApplicationRecord
       helpers.user_path(actor)
 
     when "community_request", "community_approved"
-      # 参加申請系 → Community に飛ぶ
+      # notifiable が nil（CommunityMembership消滅）、
+      # または関連する community が nil（コミュニティ削除）のときに備える
+      return helpers.notifications_path if notifiable.nil? || notifiable.community.nil?
+
       helpers.community_path(notifiable.community)
 
     else

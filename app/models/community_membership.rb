@@ -2,6 +2,8 @@ class CommunityMembership < ApplicationRecord
   belongs_to :user
   belongs_to :community
 
+  has_many :notifications, as: :notifiable, dependent: :destroy
+
   enum role: { member: 0, sub_admin: 1, admin: 2 }
   enum status: { pending: 0, approved: 1, rejected: 2 }
 
@@ -42,11 +44,10 @@ class CommunityMembership < ApplicationRecord
   def approved_is_unique_per_user_and_community
     return unless approved?
 
-    if CommunityMembership.where(
-        user_id: user_id,
-        community_id: community_id,
-        status: :approved
-      ).where.not(id: id).exists?
+    if CommunityMembership.approved
+                         .where(user_id: user_id, community_id: community_id)
+                         .where.not(id: id)
+                         .exists?
 
       errors.add(:base, "すでに承認済みです")
     end
