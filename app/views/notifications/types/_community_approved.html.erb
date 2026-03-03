@@ -1,0 +1,5 @@
+<% if n.notifiable&.community.present? %>
+  コミュニティ「<%= n.notifiable.community.name %>」への参加が承認されました
+<% else %>
+  （このコミュニティの情報は削除されたため表示できません）
+<% end %>

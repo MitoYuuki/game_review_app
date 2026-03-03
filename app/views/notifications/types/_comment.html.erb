@@ -1,0 +1,5 @@
+<% if n.notifiable&.post %>
+  があなたのレビュー「<%= n.notifiable.post.title %>」にコメントしました
+<% else %>
+  （このレビューは削除されました）
+<% end %>
