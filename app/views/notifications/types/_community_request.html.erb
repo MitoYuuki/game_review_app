@@ -1,0 +1,5 @@
+<% if n.notifiable&.community.present? %>
+  がコミュニティ「<%= n.notifiable.community.name %>」に参加申請しました
+<% else %>
+  （このコミュニティの情報は削除されました）
+<% end %>

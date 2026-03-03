@@ -1,0 +1,12 @@
+<li class="<%= notification.read ? 'notification-read' : 'notification-unread' %>">
+
+  <%= notification.actor.name %>
+
+  <%# 通知の種類によって部分テンプレートを読み込む %>
+  <%= render "notifications/types/#{notification.action}", n: notification %>
+
+  <%# notifiable が存在する場合だけ詳細を表示 %>
+  <% if notification.notifiable.present? %>
+    <%= link_to "詳細", notification_path(notification), class: "ms-2" %>
+  <% end %>
+</li>
